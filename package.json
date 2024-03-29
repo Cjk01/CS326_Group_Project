@@ -1,4 +1,7 @@
 {
+  "author" : {
+    "name": "Team Name"
+  },
   "name": "placeholder",
   "version": "0.0.1",
   "devDependencies": {
@@ -15,6 +18,12 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/Cjk01/CS326_Group_Project.git"
-  }
+  },
+  "contributors": [
+    {"name":"Craig Krikorian", "url":"https://github.com/Cjk01"},
+    {"name":"", "url":""},
+    {"name":"", "url":""}
+
+  ]
   
 }
