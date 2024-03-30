@@ -1,0 +1,34 @@
+h2 { 
+    padding: 5px;
+}
+
+#team {
+    text-align: center;
+}
+
+#team-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+}
+.team-block {
+  padding : 5px;
+  border: 1px solid black
+}
+
+.team-block:hover  {
+    background-color: #f3fa78;
+
+}
+
+#navbar {
+    padding-top: 5%;
+    text-align: center;
+    
+}
+
+nav a {
+    padding: 5px;
+    font-size: larger;
+    font-weight: bold;
+}
