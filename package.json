@@ -11,7 +11,7 @@
   },
   "scripts": {
     "milestone-01": "http-server src/docs/milestone-01 -p 3000 -c-1 -o -s",
-    "validate-html": "html-validate 'src/**/*.html'",
+    "validate-html": "html-validate src/**/*.html",
     "prettier": "prettier src -write"
   },
 
