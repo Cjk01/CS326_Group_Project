@@ -1,6 +1,16 @@
+h3 {
+  font-family: Arial;
+}
 h2 {
   padding: 5px;
+  
 }
+h1 {
+  text-align: center;
+  
+  font-family: Arial;
+}
+
 
 #team {
   text-align: center;
@@ -12,8 +22,11 @@ h2 {
   grid-template-rows: 1fr 1fr;
 }
 .team-block {
-  padding: 5px;
-  border: 1px solid black;
+  padding: 10px;
+  margin: 5px;
+  border-radius: 5px;
+  border: 3px solid black;
+  background-color: #80dfff;
 }
 
 .team-block:hover {
@@ -30,3 +43,21 @@ nav a {
   font-size: larger;
   font-weight: bold;
 }
+
+.wireframe-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 5%;
+  border: 10px solid black;
+  
+
+}
+
+p {
+  font-size: 18px;
+  font-family: Arial;
+}
+
+
