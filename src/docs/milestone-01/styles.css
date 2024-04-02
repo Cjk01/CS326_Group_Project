@@ -36,12 +36,18 @@ h1 {
 #navbar {
   padding-top: 5%;
   text-align: center;
+  
 }
 
 nav a {
   padding: 5px;
   font-size: larger;
   font-weight: bold;
+  border-radius: 5px;
+  border: 2px solid black;
+  text-decoration: none;
+  background-color: #80dfff;
+  
 }
 
 .wireframe-container {
