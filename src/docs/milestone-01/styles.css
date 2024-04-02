@@ -3,14 +3,12 @@ h3 {
 }
 h2 {
   padding: 5px;
-  
 }
 h1 {
   text-align: center;
-  
+
   font-family: Arial;
 }
-
 
 #team {
   text-align: center;
@@ -36,7 +34,6 @@ h1 {
 #navbar {
   padding-top: 5%;
   text-align: center;
-  
 }
 
 nav a {
@@ -47,7 +44,6 @@ nav a {
   border: 2px solid black;
   text-decoration: none;
   background-color: #80dfff;
-  
 }
 
 .wireframe-container {
@@ -57,13 +53,9 @@ nav a {
   justify-content: center;
   padding: 5%;
   border: 10px solid black;
-  
-
 }
 
 p {
   font-size: 18px;
   font-family: Arial;
 }
-
-
