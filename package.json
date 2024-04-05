@@ -1,5 +1,5 @@
 {
-  "author" : {
+  "author": {
     "name": "DOMinators (Temp)"
   },
   "name": "placeholder",
@@ -12,19 +12,33 @@
   "scripts": {
     "milestone-01": "http-server src/docs/milestone-01 -p 3000 -c-1 -o -s",
     "validate-html": "html-validate src/**/*.html",
-    "prettier": "prettier src -write"
+    "prettier": "prettier src -write",
+    "jsdoc" : "jsdoc src/client/**/*.js"
   },
-
   "repository": {
     "type": "git",
     "url": "https://github.com/Cjk01/CS326_Group_Project.git"
   },
   "contributors": [
-    {"name":"Craig Krikorian", "url":"https://github.com/Cjk01"},
-    {"name":"Aryan Sajith", "url":"https://github.com/Aryan-Sajith"},
-    {"name":"Jonah Osborne", "email": "jonahosborne@umass.edu", "url":"https://github.com/JonahOsborne"},
-    {"name":"Daniil Koval", "url":"https://github.com/daniilkoval1337"}
-  ]
-
+    {
+      "name": "Craig Krikorian",
+      "url": "https://github.com/Cjk01"
+    },
+    {
+      "name": "Aryan Sajith",
+      "url": "https://github.com/Aryan-Sajith"
+    },
+    {
+      "name": "Jonah Osborne",
+      "email": "jonahosborne@umass.edu",
+      "url": "https://github.com/JonahOsborne"
+    },
+    {
+      "name": "Daniil Koval",
+      "url": "https://github.com/daniilkoval1337"
+    }
+  ],
+  "dependencies": {
+    "jsdoc": "^4.0.2"
+  }
 }
-
