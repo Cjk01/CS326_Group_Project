@@ -14,7 +14,7 @@
     "milestone-02": "http-server src/client -p 3000 -c-1 -o -s",
     "validate-html": "html-validate src/**/*.html",
     "prettier": "prettier src -write",
-    "jsdoc" : "jsdoc src/client/scripts/generators/example_generator.js"
+    "jsdoc" : "jsdoc -r src/client/scripts/ -d src/docs/milestone-02"
   },
   "repository": {
     "type": "git",
