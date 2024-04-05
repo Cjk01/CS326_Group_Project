@@ -28,6 +28,7 @@
      ```
      git push
      ```
+- On the github project page, click the green button to open your pull request
 - Wait for any other team member to review your pull request
    - If anything needs to change, the reviewer will comment the required changes
    - Once no more changes are needed, the reviewer merges the pull request
