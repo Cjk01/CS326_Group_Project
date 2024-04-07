@@ -1,3 +1,9 @@
+/** 
+  * Generates a navbar element with id='navbar'
+  * @param {Object} navInputs - Object with keys as names of items on navbar and values as references to where the navbar buttons should link to
+  * @param {HTMLElement} container - The navbar element is appended to container after it is created
+  * @returns {HTMLElement} - Returns the navbar element
+  */
 export function generateNavbar(navInputs, container) {
     let nav = document.createElement('nav');
     nav.setAttribute("id", "navbar");
@@ -19,5 +25,6 @@ export function generateNavbar(navInputs, container) {
         list.appendChild(document.createElement("br"));
     }
     container.appendChild(nav);
+    return nav;
 }
 
