@@ -1,3 +1,29 @@
 body {
     background-color: aqua;
 }
+
+/*navbar styling for navbar unordered list*/
+#navbar ul{
+    list-style-type: none;
+    display: flex;
+    align-items: center;
+    margin: 10px;
+    background-color: rgb(173, 70, 70);
+    justify-content: space-between;
+    overflow:hidden;
+    
+  }
+  
+/*navbar unordered list li element styling*/
+.navbarLink {
+    list-style-type: none;
+    float: left;
+}
+
+/*navbar anchor tag styling*/
+.navbarLink a{
+    color: white;
+    font-size: 30px;
+    display: block;
+    text-decoration: none;
+}
