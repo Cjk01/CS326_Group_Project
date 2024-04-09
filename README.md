@@ -6,9 +6,14 @@
 - Before doing anything else run the following git commands
   ```
   git fetch
+  git merge
+  ```
+  This will fetch changes from the remote to your local, and merge those changes into your current working environment
+  You could also use
+  ```
   git pull
   ```
-  This will fetch changes from the remote to your local, and pull those changes into your current working environment
+  which will perform both of these commands, with the downside that it will initiate a conflict if it exists
   
 - Create a new feature branch to complete your work (you will need to switch back to main once everything is complete as well)
   ```
