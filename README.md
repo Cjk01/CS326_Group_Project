@@ -13,7 +13,8 @@
   ```
   git pull
   ```
-  which will perform both of these commands, with the downside that it will initiate a conflict if it exists
+  Use git pull, if you just want the latest files and have not made any changes
+  otherwise, use fetch and merge
   
 - Create a new feature branch to complete your work (you will need to switch back to main once everything is complete as well)
   ```
