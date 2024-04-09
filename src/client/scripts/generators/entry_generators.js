@@ -1,5 +1,6 @@
-function generateDeckEntry(deck) {
+export function generateDeckEntry(deck) {
     /**
+     * Generates a Deck Entry (Icon to represent a deck at a glance)
      * @ToDo Change text elements to align with deck objects
      * Change text elements to align with deck objects
      * Change the text on the button
@@ -12,28 +13,18 @@ function generateDeckEntry(deck) {
 
     // Creation of entire entry
     let entry = document.createElement("div");
-    entry.classList.add("deck-entry");
-
-    entry.style.width = 700;
-    entry.style.height = 150;
-    entry.style.margin = 10;
-    entry.style.display = "grid";
-    entry.style.gridTemplateColumns = "3fr 1fr";
-    entry.style.border = "solid";
-
+    entry.classList.add("entry");
 
     // Creation of text elements
 
     let textDiv = document.createElement("div");
-    textDiv.style.display = "grid";
-    textDiv.style.gridTemplateColumns = "repeat(3, 1fr)";
-    textDiv.style.gridTemplateRows = "repeat(2, 1fr)";
+    textDiv.classList.add("entry-textbox")
 
     let textChildren = [];
 
     for (let i = 0; i < 6; i++) {
         let textEl = document.createElement("div");
-        textEl.classList.add("deck-entry-text");
+        textEl.classList.add("entry-text");
         textDiv.appendChild(textEl);
         textChildren.push(textEl);
     }
@@ -51,10 +42,8 @@ function generateDeckEntry(deck) {
     // Creation of button element
 
     let buttonDiv = document.createElement("button");
-    buttonDiv.style.width = 125;
-    buttonDiv.style.height = 75;
-    buttonDiv.style.border = "solid";
-    buttonDiv.style.placeSelf = "center";
+    buttonDiv.classList.add("entry-button");
+    
     buttonDiv.innerHTML = "TBD"; // Change
 
     buttonDiv.click; // Change
@@ -64,8 +53,9 @@ function generateDeckEntry(deck) {
     return entry;
 }
 
-function generateUserEntry(user) {
+export function generateUserEntry(user) {
     /**
+     * Generates a User Entry (Icon to represent a user at a glance)
      * @ToDo Change text elements to align with user objects
      * Change the text on the button
      * Add click functionality to the button
@@ -77,28 +67,18 @@ function generateUserEntry(user) {
 
     // Creation of entire entry
     let entry = document.createElement("div");
-    entry.classList.add("user-entry");
-
-    entry.style.width = 700;
-    entry.style.height = 150;
-    entry.style.margin = 10;
-    entry.style.display = "grid";
-    entry.style.gridTemplateColumns = "3fr 1fr";
-    entry.style.border = "solid";
-
+    entry.classList.add("entry");
 
     // Creation of text elements
 
     let textDiv = document.createElement("div");
-    textDiv.style.display = "grid";
-    textDiv.style.gridTemplateColumns = "repeat(3, 1fr)";
-    textDiv.style.gridTemplateRows = "repeat(2, 1fr)";
+    textDiv.classList.add("entry-textbox")
 
     let textChildren = [];
 
     for (let i = 0; i < 6; i++) {
         let textEl = document.createElement("div");
-        textEl.classList.add("user-entry-text");
+        textEl.classList.add("entry-text");
         textDiv.appendChild(textEl);
         textChildren.push(textEl);
     }
@@ -116,10 +96,8 @@ function generateUserEntry(user) {
     // Creation of button element
 
     let buttonDiv = document.createElement("button");
-    buttonDiv.style.width = 125;
-    buttonDiv.style.height = 75;
-    buttonDiv.style.border = "solid";
-    buttonDiv.style.placeSelf = "center";
+    buttonDiv.classList.add("entry-button");
+
     buttonDiv.innerHTML = "TBD"; // Change
 
     buttonDiv.click; // Change
