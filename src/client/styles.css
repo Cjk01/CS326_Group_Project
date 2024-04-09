@@ -27,3 +27,25 @@ body {
     display: block;
     text-decoration: none;
 }
+
+.entry {
+    width: 700;
+    height: 150;
+    margin: 10;
+    display: "grid";
+    grid-template-columns: 3fr 1fr;
+    border: solid;
+}
+
+.entry-textbox {
+    display: grid;
+    grid-template-columns: (3, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+}
+
+.entry-button {
+    width: 125;
+    height: 75;
+    border: solid;
+    place-self: center;
+}
