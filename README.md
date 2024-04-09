@@ -14,7 +14,8 @@
   git pull
   ```
   Use git pull, if you just want the latest files and have not made any changes
-  otherwise, use fetch and merge
+  otherwise, use fetch and merge-- see below for GIF
+  ![Git Pull vs Git Fetch And Merge](https://itknowledgeexchange.techtarget.com/coffee-talk/files/2023/05/git-fetch-vs-merge.gif)
   
 - Create a new feature branch to complete your work (you will need to switch back to main once everything is complete as well)
   ```
