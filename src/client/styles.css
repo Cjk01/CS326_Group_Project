@@ -28,6 +28,7 @@ body {
     text-decoration: none;
 }
 
+/*Entry frame*/
 .entry {
     width: 700;
     height: 150;
@@ -37,15 +38,60 @@ body {
     border: solid;
 }
 
+/*Entry text*/
 .entry-textbox {
     display: grid;
-    grid-template-columns: (3, 1fr);
+    grid-template-columns: (2, 1fr);
     grid-template-rows: repeat(2, 1fr);
 }
 
+/*Entry button*/
 .entry-button {
     width: 125;
     height: 75;
     border: solid;
     place-self: center;
+}
+
+/*Outer frame of card*/
+.card {
+    width: 500;
+    height: 300;
+    background-color: transparent;
+    perspective: 1000;
+}
+
+/*Card contexts to support flip animation*/
+.card-inside {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.8s;
+    transform-style: preserve-3d;
+}
+
+/*Connectiing card front and back*/
+.card-front, .card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+}
+
+/*Card front*/
+.card-front {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 60;
+    border: solid;
+}
+
+/*Card back*/
+.card-back {
+    font-size: 30;
+    text-align: left;
+    border: solid;
+    transform: rotateY(180deg);
 }
