@@ -21,10 +21,19 @@
   ```
   git checkout -b <FEATURE NAME>_<ISSUE #> 
   ```
-- Work on your task, periodically committing your changes locally
+- Work on your task, periodically adding your changes to the locally tracked files (called staging area), and committing your local changes
+  ```
+  git add . (adds all files)
+  ```
+  or
+  ```
+  git add filename (add a a specific file)
+  ```
+  and then write your local changes to all tracked files
   ```
   git commit -am 'describe your commit'
   ```
+
 - Once you are done coding , tested your changes, and you are ready to make a pull request, do the following
   -  make sure all the code you wrote is properly documented with jsdoc https://jsdoc.app/
   -  run the following command to generate the documentation
