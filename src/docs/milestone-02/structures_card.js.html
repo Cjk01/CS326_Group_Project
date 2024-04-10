@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: generators/example_generator.js</title>
+    <title>JSDoc: Source: structures/card.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: generators/example_generator.js</h1>
+    <h1 class="page-title">Source: structures/card.js</h1>
 
     
 
@@ -26,22 +26,24 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>
-/**
- * @todo write this documentation
- * @param {Object} deck
- * @returns {Element|null} the generated Deck Element (https://developer.mozilla.org/en-US/docs/Web/API/Element)
+            <pre class="prettyprint source linenums"><code>/**
+ * Class representing a Card for a particular question/answer
  */
-export default function generateDeck(deck) {
-    let deckElement = document.createElement("div");
-    deckElement.classList.add("deck");
-    deckElement.style.height = 100;
-    deckElement.style.width = 500;
+export class Card {
 
-    let studyButton = document.createElement("input");
-    studyButton.onclick = "study();"
-
-    return deckElement;
+    /**
+     * Creates a Card
+     * @param {string} card_type - multiple choice, true/false, etc
+     * @param {string} question - the question text
+     * @param {string} answer - the question answer
+     * @param {Object} metadata - to be defined more clearly later (maybe turn into a class)
+     */
+   constructor(card_type = null, question = null, answer = null, metadata = null) {
+     this.card_type = card_type;
+     this.question = question;
+     this.answer = answer;
+     this.metadata = metadata;
+   }
 }</code></pre>
         </article>
     </section>
