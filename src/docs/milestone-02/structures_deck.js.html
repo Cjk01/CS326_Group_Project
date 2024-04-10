@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: generators/example_generator.js</title>
+    <title>JSDoc: Source: structures/deck.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: generators/example_generator.js</h1>
+    <h1 class="page-title">Source: structures/deck.js</h1>
 
     
 
@@ -26,22 +26,28 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>
+            <pre class="prettyprint source linenums"><code>import {User} from "./user.js"
+import {Card} from "./card.js";
+
 /**
- * @todo write this documentation
- * @param {Object} deck
- * @returns {Element|null} the generated Deck Element (https://developer.mozilla.org/en-US/docs/Web/API/Element)
+ * Class representing a Deck (of study cards)
  */
-export default function generateDeck(deck) {
-    let deckElement = document.createElement("div");
-    deckElement.classList.add("deck");
-    deckElement.style.height = 100;
-    deckElement.style.width = 500;
-
-    let studyButton = document.createElement("input");
-    studyButton.onclick = "study();"
-
-    return deckElement;
+export class Deck {
+   
+    /**
+     * Create a deck 
+     * @param {int} id - the unique identifier for each deck
+     * @param {string} topic - the study topic (ex. Math)
+     * @param {Card[]} cards - the cards themselves (defined in card.js)
+     * @param {User} creator - the creator of the deck(defined in user.js)
+     */
+    constructor(id = null , topic = null, cards = null, creator = null) {
+        this.id = id;
+        this.topic = topic;
+        this.cards = cards;
+        this.creator = creator;
+    }
+    //add more later if needed
 }</code></pre>
         </article>
     </section>

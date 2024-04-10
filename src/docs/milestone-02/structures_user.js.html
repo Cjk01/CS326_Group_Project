@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: generators/example_generator.js</title>
+    <title>JSDoc: Source: structures/user.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: generators/example_generator.js</h1>
+    <h1 class="page-title">Source: structures/user.js</h1>
 
     
 
@@ -27,21 +27,26 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>
-/**
- * @todo write this documentation
- * @param {Object} deck
- * @returns {Element|null} the generated Deck Element (https://developer.mozilla.org/en-US/docs/Web/API/Element)
+/** 
+ * Class representing a User (of Cachely!)
  */
-export default function generateDeck(deck) {
-    let deckElement = document.createElement("div");
-    deckElement.classList.add("deck");
-    deckElement.style.height = 100;
-    deckElement.style.width = 500;
-
-    let studyButton = document.createElement("input");
-    studyButton.onclick = "study();"
-
-    return deckElement;
+export class User {
+    
+    /**
+     * Creates a User
+     * @param {int} id - a unique identifier 
+     * @param {string} username - the username text
+     * @param {Object} metadata - to be defined more later
+     * @param {string[]} followers - stores followers of the User
+     * @param {string[]} following - stores those being followed by the User
+     */
+   constructor(id = null, username = null, metadata = null, followers = null, following = null) {
+      this.id = id;
+      this.username = username;
+      this.metadata = metadata;
+      this.followers = followers;
+      this.following = following;
+   }
 }</code></pre>
         </article>
     </section>
