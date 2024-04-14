@@ -1,15 +1,12 @@
 export function generateDeckEntry(deck) {
     /**
      * Generates a Deck Entry (Icon to represent a deck at a glance)
-     * @ToDo Change text elements to align with deck objects
-     * Change text elements to align with deck objects
+     * @ToDo
      * Change the text on the button
      * Add click functionality to the button
-     * Style
-     * @argument {Object} deck - A deck object as defined in structures/deck.js
+     * @argument {Deck} deck - A deck object as defined in structures/deck.js
      * @returns {Element} - An HTML div element
      */
-
 
     // Creation of entire entry
     let entry = document.createElement("div");
@@ -22,7 +19,7 @@ export function generateDeckEntry(deck) {
 
     let textChildren = [];
 
-    for (let i = 0; i < 6; i++) {
+    for (let i = 0; i < 3; i++) {
         let textEl = document.createElement("div");
         textEl.classList.add("entry-text");
         textDiv.appendChild(textEl);
@@ -30,12 +27,9 @@ export function generateDeckEntry(deck) {
     }
 
     // Change these to align with deck objects
-    textChildren[0].innerHTML = "First thing:<br>" + deck;
-    textChildren[1].innerHTML = "Second thing:<br>" + deck;
-    textChildren[2].innerHTML = "Third thing:<br>" + deck;
-    textChildren[3].innerHTML = "Fourth thing:<br>" + deck;
-    textChildren[4].innerHTML = "Fifth thing:<br>" + deck;
-    textChildren[5].innerHTML = "Sixth thing:<br>" + deck;
+    textChildren[0].innerHTML = "Topic:<br>" + deck.topic;
+    textChildren[1].innerHTML = "Card Count:<br>" + deck.cards.length;
+    textChildren[2].innerHTML = "Author:<br>" + deck.creator.username;
 
     entry.appendChild(textDiv);
 
@@ -56,14 +50,13 @@ export function generateDeckEntry(deck) {
 export function generateUserEntry(user) {
     /**
      * Generates a User Entry (Icon to represent a user at a glance)
-     * @ToDo Change text elements to align with user objects
+     * @ToDo
      * Change the text on the button
      * Add click functionality to the button
      * Style
-     * @argument {Object} user - A user object as defined in structures/user.js
+     * @argument {User} user - A user object as defined in structures/user.js
      * @returns {Element} - An HTML div element
      */
-
 
     // Creation of entire entry
     let entry = document.createElement("div");
@@ -76,7 +69,7 @@ export function generateUserEntry(user) {
 
     let textChildren = [];
 
-    for (let i = 0; i < 6; i++) {
+    for (let i = 0; i < 3; i++) {
         let textEl = document.createElement("div");
         textEl.classList.add("entry-text");
         textDiv.appendChild(textEl);
@@ -84,13 +77,10 @@ export function generateUserEntry(user) {
     }
 
     // Change these to align with user objects
-    textChildren[0].innerHTML = "First thing:<br>" + user;
-    textChildren[1].innerHTML = "Second thing:<br>" + user;
-    textChildren[2].innerHTML = "Third thing:<br>" + user;
-    textChildren[3].innerHTML = "Fourth thing:<br>" + user;
-    textChildren[4].innerHTML = "Fifth thing:<br>" + user;
-    textChildren[5].innerHTML = "Sixth thing:<br>" + user;
-
+    textChildren[0].innerHTML = "User:<br>" + user.username;
+    textChildren[1].innerHTML = "Followers:<br>" + user.followers.length;
+    textChildren[2].innerHTML = "Following:<br>" + user.following.length;
+    
     entry.appendChild(textDiv);
 
     // Creation of button element
