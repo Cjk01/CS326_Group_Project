@@ -4,7 +4,7 @@ export function generateDeckEntry(deck) {
      * @ToDo
      * Change the text on the button
      * Add click functionality to the button
-     * @argument {deck} deck - A deck object as defined in structures/deck.js
+     * @argument {Deck} deck - A deck object as defined in structures/deck.js
      * @returns {Element} - An HTML div element
      */
 
@@ -54,7 +54,7 @@ export function generateUserEntry(user) {
      * Change the text on the button
      * Add click functionality to the button
      * Style
-     * @argument {Object} user - A user object as defined in structures/user.js
+     * @argument {User} user - A user object as defined in structures/user.js
      * @returns {Element} - An HTML div element
      */
 
