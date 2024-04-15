@@ -3,4 +3,7 @@
  * this is where the logic including the state of the application will be handled (multi view ui logic)
  */
 
-console.log("testing");
+
+console.log("main.js loading");
+
+
