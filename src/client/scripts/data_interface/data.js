@@ -24,6 +24,9 @@ export async function addUser(user) {
 }
 
 export async function getUser(user_id) {
-  let response = await fetch(`${server_base_url}users?id=${user_id}` , {headers: text_headers, method: "GET"});
-  return response;
+  let headers = new Headers();
+  headers.append("Content-Type", "text/html");
+  let response = await fetch(`${server_base_url}users?id=${user_id}` , {headers: headers, method: "GET"});
+  let response_json = response.json();
+  return response_json;
 }
