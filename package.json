@@ -10,6 +10,7 @@
     "prettier": "^3.2.5"
   },
   "type": "module",
+  "proxy": "http://localhost:3470",
   "scripts": {
     "milestone-01": "http-server src/docs/milestone-01 -p 3000 -c-1 -o -s",
     "milestone-02": "concurrently \"node src/server/server.js\" \"http-server src/client -p 3000 -c-1 -o -s\"",

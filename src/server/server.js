@@ -4,7 +4,10 @@ import * as http from "http";
 import * as url from "url";
 import * as db from "./db.js";
 
-const headerFields = { "Content-Type": "text/html" };
+const text_headers = { "Content-Type": "text/html" ,"Access-Control-Allow-Origin": "*"};
+const json_headers = {"Content-Type" : "application/json", "Access-Control-Allow-Origin": "*"};
+
+
 
 /**
  * 
@@ -15,19 +18,27 @@ const headerFields = { "Content-Type": "text/html" };
  * Interacts with PouchDB
  */
 async function cachelyDataServer(request, response) {
+  const query_params = url.parse(request.url, true).query;
 
-  console.log(request.url);
-  response.writeHead(200, headerFields);
-  response.write("<h1>Hello</h1>");
-  response.end();
-
+  try {
   if(request.url.startsWith("/user")){
 
   }
   else if(request.url.startsWith("/deck")) {
 
   }
-  
+  else {
+    //the default case is for the server to respond with database info
+    let dbinfo = await db.logDatabaseInformation();
+    response.writeHead(200, json_headers);
+    response.write(JSON.stringify(dbinfo));
+    response.end();
+  }
+}
+catch(err) {
+    console.log(err);
+}
+
 
 }
 

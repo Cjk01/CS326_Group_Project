@@ -3,7 +3,9 @@
  * this is where the logic including the state of the application will be handled (multi view ui logic)
  */
 
+const server_base_url = "http://localhost:3470/"
+
 
 console.log("main.js loading");
-
+fetch(server_base_url).then(res => res.json().then(data => console.log(data))); 
 
