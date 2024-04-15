@@ -5,7 +5,6 @@ import * as db from "./db.js";
 import { User } from "../client/scripts/structures/user.js";
 
 
-
 //the headers in all cases must include Access-Control-Allow-Origin since we host our database on a different port locally
 //if the header does not include this, the client will receive an error
 const text_headers = { "Content-Type": "text/html" ,"Access-Control-Allow-Origin": "*"};
@@ -14,6 +13,27 @@ const satisfy_cors_headers = {"Access-Control-Allow-Methods" : "GET, POST, PATCH
 "Access-Control-Allow-Headers" : "Origin, Content-Type, X-Auth-Token", "Access-Control-Allow-Origin": "*"}
 
 
+/**
+ * 
+ * @param {http.IncomingMessage} request - the reuqest object from our server function 
+ * @returns {Promise} - promise resolving to our http request body
+ * A very primitive method of parsing the body from the http request using the event stream
+ * (There is no built-in method to do this for some reason?)
+ */
+
+async function getRequestBody(request) {
+    return new Promise((resolve) => {
+    let body = "";
+    request.on('data', (data_chunk) => {
+        body += data_chunk;
+    });
+    request.on('end', () => {
+        console.log(body); 
+        resolve(body);
+    });
+
+    });
+}
 
 /**
  * 
@@ -25,6 +45,7 @@ const satisfy_cors_headers = {"Access-Control-Allow-Methods" : "GET, POST, PATCH
  */
 async function cachelyDataServer(request, response) {
   console.log(` URL: ${request.url} \n Method: ${request.method} \n Headers: ${request.headers}`);
+  const body = await getRequestBody(request);
   const parsed_url = url.parse(request.url, true);
   const query_params = parsed_url.query;
 
@@ -40,7 +61,7 @@ async function cachelyDataServer(request, response) {
         //TODO the line below will need to be replaced to use the actual response body
         //we need confirmation if we are allowed to use a body parsing library
         //this is temporary
-        let response_obj = await db.addUserToDatabase(new User(1, "test", {"metadata" : "test"}, ["test2"], ["test3"]));
+        let response_obj = await db.addUserToDatabase(JSON.parse(body));
         response.writeHead(200, text_headers);
         response.write(JSON.stringify(response_obj));
         response.end();    
