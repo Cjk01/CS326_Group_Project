@@ -1,2 +1,6 @@
 # node dependencies
 node_modules
+
+#ignoring the pouchdb files
+decks/
+users/

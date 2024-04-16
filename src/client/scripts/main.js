@@ -1,6 +1,19 @@
-/**
- * This file is where all of the loaders within page_loaders are called to generate the entire page and inject it into the body
- * this is where the logic including the state of the application will be handled (multi view ui logic)
- */
+import {User} from "./structures/user.js";
+import * as data from "../scripts/data_interface/data.js";
 
-console.log("testing");
+
+/**
+ * Everything below is just for testing the data loaders 
+ * It will be removed in favor of the multi view page UI logic soon
+ */
+console.log("main.js loading");
+let add_user = await data.addUser(new User(Math.floor(Math.random() * 1000), "test", {"metadata" : "test"}, ["test2"], ["test3"]));
+console.log(add_user);
+let get_user = await data.getUser(1);
+console.log(get_user);
+
+//testing batch data loader
+let loadFakeUsers = await data.loadBatchTestData();
+console.log(loadFakeUsers);
+
+
