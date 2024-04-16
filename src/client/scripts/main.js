@@ -9,4 +9,8 @@ console.log(add_user);
 let get_user = await data.getUser(1);
 console.log(get_user);
 
+//testing batch data loader
+let loadFakeUsers = await data.loadBatchTestData();
+console.log(loadFakeUsers);
+
 

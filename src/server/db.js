@@ -1,6 +1,7 @@
 
 import {User} from "../client/scripts/structures/user.js";
 import PouchDB from "pouchdb";
+import * as http from "http";
 
 const users = new PouchDB("users");
 const decks = new PouchDB("decks");
@@ -33,6 +34,7 @@ export async function getUserByID(id){
     return user_document["user"];
 }
 
+
 /**
  * @returns {Object} - {users: user db info , decks: deck db info}
  * Used for debugging purposes
@@ -43,3 +45,5 @@ export async function logDatabaseInformation() {
    let decks_info = await decks.info();
    return {"users" : users_info, "decks" : decks_info};
 }
+
+

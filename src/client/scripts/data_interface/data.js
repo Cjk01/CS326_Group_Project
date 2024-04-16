@@ -30,3 +30,27 @@ export async function getUser(user_id) {
   let response_json = response.json();
   return response_json;
 }
+
+
+/**
+ * 
+ * @returns {Object} - {users: user db info, decks: deck db info} obtained from logDatabaseInformation()
+ * This function is used to load our pouchDB store with fake data 
+ * to satisfy the mock data requirements for milestone-02.
+ * This will not be needed once we move forward to milestone-03
+ * Makes use of the https://randomuser.me/documentation#howto api
+ */
+export async function loadBatchTestData() {
+  
+  //fetch fake user data in bulk from api
+  let fakeUsersRequest = await fetch("https://randomuser.me/api?results=500"); //fetch 500 fake users
+  let fakeUsersJson = await fakeUsersRequest.json();
+  let fakeUsersArray = fakeUsersJson.results;
+  let fakeUsersPromises = fakeUsersArray.map(user => addUser(new User(user["login"]["uuid"], user["login"]["username"],{"meta" : 3}, ["test"], ["test"])));
+  let fullyResolved = await Promise.all(fakeUsersPromises).then((resolverObject)=>console.log(resolverObject));
+  return fullyResolved;
+
+  //load entries via addUser() (similar for decks)
+
+  //return status object to user
+}
