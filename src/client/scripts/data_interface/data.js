@@ -32,6 +32,16 @@ export async function getUser(user_id) {
 }
 
 
+//TODO
+export async function addDeck() {
+
+}
+//TODO
+export async function getDeck() {
+
+}
+
+
 /**
  * 
  * @returns {Object} - {users: user db info, decks: deck db info} obtained from logDatabaseInformation()
@@ -48,9 +58,17 @@ export async function loadBatchTestData() {
   let fakeUsersArray = fakeUsersJson.results;
   let fakeUsersPromises = fakeUsersArray.map(user => addUser(new User(user["login"]["uuid"], user["login"]["username"],{"meta" : 3}, ["test"], ["test"])));
   let fullyResolved = await Promise.all(fakeUsersPromises).then((resolverObject)=>console.log(resolverObject));
-  return fullyResolved;
+  return fullyResolved; //This was just used for testing users, needs to be removed later
 
-  //load entries via addUser() (similar for decks)
+  /**
+   * TODO
+   * Here, A similar thing needs to be done for loading test deck data 
+   * via an unimplemented addDeck function
+   */
 
-  //return status object to user
+  /**
+   * TODO
+   * Now, a final http request needs to be made to the server (on an empty path /)
+   * To get the results of logDatabaseInfo, which is then returned to user
+   */
 }

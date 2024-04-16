@@ -2,7 +2,10 @@ import {User} from "./structures/user.js";
 import * as data from "../scripts/data_interface/data.js";
 
 
-
+/**
+ * Everything below is just for testing the data loaders 
+ * It will be removed in favor of the multi view page UI logic soon
+ */
 console.log("main.js loading");
 let add_user = await data.addUser(new User(Math.floor(Math.random() * 1000), "test", {"metadata" : "test"}, ["test2"], ["test3"]));
 console.log(add_user);
