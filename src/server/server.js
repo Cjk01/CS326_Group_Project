@@ -58,9 +58,6 @@ async function cachelyDataServer(request, response) {
   else if(request.url.startsWith("/users")){
 
     if(request.method === "POST"){
-        //TODO the line below will need to be replaced to use the actual response body
-        //we need confirmation if we are allowed to use a body parsing library
-        //this is temporary
         let response_obj = await db.addUserToDatabase(JSON.parse(body));
         response.writeHead(200, text_headers);
         response.write(JSON.stringify(response_obj));
@@ -76,6 +73,17 @@ async function cachelyDataServer(request, response) {
 
   }
   else if(request.url.startsWith("/decks")) {
+
+    if(request.method === "POST") {
+      let response_obj = await db.addDeckToDatabase(JSON.parse(body));
+      response.writeHead(200, text_headers);
+      response.write(JSON.stringify(response_obj));
+      response.end();
+    }
+
+    if(request.method === "GET") {
+      //TODO : get deck from the DB
+    }
 
   }
   else {

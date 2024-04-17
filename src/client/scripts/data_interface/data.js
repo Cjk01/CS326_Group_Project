@@ -3,15 +3,17 @@
 //by the front end
 
 import { User } from "../structures/user.js";
+import { Card } from "../structures/card.js";
+import { Deck } from "../structures/deck.js";
 
 const server_base_url = "http://localhost:3470/"
-const json_headers = {"Content-Type" : "application/json", "Access-Control-Allow-Origin": "*"};
-const text_headers = { "Content-Type": "text/html" ,"Access-Control-Allow-Origin": "*"};
+
 
 /**
- * 
- * @param {User} user - The user to be added to the database
  * constructs and sends the http request to add a user to the database 
+ * @param {User} user - The user to be added to the database
+ * @returns {Object} - response object with status info
+ * 
  * 
  */
 export async function addUser(user) {
@@ -23,17 +25,31 @@ export async function addUser(user) {
    
 }
 
+/**
+ * 
+ * @param {int} user_id - id of the user you wish to obtain from the database 
+ * @returns {Object} - response object with status info
+ */
 export async function getUser(user_id) {
   let headers = new Headers();
   headers.append("Content-Type", "text/html");
   let response = await fetch(`${server_base_url}users?id=${user_id}` , {headers: headers, method: "GET"});
-  let response_json = response.json();
+  let response_json = await response.json();
   return response_json;
 }
 
 
-//TODO
-export async function addDeck() {
+/**
+ * 
+ * @param {Deck} deck - the deck to be added
+ * @returns {Object} - response object with status info
+ */
+export async function addDeck(deck) {
+  let headers = new Headers();
+  headers.append("Content-Type", "text/html");
+  let response = await fetch(`${server_base_url}decks`, {headers: headers, method: "POST" , body: JSON.stringify(deck)});
+  let response_json = await response.json();
+  return response_json;
 
 }
 //TODO
@@ -43,12 +59,13 @@ export async function getDeck() {
 
 
 /**
- * 
- * @returns {Object} - {users: user db info, decks: deck db info} obtained from logDatabaseInformation()
  * This function is used to load our pouchDB store with fake data 
  * to satisfy the mock data requirements for milestone-02.
  * This will not be needed once we move forward to milestone-03
  * Makes use of the https://randomuser.me/documentation#howto api
+ * Will not be used after milestone-02
+ * @returns {Object} - {users: user db info, decks: deck db info} obtained from logDatabaseInformation()
+ * 
  */
 export async function loadBatchTestData() {
   
@@ -57,18 +74,38 @@ export async function loadBatchTestData() {
   let fakeUsersJson = await fakeUsersRequest.json();
   let fakeUsersArray = fakeUsersJson.results;
   let fakeUsersPromises = fakeUsersArray.map(user => addUser(new User(user["login"]["uuid"], user["login"]["username"],{"meta" : 3}, ["test"], ["test"])));
-  let fullyResolved = await Promise.all(fakeUsersPromises).then((resolverObject)=>console.log(resolverObject));
-  return fullyResolved; //This was just used for testing users, needs to be removed later
+  let fullyResolved = await Promise.all(fakeUsersPromises);
+  
 
   /**
-   * TODO
-   * Here, A similar thing needs to be done for loading test deck data 
-   * via an unimplemented addDeck function
+   * generating 50 multiplication cards to be used in decks
    */
+  let cards = [];
+  for(let i = 0; i < 50 ; ++i){
+    let n1 = Math.floor(Math.random() * 12);
+    let n2 = Math.floor(Math.random() * 12);
+    let question = n1.toString() + " x " + n2.toString() + " = ?";
+    let answer = (n1 * n2).toString();
+    cards.push(new Card("text_answer", question, answer, {"metadata" : "example"}));
+  }
+
+  //generating 3 decks and placing them into the database
+  for(let i = 0 ; i < 3; ++i) {
+    let uuid = await fetch("https://randomuser.me/api").then(resp => resp.json().then(data => data.results[0]["login"]["uuid"]));
+    let deck_creator = await getUser(1);
+    let deck = new Deck(uuid, "Math", cards, deck_creator);
+    let added_deck = await addDeck(deck);
+  }
+  
 
   /**
-   * TODO
+   *
    * Now, a final http request needs to be made to the server (on an empty path /)
    * To get the results of logDatabaseInfo, which is then returned to user
    */
+  let headers = new Headers();
+  headers.append("Content-Type", "text/html");
+  let response = await fetch(`${server_base_url}`, {headers: headers, method: "GET"}).then(resp => resp.json());
+  return response;
+
 }
