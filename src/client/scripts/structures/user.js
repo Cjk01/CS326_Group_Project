@@ -61,7 +61,7 @@ export class User {
     * @param {boolean} toStudy - Filters to return only decks that need to be studied according to spatial repetition
     * @param {boolean} owned - Filters to return only decks created by the user. Overrides notOwned
     * @param {boolean} notOwned - Filters to return only decks created by someone other than the user. Overridden by owned
-    * @returns 
+    * @returns {Deck[]} - Array of deck objects 
     */
    async getDecks(sorted = false, toStudy = false, owned = false, notOwned = false) {
       let deckIds = Object.keys(this.metadata);
