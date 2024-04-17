@@ -14,11 +14,12 @@ export function generateNavbar(navInputs, container) {
 
         let listLink = document.createElement('a');
         listLink.setAttribute("href", navInputs[navInput]);
+        listLink.setAttribute("id", navInput + "View");
+        listLink.classList.add("navbarLink");
         listLink.innerText = navInput;
 
         let listElem = document.createElement('li');
-        listElem.setAttribute("id", navInput + "OnNavBar");
-        listElem.classList.add("navbarLink");
+        
 
         listElem.appendChild(listLink);
         list.appendChild(listElem);
