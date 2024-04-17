@@ -92,7 +92,7 @@ export async function loadBatchTestData() {
   //generating 3 decks and placing them into the database
   for(let i = 0 ; i < 3; ++i) {
     let uuid = await fetch("https://randomuser.me/api").then(resp => resp.json().then(data => data.results[0]["login"]["uuid"]));
-    let deck_creator = await getUser(1);
+    let deck_creator = await getUser(fakeUsersArray[0]["login"]["uuid"]);
     let deck = new Deck(uuid, "Math", cards, deck_creator);
     let added_deck = await addDeck(deck);
   }
