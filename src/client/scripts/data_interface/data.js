@@ -86,10 +86,29 @@ export async function getDeck(deck_id) {
 
 /**
  * tests all CRUD operations for decks and users to ensure they are functioning correctly
- * @returns {boolean} - a boolean representing the success or failure of the test
+ * any error will be logged to the console
  * 
  */
 export async function testDatabaseOperations() {
+
+  let uuid = await fetch("https://randomuser.me/api").then(resp => resp.json().then(data => data.results[0]["login"]["uuid"]));
+  let test_user = new User(uuid , "testDatabaseUser", ["Follower1"], ["Following1"], {} );
+
+  //testing addUser
+  let add_response = await addUser(test_user);
+  console.assert(add_response["ok"]);
+
+  //testing getUser
+  let get_response = await getUser(test_user.id);
+  console.assert(get_response instanceof User && get_response.id === uuid);
+
+  //testing updateUser
+  test_user.followers.push("Great New Follower");
+  let update_response = await updateUser(test_user);
+  console.assert(update_response["ok"]);
+  getUser(test_user.id).then(user => console.assert(user.followers[1] === "Great New Follower"));
+
+
 
 }
 

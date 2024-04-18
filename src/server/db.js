@@ -60,9 +60,9 @@ export async function getUserByID(id){
  * @param {Object} user - The parsed JSON object representing the user to be updated
  */
 export async function updateUserInDatabase(user) {
-    let doc_to_update = await db.get(user.id);
-    Object.assign(original_doc, {"_id" : user.id.toString() , "user" : user});
-    let response = await db.put(doc_to_update);
+    let doc_to_update = await users.get(user.id);
+    Object.assign(doc_to_update, {"_id" : user.id.toString() , "user" : user});
+    let response = await users.put(doc_to_update);
     return response;
     
 }
