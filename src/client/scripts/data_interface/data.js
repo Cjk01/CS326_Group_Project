@@ -28,14 +28,17 @@ export async function addUser(user) {
 /**
  * 
  * @param {int} user_id - id of the user you wish to obtain from the database 
- * @returns {Object} - response object with status info
+ * @returns {User} - the User object
  */
 export async function getUser(user_id) {
   let headers = new Headers();
   headers.append("Content-Type", "text/html");
   let response = await fetch(`${server_base_url}users?id=${user_id}` , {headers: headers, method: "GET"});
   let response_json = await response.json();
-  return response_json;
+  let returned_user = new User(); //creating an empty class isntance to map the returned object into
+  Object.assign(returned_user, response_json); //filling in the User object with the contents of the returned object
+  return returned_user;
+  
 }
 
 
@@ -93,6 +96,7 @@ export async function loadBatchTestData() {
   for(let i = 0 ; i < 3; ++i) {
     let uuid = await fetch("https://randomuser.me/api").then(resp => resp.json().then(data => data.results[0]["login"]["uuid"]));
     let deck_creator = await getUser(fakeUsersArray[0]["login"]["uuid"]);
+    console.log(deck_creator instanceof User);
     let deck = new Deck(uuid, "Math", cards, deck_creator);
     let added_deck = await addDeck(deck);
   }
