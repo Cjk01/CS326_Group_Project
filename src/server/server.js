@@ -2,7 +2,7 @@
 import * as http from "http";
 import * as url from "url";
 import * as db from "./db.js";
-import { User } from "../client/scripts/structures/user.js";
+
 
 
 //the headers in all cases must include Access-Control-Allow-Origin since we host our database on a different port locally
@@ -71,6 +71,14 @@ async function cachelyDataServer(request, response) {
         response.end();    
     }
 
+    if(request.method === "PUT") {
+      let response_obj = await db.updateUserInDatabase(JSON.parse(body));
+      response.writeHead(200, text_headers);
+      response.write(JSON.stringify(response_obj));
+      response.end();   
+
+    }
+
   }
   else if(request.url.startsWith("/decks")) {
 
@@ -82,8 +90,13 @@ async function cachelyDataServer(request, response) {
     }
 
     if(request.method === "GET") {
-      //TODO : get deck from the DB
+      let response_obj = await db.getDeckByID(query_params.id);
+      response.writeHead(200, text_headers);
+      response.write(JSON.stringify(response_obj));
+      response.end();
     }
+
+
 
   }
   else {

@@ -27,6 +27,19 @@ export async function addUser(user) {
 
 /**
  * 
+ * @param {User} - the updated user object sent to the database
+ * @returns {Object} - response object with status info
+ */
+export async function updateUser(user) {
+    let headers = new Headers();
+    headers.append("Content-Type", "text/html");
+    let response = await fetch(server_base_url + "users", {"headers": headers, method: "PUT", body: JSON.stringify(user)});
+    let response_json = response.json();
+    return response_json;
+}
+
+/**
+ * 
  * @param {int} user_id - id of the user you wish to obtain from the database 
  * @returns {User} - the User object
  */
@@ -55,11 +68,47 @@ export async function addDeck(deck) {
   return response_json;
 
 }
-//TODO
-export async function getDeck() {
+/**
+ * 
+ * @param {int} deck_id 
+ * @returns {Deck} - the requested deck object
+ */
+export async function getDeck(deck_id) {
+  let headers = new Headers();
+  headers.append("Content-Type", "text/html");
+  let response = await fetch(`${server_base_url}decks?id=${deck_id}`, {headers: headers, method: "GET"});
+  let response_json = await response.json();
+  let returned_deck = new Deck();
+  Object.assign(returned_deck, response_json);
+  return returned_deck;
+}
+
+
+/**
+ * tests all CRUD operations for decks and users to ensure they are functioning correctly
+ * @returns {boolean} - a boolean representing the success or failure of the test
+ * 
+ */
+export async function testDatabaseOperations() {
 
 }
 
+/**
+ * Clears the database of all contents
+ * Used for setting up test environments
+ */
+export async function clearDatabase() {
+
+}
+
+/**
+ * This function configures the database for milestone-02 presentation
+ * It is meant to be called once in main.js, and prepares an example user
+ * so that all features can be shown in their entirety
+ */
+export async function configureDatabaseForMilestoneTwo() {
+
+}
 
 /**
  * This function is used to load our pouchDB store with fake data 
@@ -78,7 +127,6 @@ export async function loadBatchTestData() {
   let fakeUsersArray = fakeUsersJson.results;
   let fakeUsersPromises = fakeUsersArray.map(user => addUser(new User(user["login"]["uuid"], user["login"]["username"],{"meta" : 3}, ["test"], ["test"])));
   let fullyResolved = await Promise.all(fakeUsersPromises);
-  
 
   /**
    * generating 50 multiplication cards to be used in decks
@@ -91,6 +139,7 @@ export async function loadBatchTestData() {
     let answer = (n1 * n2).toString();
     cards.push(new Card("text_answer", question, answer, {"metadata" : "example"}));
   }
+
 
   //generating 3 decks and placing them into the database
   for(let i = 0 ; i < 3; ++i) {

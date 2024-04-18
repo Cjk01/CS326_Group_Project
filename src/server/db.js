@@ -1,6 +1,4 @@
 
-import {User} from "../client/scripts/structures/user.js";
-import {Deck} from "../client/scripts/structures/deck.js";
 import PouchDB from "pouchdb";
 import * as http from "http";
 
@@ -10,7 +8,7 @@ const decks = new PouchDB("decks");
 
 /**
  * 
- * @param {Deck} deck - the deck object to be added
+ * @param {Object} deck - JSON representation of the deck object to be updated
  * @returns {Object} - the response object, similar to addUserToDatabase
  */
 export async function addDeckToDatabase(deck) {
@@ -22,7 +20,7 @@ export async function addDeckToDatabase(deck) {
 /**
  * 
  * @param {string} id - id of the requested deck
- * @returns {Deck} - the requested deck object
+ * @returns {Object} - the requested deck object
  */
 
 export async function getDeckByID(id) {
@@ -32,7 +30,7 @@ export async function getDeckByID(id) {
 
 /**
  * 
- * @param {User} user - the user object to be added
+ * @param {Object} user - JSON representation of the user object to be added
  * @returns {Object} - the response object, like below
  * {
   "ok": true,
@@ -50,11 +48,23 @@ export async function addUserToDatabase(user) {
 /**
  * 
  * @param {string} id - id of the requested user
- * @returns {User} - The requested User object
+ * @returns {Object} - JSON representation of the requested User object
  */
 export async function getUserByID(id){
     let user_document = await users.get(id);
     return user_document["user"];
+}
+
+/**
+ * 
+ * @param {Object} user - The parsed JSON object representing the user to be updated
+ */
+export async function updateUserInDatabase(user) {
+    let doc_to_update = await db.get(user.id);
+    Object.assign(original_doc, {"_id" : user.id.toString() , "user" : user});
+    let response = await db.put(doc_to_update);
+    return response;
+    
 }
 
 
