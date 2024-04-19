@@ -109,8 +109,10 @@ body {
 
 }
 
-#decks-container {
-    background-color: green;
+#user-decks-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: auto;
 }
 
 

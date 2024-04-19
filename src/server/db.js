@@ -2,8 +2,8 @@
 import PouchDB from "pouchdb";
 import * as http from "http";
 
-const users = new PouchDB("users");
-const decks = new PouchDB("decks");
+let users = new PouchDB("users");
+let decks = new PouchDB("decks");
 
 
 /**
@@ -109,6 +109,8 @@ export async function deleteUserFromDatabase(id) {
 export async function clearDatabases() {
     let delete_users = await users.destroy();
     let delete_decks = await decks.destroy();
+    users = new PouchDB("users");
+    decks = new PouchDB("decks");
     return {"ok" : delete_decks["ok"] && delete_users["ok"] };
 }
 
