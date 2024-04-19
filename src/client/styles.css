@@ -39,7 +39,7 @@ body {
     width: 700;
     height: 150;
     margin: 10;
-    display: "grid";
+    display: grid;
     grid-template-columns: 3fr 1fr;
     border: solid;
 }
@@ -53,8 +53,8 @@ body {
 
 /*Entry button*/
 .entry-button {
-    width: 125;
-    height: 75;
+    width: 60%;
+    height: 30%;
     border: solid;
     place-self: center;
 }
@@ -109,8 +109,10 @@ body {
 
 }
 
-#decks-container {
-    background-color: green;
+#user-decks-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: auto;
 }
 
 

@@ -1,16 +1,14 @@
 
-import {User} from "../client/scripts/structures/user.js";
-import {Deck} from "../client/scripts/structures/deck.js";
 import PouchDB from "pouchdb";
 import * as http from "http";
 
-const users = new PouchDB("users");
-const decks = new PouchDB("decks");
+let users = new PouchDB("users");
+let decks = new PouchDB("decks");
 
 
 /**
  * 
- * @param {Deck} deck - the deck object to be added
+ * @param {Object} deck - JSON representation of the deck object to be updated
  * @returns {Object} - the response object, similar to addUserToDatabase
  */
 export async function addDeckToDatabase(deck) {
@@ -22,7 +20,7 @@ export async function addDeckToDatabase(deck) {
 /**
  * 
  * @param {string} id - id of the requested deck
- * @returns {Deck} - the requested deck object
+ * @returns {Object} - the requested deck object
  */
 
 export async function getDeckByID(id) {
@@ -32,7 +30,29 @@ export async function getDeckByID(id) {
 
 /**
  * 
- * @param {User} user - the user object to be added
+ * @param {Object} deck - The parsed JSON object representing the deck to be updated
+ * @returns {Object} - response status object
+ */
+export async function updateDeckInDatabase(deck) {
+    let doc_to_update = await decks.get(deck.id);
+    Object.assign(doc_to_update, {"_id" : deck.id.toString() , "deck" : deck});
+    let response = await decks.put(doc_to_update);
+    return response;
+}
+
+/**
+ * 
+ * @param {string} id - The id of the deck to be deleted
+ * @returns {Object} - response status object
+ */
+export async function deleteDeckFromDatabase(id) {
+    let deletion = await decks.get(id).then(deck_doc => decks.remove(deck_doc));
+    return deletion;
+ }
+
+/**
+ * 
+ * @param {Object} user - JSON representation of the user object to be added
  * @returns {Object} - the response object, like below
  * {
   "ok": true,
@@ -50,11 +70,48 @@ export async function addUserToDatabase(user) {
 /**
  * 
  * @param {string} id - id of the requested user
- * @returns {User} - The requested User object
+ * @returns {Object} - JSON representation of the requested User object
  */
 export async function getUserByID(id){
     let user_document = await users.get(id);
     return user_document["user"];
+}
+
+/**
+ * 
+ * @param {Object} user - The parsed JSON object representing the user to be updated
+ * @returns {Object} - response status object
+ */
+export async function updateUserInDatabase(user) {
+    let doc_to_update = await users.get(user.id);
+    Object.assign(doc_to_update, {"_id" : user.id.toString() , "user" : user});
+    let response = await users.put(doc_to_update);
+    return response;
+    
+}
+
+/**
+ * deletes a user specified by id from the database.
+ * Note: Because of how pouchDB works, there are still references to deleted documents (called tombstones)
+ * Under the hood, this just adds a _deleted attribute to the document (could be useful info for later)
+ * @param {string} id - id of user to be deleted
+ * @returns {Object} - response status object (if the user was deleted properly)
+ */
+export async function deleteUserFromDatabase(id) {
+   let deletion = await users.get(id).then(user_doc => users.remove(user_doc));
+   return deletion;
+}
+
+/**
+ * deletes the entirety of the users and decks databases
+ * @returns {Object} response status object
+ */
+export async function clearDatabases() {
+    let delete_users = await users.destroy();
+    let delete_decks = await decks.destroy();
+    users = new PouchDB("users");
+    decks = new PouchDB("decks");
+    return {"ok" : delete_decks["ok"] && delete_users["ok"] };
 }
 
 

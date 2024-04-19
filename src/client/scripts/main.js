@@ -2,12 +2,14 @@ import { generateNavbar } from "./generators/navbar_generator.js"
 import { loadHomepageView } from "./page_loaders/homepage_loader.js";
 import {loadDecksView} from "./page_loaders/decks_loader.js"
 import { loadProfileView } from "./page_loaders/profile_loader.js";
-import { loadBatchTestData } from "./data_interface/data.js";
+import { addUser, clearDatabases, configureDatabaseForMilestoneTwo, loadBatchTestData, testDatabaseOperations, updateUser } from "./data_interface/data.js";
+import { User } from "./structures/user.js";
 
-//this is loading the test data, and logging the database stats to console
-//this will be removed after milestone-02
-let load_test_data_response = await loadBatchTestData();
-console.log(load_test_data_response);
+
+await clearDatabases();
+await configureDatabaseForMilestoneTwo();
+
+
 
 let body = document.getElementById("body");
 //create and append the navbar element to the body of the page
@@ -19,9 +21,12 @@ views.setAttribute("id", "views");
 body.appendChild(views);
 
 //add all view pages as children of the views element
-views.appendChild(loadHomepageView());
-views.appendChild(loadDecksView());
-views.appendChild(loadProfileView());
+let hpview = await loadHomepageView();
+let dview = await loadDecksView();
+let pview = await loadProfileView();
+views.appendChild(hpview);
+views.appendChild(dview);
+views.appendChild(pview);
 
 //setting up the multiview UI logic 
 const links = document.querySelectorAll(".navbarLink");

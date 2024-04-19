@@ -7,7 +7,10 @@
  * 
  */
 
-export  function loadDecksView() {
+import { getDeck } from "../data_interface/data.js";
+import { generateDeckEntry } from "../generators/entry_generators.js";
+
+export async function loadDecksView() {
 
     //the buttons (your decks, saved decks, create deck)
     let your_decks_button = document.createElement("input");
@@ -32,6 +35,16 @@ export  function loadDecksView() {
     // the container of deck previews (your decks, saved decks)
     let user_decks_container = document.createElement("div");
     user_decks_container.setAttribute("id", "user-decks-container");
+    
+    //load all of the active user's decks (should be set prior)
+    let active_user_raw = localStorage.getItem("active-user");
+    let active_user = JSON.parse(active_user_raw);
+    Object.keys(active_user.metadata).forEach(async deck_id => {
+       let deck = await getDeck(deck_id); 
+       let deck_entry = generateDeckEntry(deck);
+       user_decks_container.appendChild(deck_entry);
+
+    });
  
     
     //the container of the entire page view
@@ -46,7 +59,7 @@ export  function loadDecksView() {
 
 
 /**
- * TODO
+ * TODO (maybe not necessary?? idk)
  * This function dynamically updates the content of the page
  * It makes use of localstorage if needed (not via pouchDB, as we want to only use pouchDB for what will later be replaced by a remote server)
  * 

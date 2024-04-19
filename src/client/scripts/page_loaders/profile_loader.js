@@ -1,6 +1,6 @@
 
 
-export  function loadProfileView() {
+export  async function loadProfileView() {
     let testcontent = document.createElement("div");
     testcontent.setAttribute("id", "ProfileView");
     testcontent.classList.add("view");
