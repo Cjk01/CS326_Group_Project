@@ -58,6 +58,7 @@ export async function getUserByID(id){
 /**
  * 
  * @param {Object} user - The parsed JSON object representing the user to be updated
+ * @returns {Object} - response status object
  */
 export async function updateUserInDatabase(user) {
     let doc_to_update = await users.get(user.id);
@@ -65,6 +66,18 @@ export async function updateUserInDatabase(user) {
     let response = await users.put(doc_to_update);
     return response;
     
+}
+
+/**
+ * deletes a user specified by id from the database.
+ * Note: Because of how pouchDB works, there are still references to deleted documents (called tombstones)
+ * Under the hood, this just adds a _deleted attribute to the document (could be useful info for later)
+ * @param {string} id - id of user to be deleted
+ * @returns {Object} - response status object (if the user was deleted properly)
+ */
+export async function deleteUserFromDatabase(id) {
+   let deletion = await users.get(id).then(user_doc => users.remove(user_doc));
+   return deletion;
 }
 
 

@@ -79,6 +79,14 @@ async function cachelyDataServer(request, response) {
 
     }
 
+    if(request.method === "DELETE") {
+      let response_obj = await db.deleteUserFromDatabase(query_params.id);
+      response.writeHead(200, text_headers);
+      response.write(JSON.stringify(response_obj));
+      response.end();   
+
+    }
+
   }
   else if(request.url.startsWith("/decks")) {
 

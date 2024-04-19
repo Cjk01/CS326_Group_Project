@@ -54,6 +54,18 @@ export async function getUser(user_id) {
   
 }
 
+/**
+ * RIP User 
+ * @param {int} user_id id of user to be deleted 
+ */
+export async function deleteUser(user_id) {
+  let headers = new Headers();
+  headers.append("Content-Type", "text/html");
+  let response = await fetch(`${server_base_url}users?id=${user_id}` , {headers: headers, method: "DELETE"});
+  let response_json = await response.json();
+  return response_json;
+}
+
 
 /**
  * 
@@ -108,7 +120,9 @@ export async function testDatabaseOperations() {
   console.assert(update_response["ok"]);
   getUser(test_user.id).then(user => console.assert(user.followers[1] === "Great New Follower"));
 
-
+  //testing deleteUser
+  let delete_response = await deleteUser(test_user["id"]);
+  console.assert(delete_response["ok"]);
 
 }
 
