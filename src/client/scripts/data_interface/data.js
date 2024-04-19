@@ -80,6 +80,23 @@ export async function addDeck(deck) {
   return response_json;
 
 }
+
+export async function updateDeck(deck) {
+  let headers = new Headers();
+  headers.append("Content-Type", "text/html");
+  let response = await fetch(`${server_base_url}decks`, {headers: headers, method: "PUT" , body: JSON.stringify(deck)});
+  let response_json = await response.json();
+  return response_json;
+}
+
+export async function deleteDeck(deck_id) {
+  let headers = new Headers();
+  headers.append("Content-Type", "text/html");
+  let response = await fetch(`${server_base_url}decks?id=${deck_id}` , {headers: headers, method: "DELETE"});
+  let response_json = await response.json();
+  return response_json;
+}
+
 /**
  * 
  * @param {int} deck_id 
@@ -103,8 +120,8 @@ export async function getDeck(deck_id) {
  */
 export async function testDatabaseOperations() {
 
-  let uuid = await fetch("https://randomuser.me/api").then(resp => resp.json().then(data => data.results[0]["login"]["uuid"]));
-  let test_user = new User(uuid , "testDatabaseUser", ["Follower1"], ["Following1"], {} );
+  let user_uuid = await fetch("https://randomuser.me/api").then(resp => resp.json().then(data => data.results[0]["login"]["uuid"]));
+  let test_user = new User(user_uuid , "testDatabaseUser", ["Follower1"], ["Following1"], {} );
 
   //testing addUser
   let add_response = await addUser(test_user);
@@ -112,7 +129,7 @@ export async function testDatabaseOperations() {
 
   //testing getUser
   let get_response = await getUser(test_user.id);
-  console.assert(get_response instanceof User && get_response.id === uuid);
+  console.assert(get_response instanceof User && get_response.id === user_uuid);
 
   //testing updateUser
   test_user.followers.push("Great New Follower");
@@ -120,9 +137,31 @@ export async function testDatabaseOperations() {
   console.assert(update_response["ok"]);
   getUser(test_user.id).then(user => console.assert(user.followers[1] === "Great New Follower"));
 
+  //testing addDeck
+  let deck_uuid = await fetch("https://randomuser.me/api").then(resp => resp.json().then(data => data.results[0]["login"]["uuid"]));
+  let test_deck = new Deck(deck_uuid, "TestTopic", [new Card("multiple-choice", "1x0", "0", {})], test_user );
+  let deck_add = await addDeck(test_deck);
+  console.assert(deck_add["ok"]);
+
+  //testing getDeck
+  let deck_get = await getDeck(test_deck.id);
+  console.assert(deck_get instanceof Deck && deck_get.id === deck_uuid);
+
+  //testing updateDeck
+  test_deck.cards.push(new Card("multiple-choice", "2x2", "4", {}));
+  let update_deck = await updateDeck(test_deck);
+  console.assert(update_deck["ok"]);
+  getDeck(test_deck.id).then(deck => console.assert(deck.cards.length === 2 && deck.cards[1].answer === "4"));
+
+  //testing deleteDeck
+  let delete_deck = await deleteDeck(test_deck["id"]);
+  console.assert(delete_deck["ok"]);
+
   //testing deleteUser
   let delete_response = await deleteUser(test_user["id"]);
   console.assert(delete_response["ok"]);
+
+  
 
 }
 
@@ -130,9 +169,16 @@ export async function testDatabaseOperations() {
  * Clears the database of all contents
  * Used for setting up test environments
  */
-export async function clearDatabase() {
+export async function clearDatabases() {
 
+  let headers = new Headers();
+  headers.append("Content-Type", "text/html");
+  let response = await fetch(`${server_base_url}clear_databases` , {headers: headers, method: "DELETE"});
+  let response_json = await response.json();
+  return response_json;
 }
+
+
 
 /**
  * This function configures the database for milestone-02 presentation
@@ -195,3 +241,5 @@ export async function loadBatchTestData() {
   return response;
 
 }
+
+

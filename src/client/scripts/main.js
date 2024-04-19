@@ -2,11 +2,12 @@ import { generateNavbar } from "./generators/navbar_generator.js"
 import { loadHomepageView } from "./page_loaders/homepage_loader.js";
 import {loadDecksView} from "./page_loaders/decks_loader.js"
 import { loadProfileView } from "./page_loaders/profile_loader.js";
-import { addUser, loadBatchTestData, testDatabaseOperations, updateUser } from "./data_interface/data.js";
+import { addUser, clearDatabases, loadBatchTestData, testDatabaseOperations, updateUser } from "./data_interface/data.js";
 import { User } from "./structures/user.js";
 
 
 testDatabaseOperations();
+clearDatabases(); //delete all contents of both databases after testing
 
 let body = document.getElementById("body");
 //create and append the navbar element to the body of the page

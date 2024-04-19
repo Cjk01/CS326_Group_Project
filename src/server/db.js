@@ -30,6 +30,28 @@ export async function getDeckByID(id) {
 
 /**
  * 
+ * @param {Object} deck - The parsed JSON object representing the deck to be updated
+ * @returns {Object} - response status object
+ */
+export async function updateDeckInDatabase(deck) {
+    let doc_to_update = await decks.get(deck.id);
+    Object.assign(doc_to_update, {"_id" : deck.id.toString() , "deck" : deck});
+    let response = await decks.put(doc_to_update);
+    return response;
+}
+
+/**
+ * 
+ * @param {string} id - The id of the deck to be deleted
+ * @returns {Object} - response status object
+ */
+export async function deleteDeckFromDatabase(id) {
+    let deletion = await decks.get(id).then(deck_doc => decks.remove(deck_doc));
+    return deletion;
+ }
+
+/**
+ * 
  * @param {Object} user - JSON representation of the user object to be added
  * @returns {Object} - the response object, like below
  * {
@@ -78,6 +100,16 @@ export async function updateUserInDatabase(user) {
 export async function deleteUserFromDatabase(id) {
    let deletion = await users.get(id).then(user_doc => users.remove(user_doc));
    return deletion;
+}
+
+/**
+ * deletes the entirety of the users and decks databases
+ * @returns {Object} response status object
+ */
+export async function clearDatabases() {
+    let delete_users = await users.destroy();
+    let delete_decks = await decks.destroy();
+    return {"ok" : delete_decks["ok"] && delete_users["ok"] };
 }
 
 
