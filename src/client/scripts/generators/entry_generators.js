@@ -44,21 +44,21 @@ export function generateDeckEntry(deck, view) {
     let studyingButton = document.createElement("input");
     studyingButton.type = "button";
     studyingButton.classList.add("entry-study-Button");
-    if (activeUser.isStudying(deck)) {
+    if (activeUser.metadata[deck.id].beingStudied) {
         studyingButton.value = "Studying";
     } else {
         studyingButton.value = "Not studying";
     }
 
     studyingButton.addEventListener("click", async () => {
-        if (activeUser.isStudying(deck)) {
+        if (activeUser.metadata[deck.id].beingStudied) {
             studyingButton.value = "Pending";
-            await activeUser.toggleStudy();
+            await activeUser.toggleStudy(deck);
             studyingButton.value = "Not studying";
         } else {
             studyingButton.value = "Pending";
-            await activeUser.toggleStudy();
-            studyingButton.value = "Not studying";
+            await activeUser.toggleStudy(deck);
+            studyingButton.value = "Studying";
         }
     })
 
@@ -95,9 +95,12 @@ export function generateDeckEntry(deck, view) {
     bottomButton.classList.add("entry-button");
     bottomButton.value = "View";
     
-    bottomButton.addEventListener(() => {
+    bottomButton.addEventListener("click", () => {
         console.log("Not yet implemented");
     });
+
+    buttonDiv.appendChild(topButton);
+    buttonDiv.appendChild(bottomButton);
 
     entry.appendChild(buttonDiv);
 

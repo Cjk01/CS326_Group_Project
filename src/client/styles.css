@@ -37,7 +37,7 @@ body {
 /*Entry frame*/
 .entry {
     width: 700;
-    height: 150;
+    height: 250;
     margin: 10;
     display: grid;
     grid-template-columns: 3fr 1fr;
@@ -47,13 +47,13 @@ body {
 /*Entry text*/
 .entry-textbox {
     display: grid;
-    grid-template-columns: (2, 1fr);
-    grid-template-rows: repeat(2, 1fr);
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
 }
 
 .entry-study-button {
-    height: 50;
-    width: 75;
+    height: 15%;
+    width: 25%;
 }
 
 .entry-button-grid {
@@ -63,8 +63,8 @@ body {
 
 /*Entry button*/
 .entry-button {
-    width: 60%;
-    height: 30%;
+    width: 70%;
+    height: 50%;
     border: solid;
     place-self: center;
 }
