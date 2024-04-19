@@ -15,6 +15,7 @@ export class User {
      * timeLastStudied - The time in milliseconds since the Epoch at the time the deck was last studied
      * timesStudied - The number of times the deck has been studied, to be used for spatial repetition
      * beingStudied - A boolean indicating whether the deck is being actively studied
+     * 
      */
    constructor(id = null, username = null, followers = null, following = null, metadata = {}) {
       this.id = id;
