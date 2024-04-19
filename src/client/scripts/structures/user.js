@@ -1,4 +1,6 @@
-
+import { getDeck, getUser, updateUser } from "../data_interface/data.js";
+import { Deck } from "./deck.js";
+import { Card } from "./card.js";
 /** 
  * Class representing a User (of Cachely!)
  */
@@ -6,7 +8,7 @@ export class User {
     
     /**
      * Creates a User
-     * @param {int} id - a unique identifier 
+     * @param {Number} id - a unique identifier 
      * @param {string} username - the username text
      * @param {Number[]} followers - stores followers of the User
      * @param {Number[]} following - stores those being followed by the User
@@ -15,7 +17,6 @@ export class User {
      * timeLastStudied - The time in milliseconds since the Epoch at the time the deck was last studied
      * timesStudied - The number of times the deck has been studied, to be used for spatial repetition
      * beingStudied - A boolean indicating whether the deck is being actively studied
-     * 
      */
    constructor(id = null, username = null, followers = null, following = null, metadata = {}) {
       this.id = id;
@@ -26,23 +27,144 @@ export class User {
    }
 
    /**
+    * @todo - Uncomment follower parts - as of right now, active user's followers/following aren't in database
+    * Fetches active user from database and sets local storage field
+    * Can also be used to update the field to match database
+    * @param {Number} userId - the user object meant to 
+    */
+   static async estabilishLocalStorage(userId) {
+      let activeUser = await getUser(userId);
+      let activeDecks = await activeUser.getDecks();
+      // let activeFollowers = await activeUser.getFollowers();
+      // let activeFollowing = await activeUser.getFollowing();
+      localStorage.setItem("active-user", JSON.stringify(activeUser));
+      localStorage.setItem("active-decks", JSON.stringify(activeDecks));
+      // localStorage.setItem("active-followers", JSON.stringify(activeFollowers));
+      // localStorage.setItem("active-following", JSON.stringify(activeFollowing));
+   }
+
+   /** Updates local storage's active-user field without accessing database
+    * @param {User} activeUser - The active user, currently in local storage
+    */
+   static #updateLocalUser(activeUser) {
+      localStorage.setItem("active-user", JSON.stringify(activeUser));
+   }
+
+   /** Updates local storage's active-decks field without accessing database
+    * @param {Deck} deck - A deck to be added to local storage
+    */
+   static #updateLocalDecks(deck) {
+      let localDecks = User.getActiveDecks();
+      localDecks.push(deck);
+      localStorage.setItem("active-decks", JSON.stringify(localDecks));
+   }
+
+   /**
+    * Updates the local storage following field
+    * @param {User} user - the user to add or delete to the local storage following field
+    * @param {boolean} add - true for adding, false for deleting
+    */
+   static #updateLocalFollowing(user, add) {
+      let localFollowing = User.getActiveFollowing();
+      if (add) {
+         localFollowing.push(user);
+         localStorage.setItem("active-following", JSON.stringify(localFollowing));
+      } else {
+         localStorage.setItem("active-following", JSON.stringify(localFollowing.filter(follow => follow.id !== user.id)));
+      }
+      
+      
+   }
+
+   /**
     * An abstraction to get the active user from local storage. Unnecessary, but there if you want it.
     * @returns {User} - The active (logged in) user object
     */
    static getActiveUser() {
-      return localStorage.getItem("active-user");
+      let userData = JSON.parse(localStorage.getItem("active-user"));
+      return new User(userData.id, userData.username, userData.followers, userData.following, userData.metadata);
    }
 
    /**
-    * @todo - Update database after registry
+    * Gets active user's decks from local storage and sorts/filters them as necessary
+    * @param {boolean} sorted - Sorts according to time over deadline to study according to spatial repetition
+    * @param {boolean} beingStudied - Filters to return only decks currently being studied according to metadata
+    * @param {boolean} toStudy - Filters to return only decks that need to be studied according to spatial repetition
+    * @param {boolean} owned - Filters to return only decks created by the user. Overrides notOwned
+    * @param {boolean} notOwned - Filters to return only decks created by someone other than the user. Overridden by owned
+    * @returns {Deck[]} - Array of deck objects 
+    */
+   static getActiveDecks(sorted = false, beingStudied = false, toStudy = false, owned = false, notOwned = false) {
+      let decks = JSON.parse(localStorage.getItem("active-decks"));
+      let deckArr = [];
+      for (let deck of decks) {
+         let cardArr = [];
+         for (let card of deck.cards) {
+            cardArr.push(new Card(card.card_type, card.question, card.answer, card.metadata));
+         }
+         let creator = deck.creator;
+         let creatorUser = new User(creator.id, creator.username, creator.followers, creator.following, creator.metadata);
+         deckArr.push(new Deck(deck.id, deck.topic, cardArr, creatorUser));
+      }
+
+      if (beingStudied) {
+         deckArr = deckArr.filter((deck) => this.metadata[deck.id].beingStudied);
+      }
+
+      if (toStudy) {
+         deckArr = deckArr.filter(deck => this.checkDeck(deck));
+      }
+
+      let sortFunc = ((d1, d2) => {
+         let time = Date.now();
+         let timeInDay = 86400000; // Number of milliseconds in a day
+
+         let d1Time = (time - this.metadata[d1.id].timeLastStudied) - (timeInDay * this.metadata[d1.id].timesStudied);
+         let d2Time = (time - this.metadata[d2.id].timeLastStudied) - (timeInDay * this.metadata[d2.id].timesStudied);
+
+         return d1Time - d2Time;
+      })
+
+      if (sorted) {
+         deckArr.sort(sortFunc)
+      }
+
+      if (owned) {
+         deckArr = deckArr.filter(deck => deck.creator.id === this.id);
+      } else if (notOwned) {
+         deckArr = deckArr.filter(deck => deck.creator.id !== this.id);
+      }
+
+      return deckArr;
+   }
+
+   /**
+    * Gets active user's followers from local storage
+    */
+   static getActiveFollowers() {
+      let followers = JSON.parse(localStorage.getItem("active-followers"));
+      return followers.map(follow => new User(follow.id, follow.username, follow.followers, follow.following, follow.metadata));
+   }
+
+   /**
+    * Gets users the active user is following from local storage
+    */
+   static getActiveFollowing() {
+      let following = JSON.parse(localStorage.getItem("active-following"));
+      return following.map(follow => new User(follow.id, follow.username, follow.followers, follow.following, follow.metadata));
+   }
+
+   /**
     * Registers a deck's id in the metadata field along with necessary information
     * @param {Deck} deck - Deck object as defined in /structures/deck.js
     */
-   registerDeck(deck) {
-      this.metadata[deck.id] = {};
-      this.metadata[deck.id].timeLastStudied = Date.now();
-      this.metadata[deck.id].timesStudied = 0;
-      this.metadata[deck.id].beingStudied = true;
+   async registerDeck(deck) {
+      this.metadata[deck.id] = {timeLastStudied: Date.now(), timesStudied: 0, beingStudied: true};
+      await updateUser(this);
+      if (this.id === User.getActiveUser().id) {
+         User.#updateLocalUser(this);
+         User.#updateLocalDecks(deck);
+      }
    }
 
    /**
@@ -57,65 +179,42 @@ export class User {
    }
 
    /**
-    * @todo - Modify to update database
     * Updates the given deck in metadata, to be used after the user studies it
     * @param {Deck} deck - Deck object as defined in /structures/deck.js
     */
    updateDeck(deck) {
       this.metadata[deck.id].timeLastStudied = Date.now();
       this.metadata[deck.id].timesStudied += 1;
-   }
-
-   /**
-    * Utility method for comparing the current state of a user's deck list to local storage.
-    * Not needed elsewhere
-    * @param {Number[]} d1 - Array of Deck IDs
-    * @param {Number[]} d2 - Array of Deck IDs
-    * @returns 
-    */
-   _compareUserDecks(d1, d2) {
-      if (d1.length !== d2.length) {
-         return false;
-      }
-      for (let i = 0; i < d1.length; i++) {
-         if (d1[i] !== d2[i]) {
-            return false;
-         }
-      }
-      return true
-   }
-
-   /**
-    * Loads in decks saved or created by the user. If the user is the active user, stores in/fetches from localStorage
-    * @returns {Deck[]} - Array of Deck objects
-    */
-   async loadDecks() {
-      if (this.id === localStorage.getItem("active-user").id) { // Check if user is active user
-         if (this._compareUserDecks(Object.keys(this.metadata), localStorage.getItem("user-decks"))) { // Check for changes, probably a better way to do it
-            return localStorage.getItem("user-decks");
-         } else {
-            let decks = await Promise.all(Object.keys(this.metadata).map(getDeck));
-            localStorage.setItem("user-decks", decks);
-         }
-      } else {
-         return await Promise.all(Object.keys(this.metadata).map(getDeck));
+      updateUser(this);
+      if (this.id === User.getActiveUser().id) {
+         User.#updateLocalUser(this);
       }
    }
 
    /**
     * Gets decks from the database and sorts/filters them as necessary
-    * With no parameters, functions the same as loadDecks. You do not need to call load decks before using this.
     * @param {boolean} sorted - Sorts according to time over deadline to study according to spatial repetition
+    * @param {boolean} beingStudied - Filters to return only decks currently being studied according to metadata
     * @param {boolean} toStudy - Filters to return only decks that need to be studied according to spatial repetition
     * @param {boolean} owned - Filters to return only decks created by the user. Overrides notOwned
     * @param {boolean} notOwned - Filters to return only decks created by someone other than the user. Overridden by owned
     * @returns {Deck[]} - Array of deck objects 
     */
-   async filterDecks(sorted = false, toStudy = false, owned = false, notOwned = false) {
-      let decks = await this.loadDecks();
+   async getDecks(sorted = false, beingStudied = false, toStudy = false, owned = false, notOwned = false) {
+      let decks = await Promise.all(Object.keys(this.metadata).map(getDeck));
       
+      if (beingStudied) {
+         decks = decks.filter((deck) => this.metadata[deck.id].beingStudied);
+      }
+
       if (toStudy) {
-         decks = decks.filter(this.checkDeck);
+         decks = decks.filter(deck => this.checkDeck(deck));
+      }
+
+      if (owned) {
+         decks = decks.filter(deck => deck.creator.id === this.id);
+      } else if (notOwned) {
+         decks = decks.filter(deck => deck.creator.id !== this.id);
       }
 
       let sortFunc = ((d1, d2) => {
@@ -132,116 +231,82 @@ export class User {
          decks.sort(sortFunc)
       }
 
-      if (owned) {
-         decks = decks.filter(deck => deck.creator.id === this.id);
-      } else if (notOwned) {
-         decks = decks.filter(deck => deck.creator.id !== this.id);
-      }
-
       return decks;
    }
 
    /**
-    * @todo - Update database
     * @param {Deck} deck - Deck object as defined in structures/deck.js
     */
    async toggleStudy(deck) {
       this.metadata[deck.id].beingStudied = !this.metadata[deck.id].beingStudied;
+      await updateUser(this);
+      if (this.id === User.getActiveUser().id) {
+         User.#updateLocalUser(this);
+      }
 
    }
    
    /**
-    * @todo - Update database
     * Registers another user that has started to follow this one
     * Meant to be used by registerFollowing
     * @param {User} other - Other User object
     */
-   async _registerFollower(other) {
+   async #registerFollower(other) {
       this.followers.push(other.id);
+      await updateUser(this);
    }
 
    /**
-    * @todo - Update database
     * Registers another user that this one has started to follow
     * Triggers other's registerFollower method
     * @param {User} other - Other User object
     */
    async registerFollowing(other) {
       this.followers.push(other.id);
-      other._registerFollower(this);
+      other.#registerFollower(this);
+      await updateUser(this);
+      if (this.id === User.getActiveUser().id) {
+         User.#updateLocalUser(this);
+         User.#updateLocalFollowing(other, true);
+      }
    }
    
    /**
-    * @todo - Update database
     * Removes a user from this user's follower list
     * @param {User} other - Other User object 
     */
-   async _removeFollower(other) {
+   async #removeFollower(other) {
       this.followers = this.followers.filter(f => f !== other.id);
+      await updateUser(this);
    }
 
    /**
-    * @todo - Update database
     * Removes a user from this user's following list
     * @param {User} other - Other User object 
     */
    async removeFollowing(other) {
       this.following = this.following.filter(f => f !== other.id);
-      other._removeFollower(this);
-   }
-
-   /**
-    * Utility method for comparing the current state of a user's follow lists to local storage.
-    * Not needed elsewhere
-    * @param {Number[]} f1 - Array of user IDs
-    * @param {Number[]} f2 - Array of user IDs
-    * @returns boolean - true if arrays are the same, false if not
-    */
-   _compareUsersArrs(f1, f2) {
-      if (f1.length !== f2.length) {
-         return false;
+      other.#removeFollower(this);
+      await updateUser(this);
+      if (this.id === User.getActiveUser().id) {
+         User.#updateLocalUser(this);
+         User.#updateLocalFollowing(other, false);
       }
-      for (let i = 0; i < f1.length; i++) {
-         if (f1[i] !== f2[i]) {
-            return false;
-         }
-      }
-      return true;
    }
 
    /**
     * Outputs array of User objects who follow this user
-    * Stores in/Retrieves from local storage for active user
     * @returns {User[]} - Array of User objects
     */
-   async loadFollowers() {
-      if (this.id === localStorage.getItem("active-user")) {
-         if (this._compareUsersArrs(this.followers, localStorage.getItem("user-followers").map(u => u.id))) {
-            return localStorage.get("user-followers");
-         } else {
-            let followers = await Promise.all(this.followers.map(getUser));
-            localStorage.setItem("user-followers", followers);
-            return followers
-         }
-      }
+   async getFollowers() {
       return await Promise.all(this.followers.map(getUser));
    }
 
    /**
     * Outputs array of User objects who are followed by this user
-    * Stores in/Retrieves from local storage for active user
     * @returns {User[]} - Array of User objects
     */
-   async loadFollowing() {
-      if (this.id === localStorage.getItem("active-user")) {
-         if (this._compareUsersArrs(this.following, localStorage.getItem("user-following").map(u => u.id))) {
-            return localStorage.get("user-following");
-         } else {
-            let following = await Promise.all(this.following.map(getUser));
-            localStorage.setItem("user-followers", following);
-            return following
-         }
-      }
+   async getFollowing() {
       return await Promise.all(this.following.map(getUser));
    }
 }
