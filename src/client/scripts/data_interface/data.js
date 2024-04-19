@@ -212,12 +212,7 @@ export async function configureDatabaseForMilestoneTwo() {
   }
   
   let added_user_to_db = await addUser(user);
-  localStorage.setItem("active-user", JSON.stringify(user));
-  
-
-
-
-  
+  await User.estabilishLocalStorage(user.id);
 }
 
 /**
