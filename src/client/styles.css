@@ -51,6 +51,16 @@ body {
     grid-template-rows: repeat(2, 1fr);
 }
 
+.entry-study-button {
+    height: 50;
+    width: 75;
+}
+
+.entry-button-grid {
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+}
+
 /*Entry button*/
 .entry-button {
     width: 60%;
