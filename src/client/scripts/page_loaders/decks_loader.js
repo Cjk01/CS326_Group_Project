@@ -3,6 +3,7 @@
 
 import { getDeck, addDeck, updateDeck } from "../data_interface/data.js";
 import { generateDeckEntry } from "../generators/entry_generators.js";
+import { generateCard } from "../generators/card_generator.js";
 import { User } from "../structures/user.js";
 import {Card} from "../structures/card.js";
 import { Deck } from "../structures/deck.js";
@@ -93,7 +94,11 @@ export async function populateDecksContainer(filter) {
 }
 
 export async function populateDeckPreviewPane(deck) {
-
+    let preview_pane = document.getElementById("deck-preview-pane");
+    while(preview_pane.firstChild) {
+        preview_pane.removeChild(preview_pane.firstChild);
+    }
+    deck.cards.forEach(card => preview_pane.appendChild(generateCard(card)));
 }
 
 

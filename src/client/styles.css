@@ -125,5 +125,10 @@ body {
     grid-template-rows: auto;
 }
 
+#deck-preview-pane {
+    display: flex;
+    background-color: red;
+    border: 1px solid black;
+}
 
 /* Styling for decks page above */
