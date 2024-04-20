@@ -3,14 +3,12 @@ import {Deck} from "../structures/deck.js"
 
 const activeUser = User.getActiveUser();
 
-export function generateDeckEntry(deck, view) {
+export function generateDeckEntry(deck) {
     /**
      * Generates a Deck Entry (Icon to represent a deck at a glance)
      * @ToDo
-     * Change the text on the button
-     * Add click functionality to the button
+     * Add functionality to buttons
      * @param {Deck} deck - A deck object as defined in structures/deck.js
-     * @param {boolean} view - Decides what the top button does. True for study, false for add.
      * @returns {Element} - An HTML div element
      */
 
@@ -41,28 +39,31 @@ export function generateDeckEntry(deck, view) {
         console.log("Not yet implemented");
     })
 
-    let studyingButton = document.createElement("input");
-    studyingButton.type = "button";
-    studyingButton.classList.add("entry-study-Button");
-    if (activeUser.metadata[deck.id].beingStudied) {
-        studyingButton.value = "Studying";
-    } else {
-        studyingButton.value = "Not studying";
-    }
-
-    studyingButton.addEventListener("click", async () => {
+    if (Object.keys(activeUser.metadata).includes(deck.id)) {
+        let studyingButton = document.createElement("input");
+        studyingButton.type = "button";
+        studyingButton.classList.add("entry-study-Button");
         if (activeUser.metadata[deck.id].beingStudied) {
-            studyingButton.value = "Pending";
-            await activeUser.toggleStudy(deck);
-            studyingButton.value = "Not studying";
-        } else {
-            studyingButton.value = "Pending";
-            await activeUser.toggleStudy(deck);
             studyingButton.value = "Studying";
+        } else {
+            studyingButton.value = "Not studying";
         }
-    })
 
-    textDiv.appendChild(studyingButton);
+        studyingButton.addEventListener("click", async () => {
+            if (activeUser.metadata[deck.id].beingStudied) {
+                studyingButton.value = "Pending";
+                await activeUser.toggleStudy(deck);
+                studyingButton.value = "Not studying";
+            } else {
+                studyingButton.value = "Pending";
+                await activeUser.toggleStudy(deck);
+                studyingButton.value = "Studying";
+            }
+        })
+    
+        textDiv.appendChild(studyingButton);
+    
+    }
 
     entry.appendChild(textDiv);
 
@@ -74,22 +75,11 @@ export function generateDeckEntry(deck, view) {
     let topButton = document.createElement("input");
     topButton.type = "button";
     topButton.classList.add("entry-button");
-    if (view) {
-        topButton.value = "Study";
-        topButton.addEventListener("click", () => {
-            console.log("Not yet implemented");
-        })
-    } else {
-        topButton.value = "Add";
-        topButton.addEventListener("click", async () => {
-            if (!topButton.value === "Added") {
-                topButton.value = "Pending";
-                await activeUser.registerDeck(deck);
-                topButton.value = "Added";
-            }
-        })
-    }
-    
+    topButton.value = "Study";
+    topButton.addEventListener("click", () => {
+        console.log("Not yet implemented");
+    });
+
     let bottomButton = document.createElement("input");
     bottomButton.type = "button";
     bottomButton.classList.add("entry-button");
@@ -99,8 +89,26 @@ export function generateDeckEntry(deck, view) {
         console.log("Not yet implemented");
     });
 
+    let thirdButton;
+
+    if (!Object.keys(activeUser.metadata).includes(deck.id)) {
+        thirdButton = document.createElement("input");
+        thirdButton.type = "button";
+        thirdButton.classList.add("entry-button");
+        thirdButton.value = "Add";
+        thirdButton.addEventListener("click", async () => {
+            thirdButton.value = "Pending";
+            await activeUser.registerDeck(deck);
+            thirdButton.value = "Added";
+            thirdButton.disabled = true;
+        })
+    }
+
     buttonDiv.appendChild(topButton);
     buttonDiv.appendChild(bottomButton);
+    if (thirdButton) {
+        buttonDiv.appendChild(thirdButton);
+    }
 
     entry.appendChild(buttonDiv);
 

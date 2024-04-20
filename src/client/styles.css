@@ -58,12 +58,12 @@ body {
 
 .entry-button-grid {
     display: grid;
-    grid-template-rows: 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
 }
 
 /*Entry button*/
 .entry-button {
-    width: 70%;
+    width: 50%;
     height: 50%;
     border: solid;
     place-self: center;
