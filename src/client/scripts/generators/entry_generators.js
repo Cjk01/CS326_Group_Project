@@ -1,7 +1,6 @@
 import {User} from "../structures/user.js";
 import {Deck} from "../structures/deck.js"
 
-const activeUser = User.getActiveUser();
 
 export function generateDeckEntry(deck) {
     /**
@@ -39,24 +38,24 @@ export function generateDeckEntry(deck) {
         console.log("Not yet implemented");
     })
 
-    if (Object.keys(activeUser.metadata).includes(deck.id)) {
+    if (Object.keys(User.getActiveUser().metadata).includes(deck.id)) {
         let studyingButton = document.createElement("input");
         studyingButton.type = "button";
         studyingButton.classList.add("entry-study-Button");
-        if (activeUser.metadata[deck.id].beingStudied) {
+        if (User.getActiveUser().metadata[deck.id].beingStudied) {
             studyingButton.value = "Studying";
         } else {
             studyingButton.value = "Not studying";
         }
 
         studyingButton.addEventListener("click", async () => {
-            if (activeUser.metadata[deck.id].beingStudied) {
+            if (User.getActiveUser().metadata[deck.id].beingStudied) {
                 studyingButton.value = "Pending";
-                await activeUser.toggleStudy(deck);
+                await User.getActiveUser().toggleStudy(deck);
                 studyingButton.value = "Not studying";
             } else {
                 studyingButton.value = "Pending";
-                await activeUser.toggleStudy(deck);
+                await User.getActiveUser().toggleStudy(deck);
                 studyingButton.value = "Studying";
             }
         })
@@ -91,14 +90,14 @@ export function generateDeckEntry(deck) {
 
     let thirdButton;
 
-    if (!Object.keys(activeUser.metadata).includes(deck.id)) {
+    if (!Object.keys(User.getActiveUser().metadata).includes(deck.id)) {
         thirdButton = document.createElement("input");
         thirdButton.type = "button";
         thirdButton.classList.add("entry-button");
         thirdButton.value = "Add";
         thirdButton.addEventListener("click", async () => {
             thirdButton.value = "Pending";
-            await activeUser.registerDeck(deck);
+            await User.getActiveUser().registerDeck(deck);
             thirdButton.value = "Added";
             thirdButton.disabled = true;
         })
@@ -160,20 +159,20 @@ export function generateUserEntry(user) {
     let topButton = document.createElement("input");
     topButton.type = "button";
     topButton.classList.add("entry-button");
-    if (activeUser.isFollowing(user)) {
+    if (User.getActiveUser().isFollowing(user)) {
         topButton.value = "Unfollow";
     } else {
         topButton.value = "Follow"
     }
 
     topButton.addEventListener("click", async () => {
-        if (activeUser.isFollowing(user)) {
+        if (User.getActiveUser().isFollowing(user)) {
             topButton.value = "Pending";
-            await activeUser.removeFollowing(user);
+            await User.getActiveUser().removeFollowing(user);
             topButton.value = "Follow";
         } else {
             topButton.value = "Pending";
-            await activeUser.registerFollowing(user);
+            await User.getActiveUser().registerFollowing(user);
             topButton.value = "Unfollow";
         }
     })

@@ -108,6 +108,9 @@ export async function loadCreateNewDeckView() {
     submit_deck_button.setAttribute("value" , "Create Deck");
 
     submit_deck_button.addEventListener("click", () => {
+        // TODO
+        //add a new deck to the database with the given name
+        //add this new deck to the user's list of decks
         loadModifyDeckView(document.getElementById("deckname-input").value);
     });
 

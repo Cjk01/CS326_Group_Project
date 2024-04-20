@@ -247,8 +247,6 @@ export class User {
    }
    
    /**
-<<<<<<< HEAD
-=======
     * Judges whether or not this user is following the given user
     * @param {User} user 
     * @returns {Boolean} - True if this user is following the other, false if otherwise
@@ -259,7 +257,6 @@ export class User {
 
    /**
     * @todo - Update database
->>>>>>> 7272c54 (Added isFollowing method to user.js)
     * Registers another user that has started to follow this one
     * Meant to be used by registerFollowing
     * @param {User} other - Other User object
