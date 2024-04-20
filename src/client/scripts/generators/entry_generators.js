@@ -1,10 +1,14 @@
+import {User} from "../structures/user.js";
+import {Deck} from "../structures/deck.js"
+
+const activeUser = User.getActiveUser();
+
 export function generateDeckEntry(deck) {
     /**
      * Generates a Deck Entry (Icon to represent a deck at a glance)
      * @ToDo
-     * Change the text on the button
-     * Add click functionality to the button
-     * @argument {Deck} deck - A deck object as defined in structures/deck.js
+     * Add functionality to buttons
+     * @param {Deck} deck - A deck object as defined in structures/deck.js
      * @returns {Element} - An HTML div element
      */
 
@@ -29,18 +33,82 @@ export function generateDeckEntry(deck) {
     // Change these to align with deck objects
     textChildren[0].innerHTML = "Topic:<br>" + deck.topic;
     textChildren[1].innerHTML = "Card Count:<br>" + deck.cards.length;
-    textChildren[2].innerHTML = "Author:<br>" + deck.creator.username;
+    textChildren[2].innerHTML = "Author:<br>" + deck.creator.username + "<br>(Click to view profile)";
+    
+    textChildren[2].addEventListener("click", () => {
+        console.log("Not yet implemented");
+    })
+
+    if (Object.keys(activeUser.metadata).includes(deck.id)) {
+        let studyingButton = document.createElement("input");
+        studyingButton.type = "button";
+        studyingButton.classList.add("entry-study-Button");
+        if (activeUser.metadata[deck.id].beingStudied) {
+            studyingButton.value = "Studying";
+        } else {
+            studyingButton.value = "Not studying";
+        }
+
+        studyingButton.addEventListener("click", async () => {
+            if (activeUser.metadata[deck.id].beingStudied) {
+                studyingButton.value = "Pending";
+                await activeUser.toggleStudy(deck);
+                studyingButton.value = "Not studying";
+            } else {
+                studyingButton.value = "Pending";
+                await activeUser.toggleStudy(deck);
+                studyingButton.value = "Studying";
+            }
+        })
+    
+        textDiv.appendChild(studyingButton);
+    
+    }
 
     entry.appendChild(textDiv);
 
     // Creation of button element
 
-    let buttonDiv = document.createElement("button");
-    buttonDiv.classList.add("entry-button");
-    
-    buttonDiv.innerHTML = "TBD"; // Change
+    let buttonDiv = document.createElement("div");
+    buttonDiv.classList.add("entry-button-grid");
 
-    buttonDiv.click; // Change
+    let topButton = document.createElement("input");
+    topButton.type = "button";
+    topButton.classList.add("entry-button");
+    topButton.value = "Study";
+    topButton.addEventListener("click", () => {
+        console.log("Not yet implemented");
+    });
+
+    let bottomButton = document.createElement("input");
+    bottomButton.type = "button";
+    bottomButton.classList.add("entry-button");
+    bottomButton.value = "View";
+    
+    bottomButton.addEventListener("click", () => {
+        console.log("Not yet implemented");
+    });
+
+    let thirdButton;
+
+    if (!Object.keys(activeUser.metadata).includes(deck.id)) {
+        thirdButton = document.createElement("input");
+        thirdButton.type = "button";
+        thirdButton.classList.add("entry-button");
+        thirdButton.value = "Add";
+        thirdButton.addEventListener("click", async () => {
+            thirdButton.value = "Pending";
+            await activeUser.registerDeck(deck);
+            thirdButton.value = "Added";
+            thirdButton.disabled = true;
+        })
+    }
+
+    buttonDiv.appendChild(topButton);
+    buttonDiv.appendChild(bottomButton);
+    if (thirdButton) {
+        buttonDiv.appendChild(thirdButton);
+    }
 
     entry.appendChild(buttonDiv);
 
@@ -54,7 +122,7 @@ export function generateUserEntry(user) {
      * Change the text on the button
      * Add click functionality to the button
      * Style
-     * @argument {User} user - A user object as defined in structures/user.js
+     * @param {User} user - A user object as defined in structures/user.js
      * @returns {Element} - An HTML div element
      */
 
@@ -83,14 +151,44 @@ export function generateUserEntry(user) {
     
     entry.appendChild(textDiv);
 
-    // Creation of button element
+    // Creation of button elements
 
-    let buttonDiv = document.createElement("button");
-    buttonDiv.classList.add("entry-button");
+    let buttonDiv = document.createElement("div");
+    buttonDiv.classList.add("entry-button-grid");
 
-    buttonDiv.innerHTML = "TBD"; // Change
 
-    buttonDiv.click; // Change
+    let topButton = document.createElement("input");
+    topButton.type = "button";
+    topButton.classList.add("entry-button");
+    if (activeUser.isFollowing(user)) {
+        topButton.value = "Unfollow";
+    } else {
+        topButton.value = "Follow"
+    }
+
+    topButton.addEventListener("click", async () => {
+        if (activeUser.isFollowing(user)) {
+            topButton.value = "Pending";
+            await activeUser.removeFollowing(user);
+            topButton.value = "Follow";
+        } else {
+            topButton.value = "Pending";
+            await activeUser.registerFollowing(user);
+            topButton.value = "Unfollow";
+        }
+    })
+
+    let bottomButton = document.createElement("input");
+    bottomButton.type = "button";
+    bottomButton.classList.add("entry-button");
+    bottomButton.value = "View";
+    
+    bottomButton.addEventListener("click", () => {
+        console.log("To be implemented");
+    });
+
+    buttonDiv.appendChild(topButton);
+    buttonDiv.appendChild(bottomButton);
 
     entry.appendChild(buttonDiv);
 
