@@ -6,17 +6,17 @@ import { User } from "../structures/user.js";
  * @returns {Element} - The study view page
 */
 export async function loadGeneralStudyPageView() {
-    // Get current user data
-    const decks = User.getActiveDecks(true, true, true);
-
-    console.log(`THESE ARE THE DECKS: ${decks}`);
-
-
     let study_view = document.createElement("div");
-    study_view.setAttribute("id", "GeneralStudyView");
-    study_view.innerHTML = `
+    study_view.setAttribute("id", "StudyView");
+    study_view.className = "view";
 
-    `;
+    let decks = User.getActiveDecks(true, true, true);
+
+    if (decks.length === 0) { // Edge Case: No decks actively being studied as of yet
+        study_view.innerText = "Please select a deck to study from your Decks!";
+    } else {
+        study_view.innerText = "ACTUAL STUDY CONTENT HERE LMAO";
+    }
+
+    return study_view;
 }
-
-loadGeneralStudyPageView();
