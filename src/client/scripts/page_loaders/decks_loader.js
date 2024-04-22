@@ -18,55 +18,36 @@ import { Deck } from "../structures/deck.js";
 
 export async function loadDecksView() {
 
-    //the buttons (your decks, saved decks, create deck)
-    let your_decks_button = document.createElement("input");
-    your_decks_button.setAttribute("type", "button");
-    your_decks_button.setAttribute("value", "Your Decks");
-
-    let saved_decks_button = document.createElement("input");
-    saved_decks_button.setAttribute("type", "button");
-    saved_decks_button.setAttribute("value", "Saved Decks");
-
-    let create_deck_button = document.createElement("input");
-    create_deck_button.setAttribute("type", "button");
-    create_deck_button.setAttribute("value", "Create Deck");
-
-
-    //container holding all of the buttons
-    let decks_button_container = document.createElement("div");
-    decks_button_container.setAttribute("id", "decks-button-container");
-    decks_button_container.appendChild(your_decks_button);
-    decks_button_container.appendChild(saved_decks_button);
-    decks_button_container.appendChild(create_deck_button);
-
-    // the container of deck previews (your decks, saved decks)
-    let user_decks_container = document.createElement("div");
-    user_decks_container.setAttribute("id", "user-decks-container");
-    
-    
+        
     //the container of the entire page view
     let decks_view = document.createElement("div");
     decks_view.setAttribute("id", "DecksView");
     decks_view.classList.add("view");
-    decks_view.appendChild(decks_button_container);
-    decks_view.appendChild(user_decks_container);
-
+    decks_view.innerHTML = 
+    `
+    <div id="decks-button-container"> 
+    <input id="your-decks-button" type="button" value="Your Decks"/>
+    <input id="saved-decks-button" type="button" value="Saved Decks"/>
+    <input id="create-deck-button" type="button" value="Create Deck"/>
+    </div>
+    <div id="user-decks-container"> </div>
+    `;
 
     //load all of the active user's decks (should be set prior)
     //this is equivalent to clicking "Your Decks"
-    await User.getActiveUser().getDecks(true, false, false, true, false).then(decks => decks.forEach(deck => user_decks_container.appendChild(generateDeckEntry(deck))));
+    await User.getActiveUser().getDecks(true, false, false, true, false).then(decks => decks.forEach(deck => decks_view.querySelector("#user-decks-container").appendChild(generateDeckEntry(deck))));
     
     //adding event listeners to the buttons to load filtered subset of decks
 
-    your_decks_button.addEventListener("click", async () => {
+    decks_view.querySelector("#your-decks-button").addEventListener("click", async () => {
         await populateDecksContainer(true);
     });
 
-    saved_decks_button.addEventListener("click", async () => {
+    decks_view.querySelector("#saved-decks-button").addEventListener("click", async () => {
         await populateDecksContainer(false);
     });
 
-    create_deck_button.addEventListener("click" , async () => {
+    decks_view.querySelector("#create-deck-button").addEventListener("click" , async () => {
       await loadCreateNewDeckView();
     });
 
