@@ -154,15 +154,24 @@ export class User {
    }
 
    /**
-    * Registers a deck's id in the metadata field along with necessary information
+    * Registers a deck's id in the metadata field along with necessary information if it doesn't already exists.
     * @param {Deck} deck - Deck object as defined in /structures/deck.js
+    * @returns {boolean} - true if user was freshly registered, false otherwise
     */
    async registerDeck(deck) {
-      this.metadata[deck.id] = {timeLastStudied: Date.now(), timesStudied: 0, beingStudied: true};
-      await updateUser(this);
-      if (this.id === User.getActiveUser().id) {
-         User.#updateLocalUser(this);
-         User.#updateLocalDecks(deck);
+      if (deck.id in this.metadata) {
+         return false;
+      } else {
+         this.metadata[deck.id] = {timeLastStudied: Date.now(), timesStudied: 0, beingStudied: true};
+
+         await updateUser(this);
+
+         if (this.id === User.getActiveUser().id) {
+            User.#updateLocalUser(this);
+            User.#updateLocalDecks(deck);
+         }
+
+         return true;
       }
    }
 
