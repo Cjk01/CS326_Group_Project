@@ -116,23 +116,15 @@ export async function loadCreateNewDeckView() {
         user_decks_container.removeChild(user_decks_container.firstChild);
     }
 
-    let create_new_deck_view = document.createElement("div");
-    create_new_deck_view.setAttribute("id", "create-new-deck-view");
-
-    let deckname_input_label = document.createElement("label");
-    deckname_input_label.setAttribute("for", "deckname");
-    deckname_input_label.innerHTML = "Enter Your Deck Name";
-    let deckname_input = document.createElement("input");
-    deckname_input.setAttribute("id", "deckname-input");
-    deckname_input.setAttribute("type", "text");
-    deckname_input.setAttribute("name", "deckname");
-
-    let submit_deck_button = document.createElement("input");
-    submit_deck_button.setAttribute("id", "submit-deck-button");
-    submit_deck_button.setAttribute("type", "button");
-    submit_deck_button.setAttribute("value" , "Create Deck");
-
-    submit_deck_button.addEventListener("click", async () => {
+    user_decks_container.innerHTML = 
+    `
+    <div id="create-new-deck-view">
+    <label for="deckname">Enter Your Deck Name</label> 
+    <input id="deckname-input" type="text" name="deckname"/>
+    <input id="submit-deck-button" type="button" value="Create Deck"/>
+    </div>
+    `;
+    document.getElementById("submit-deck-button").addEventListener("click", async () => {
         // TODO
         //Refactor this logic of adding deck to db plus updating user to a predefined function
         // it should create a new blank deck, add it to the decks db, and register it with the current active user
@@ -144,13 +136,7 @@ export async function loadCreateNewDeckView() {
         active_user.registerDeck(new_deck);
         loadModifyDeckView(new_deck_uuid);
     });
-
-    create_new_deck_view.appendChild(deckname_input_label);
-    create_new_deck_view.appendChild(deckname_input);
-    create_new_deck_view.appendChild(submit_deck_button);
-
-    user_decks_container.appendChild(create_new_deck_view);
-    
+   
 
 }
 
