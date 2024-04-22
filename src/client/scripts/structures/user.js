@@ -95,6 +95,7 @@ export class User {
     * @returns {Deck[]} - Array of deck objects 
     */
    static getActiveDecks(sorted = false, beingStudied = false, toStudy = false, owned = false, notOwned = false) {
+      let user = User.getActiveUser();
       let decks = JSON.parse(localStorage.getItem("active-decks"));
       let deckArr = [];
       for (let deck of decks) {
@@ -108,19 +109,19 @@ export class User {
       }
 
       if (beingStudied) {
-         deckArr = deckArr.filter((deck) => this.metadata[deck.id].beingStudied);
+         deckArr = deckArr.filter((deck) => user.metadata[deck.id].beingStudied);
       }
 
       if (toStudy) {
-         deckArr = deckArr.filter(deck => this.checkDeck(deck));
+         deckArr = deckArr.filter(deck => user.checkDeck(deck));
       }
 
       let sortFunc = ((d1, d2) => {
          let time = Date.now();
          let timeInDay = 86400000; // Number of milliseconds in a day
 
-         let d1Time = (time - this.metadata[d1.id].timeLastStudied) - (timeInDay * this.metadata[d1.id].timesStudied);
-         let d2Time = (time - this.metadata[d2.id].timeLastStudied) - (timeInDay * this.metadata[d2.id].timesStudied);
+         let d1Time = (time - user.metadata[d1.id].timeLastStudied) - (timeInDay * user.metadata[d1.id].timesStudied);
+         let d2Time = (time - user.metadata[d2.id].timeLastStudied) - (timeInDay * user.metadata[d2.id].timesStudied);
 
          return d1Time - d2Time;
       })
@@ -130,9 +131,9 @@ export class User {
       }
 
       if (owned) {
-         deckArr = deckArr.filter(deck => deck.creator.id === this.id);
+         deckArr = deckArr.filter(deck => deck.creator.id === user.id);
       } else if (notOwned) {
-         deckArr = deckArr.filter(deck => deck.creator.id !== this.id);
+         deckArr = deckArr.filter(deck => deck.creator.id !== user.id);
       }
 
       return deckArr;
