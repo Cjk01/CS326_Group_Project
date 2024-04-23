@@ -1,14 +1,14 @@
 import { getDeck, getUser, updateUser } from "../data_interface/data.js";
 import { Deck } from "./deck.js";
 import { Card } from "./card.js";
-/** 
+/**
  * Class representing a User (of Cachely!)
  */
 export class User {
-    
+
     /**
      * Creates a User
-     * @param {Number} id - a unique identifier 
+     * @param {Number} id - a unique identifier
      * @param {string} username - the username text
      * @param {Number[]} followers - stores followers of the User
      * @param {Number[]} following - stores those being followed by the User
@@ -30,7 +30,7 @@ export class User {
     * @todo - Uncomment follower parts - as of right now, active user's followers/following aren't in database
     * Fetches active user from database and sets local storage field
     * Can also be used to update the field to match database
-    * @param {Number} userId - the user object meant to 
+    * @param {Number} userId - the user object meant to
     */
    static async estabilishLocalStorage(userId) {
       let activeUser = await getUser(userId);
@@ -72,8 +72,6 @@ export class User {
       } else {
          localStorage.setItem("active-following", JSON.stringify(localFollowing.filter(follow => follow.id !== user.id)));
       }
-      
-      
    }
 
    /**
@@ -92,7 +90,7 @@ export class User {
     * @param {boolean} toStudy - Filters to return only decks that need to be studied according to spatial repetition
     * @param {boolean} owned - Filters to return only decks created by the user. Overrides notOwned
     * @param {boolean} notOwned - Filters to return only decks created by someone other than the user. Overridden by owned
-    * @returns {Deck[]} - Array of deck objects 
+    * @returns {Deck[]} - Array of deck objects
     */
    static getActiveDecks(sorted = false, beingStudied = false, toStudy = false, owned = false, notOwned = false) {
       let user = User.getActiveUser();
@@ -118,7 +116,7 @@ export class User {
 
       let sortFunc = ((d1, d2) => {
          let time = Date.now();
-         let timeInDay = 86400000; // Number of milliseconds in a day
+         let timeInDay = 86_400_000; // Number of milliseconds in a day
 
          let d1Time = (time - user.metadata[d1.id].timeLastStudied) - (timeInDay * user.metadata[d1.id].timesStudied);
          let d2Time = (time - user.metadata[d2.id].timeLastStudied) - (timeInDay * user.metadata[d2.id].timesStudied);
@@ -156,15 +154,24 @@ export class User {
    }
 
    /**
-    * Registers a deck's id in the metadata field along with necessary information
+    * Registers a deck's id in the metadata field along with necessary information if it doesn't already exists.
     * @param {Deck} deck - Deck object as defined in /structures/deck.js
+    * @returns {boolean} - true if user was freshly registered, false otherwise
     */
    async registerDeck(deck) {
-      this.metadata[deck.id] = {timeLastStudied: Date.now(), timesStudied: 0, beingStudied: true};
-      await updateUser(this);
-      if (this.id === User.getActiveUser().id) {
-         User.#updateLocalUser(this);
-         User.#updateLocalDecks(deck);
+      if (deck.id in this.metadata) {
+         return false;
+      } else {
+         this.metadata[deck.id] = {timeLastStudied: Date.now(), timesStudied: 0, beingStudied: true};
+
+         await updateUser(this);
+
+         if (this.id === User.getActiveUser().id) {
+            User.#updateLocalUser(this);
+            User.#updateLocalDecks(deck);
+         }
+
+         return true;
       }
    }
 
@@ -175,7 +182,7 @@ export class User {
     */
    checkDeck(deck) {
       let time = Date.now();
-      let timeInDay = 86400000; // Number of milliseconds in a day
+      let timeInDay = 86_400_000; // Number of milliseconds in a day
       return ((time - this.metadata[deck.id].timeLastStudied) >= (timeInDay * this.metadata[deck.id].timesStudied));
    }
 
@@ -199,11 +206,11 @@ export class User {
     * @param {boolean} toStudy - Filters to return only decks that need to be studied according to spatial repetition
     * @param {boolean} owned - Filters to return only decks created by the user. Overrides notOwned
     * @param {boolean} notOwned - Filters to return only decks created by someone other than the user. Overridden by owned
-    * @returns {Deck[]} - Array of deck objects 
+    * @returns {Deck[]} - Array of deck objects
     */
    async getDecks(sorted = false, beingStudied = false, toStudy = false, owned = false, notOwned = false) {
       let decks = await Promise.all(Object.keys(this.metadata).map(getDeck));
-      
+
       if (beingStudied) {
          decks = decks.filter((deck) => this.metadata[deck.id].beingStudied);
       }
@@ -220,7 +227,7 @@ export class User {
 
       let sortFunc = ((d1, d2) => {
          let time = Date.now();
-         let timeInDay = 86400000; // Number of milliseconds in a day
+         let timeInDay = 86_400_000; // Number of milliseconds in a day
 
          let d1Time = (time - this.metadata[d1.id].timeLastStudied) - (timeInDay * this.metadata[d1.id].timesStudied);
          let d2Time = (time - this.metadata[d2.id].timeLastStudied) - (timeInDay * this.metadata[d2.id].timesStudied);
@@ -246,10 +253,10 @@ export class User {
       }
 
    }
-   
+
    /**
     * Judges whether or not this user is following the given user
-    * @param {User} user 
+    * @param {User} user
     * @returns {Boolean} - True if this user is following the other, false if otherwise
     */
    isFollowing(user) {
@@ -281,10 +288,10 @@ export class User {
          User.#updateLocalFollowing(other, true);
       }
    }
-   
+
    /**
     * Removes a user from this user's follower list
-    * @param {User} other - Other User object 
+    * @param {User} other - Other User object
     */
    async #removeFollower(other) {
       this.followers = this.followers.filter(f => f !== other.id);
@@ -293,7 +300,7 @@ export class User {
 
    /**
     * Removes a user from this user's following list
-    * @param {User} other - Other User object 
+    * @param {User} other - Other User object
     */
    async removeFollowing(other) {
       this.following = this.following.filter(f => f !== other.id);

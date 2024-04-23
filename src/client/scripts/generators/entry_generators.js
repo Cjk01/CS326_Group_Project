@@ -33,7 +33,7 @@ export function generateDeckEntry(deck) {
     textChildren[0].innerHTML = deck.topic;
     textChildren[1].innerHTML = deck.cards.length + " Cards";
     textChildren[2].innerHTML = "Author: " + deck.creator.username;
-    
+
     textChildren[2].addEventListener("click", () => {
         console.log("Not yet implemented");
     })
@@ -59,9 +59,9 @@ export function generateDeckEntry(deck) {
                 studyingButton.value = "Studying";
             }
         })
-    
+
         textDiv.appendChild(studyingButton);
-    
+
     }
 
     entry.appendChild(textDiv);
@@ -76,14 +76,17 @@ export function generateDeckEntry(deck) {
     topButton.classList.add("entry-button");
     topButton.value = "Study";
     topButton.addEventListener("click", () => {
-        console.log("Not yet implemented");
+        const studyPage = document.getElementById("StudyView");
+
+        studyPage.deck = deck;
+        document.getElementById("StudyView").click();
     });
 
     let bottomButton = document.createElement("input");
     bottomButton.type = "button";
     bottomButton.classList.add("entry-button");
     bottomButton.value = "View";
-    
+
     bottomButton.addEventListener("click", () => {
         console.log("Not yet implemented");
     });
@@ -147,7 +150,7 @@ export function generateUserEntry(user) {
     textChildren[0].innerHTML = "User:<br>" + user.username;
     textChildren[1].innerHTML = "Followers:<br>" + user.followers.length;
     textChildren[2].innerHTML = "Following:<br>" + user.following.length;
-    
+
     entry.appendChild(textDiv);
 
     // Creation of button elements
@@ -181,7 +184,7 @@ export function generateUserEntry(user) {
     bottomButton.type = "button";
     bottomButton.classList.add("entry-button");
     bottomButton.value = "View";
-    
+
     bottomButton.addEventListener("click", () => {
         console.log("To be implemented");
     });
