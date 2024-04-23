@@ -263,15 +263,35 @@ label {
 
 /* Styling for decks page above */
 
+/*Styling for home page below*/
 .homepage-entry {
     margin-top: 10px !important;
 }
 
-.homepage-follower{
+.homepage-follower {
     margin-top: 10px !important;
 }
 
-.homepage-followee{
+.homepage-followee {
     margin-top: 10px !important;
 }
+
+#homepage-addButton {
+    margin-left: 50px !important;
+    margin-top: 20px !important;
+    font-size: 32px;
+    font-family: "math";
+    display: block;
+    box-shadow: 1px 1px 1px #a3a8a0, 2px 2px 2px black, 3px 3px 3px #a3a8a0, 4px 4px 4px black;
+    border: 2px solid #bdc9b5;
+    padding-left: 550px;
+    padding-right: 550px;
+    background-color: #dee6e0 !important;
+}
+
+#homepage-addButton:active {
+    box-shadow:
+      inset -2px -2px 3px rgb(255 255 255 / 60%),
+      inset 2px 2px 3px rgb(0 0 0 / 60%);
+  }
 

@@ -1,14 +1,18 @@
-import { getDeck, addDeck, updateDeck } from "../data_interface/data.js";
 import { generateDeckEntry, generateUserEntry } from "../generators/entry_generators.js";
-import { generateCard } from "../generators/card_generator.js";
 import { User } from "../structures/user.js";
-import {Card} from "../structures/card.js";
-import { Deck } from "../structures/deck.js";
+
+/** 
+ * Generates the homepage HTML element
+ * @returns {HTMLElement}
+*/
 
 export async function loadHomepageView() {
     //Get all the necessary data by using User methods --> Retrieves from local storage
     const user = User.getActiveUser();
     const decks = User.getActiveDecks(true, false, false, true, false);
+
+    //TODO: Uncomment lines once these are added into local storage. For now, just use a fake user
+    const user1 = new User(123, "daniilkoval", [1245, 456], [1245, 456], {});
     //const followers = User.getActiveFollowers();
     //const following = User.getActiveFollowing();
 
@@ -23,24 +27,40 @@ export async function loadHomepageView() {
     studyHeader.innerHTML = `<h2 id='homepage-decksToStudy'>Decks to Study: </h2>`;
     homePageContainer.appendChild(studyHeader);
 
+    //Element to contain the decks
     const deckContainer = document.createElement('div');
     deckContainer.setAttribute('id', 'homepage-deckContainer');
     homePageContainer.appendChild(deckContainer);
 
-    //Create divs for 5 decks that are most urgent to study --> As per wireframe
+    //Generate deck elements for the first 5 decks in the decks to study as per wire frame
     for(let i = 0; i < 5; i++){
         const deck = generateDeckEntry(decks[i]);
         deck.classList.add('homepage-entry');
         deckContainer.appendChild(deck);
     }
 
+    //Create an add deck button
+    const addButton = document.createElement('input');
+    addButton.setAttribute('type', 'button');
+    addButton.setAttribute('id', 'homepage-addButton');
+    addButton.setAttribute('value', '+');
+    addButton.classList.add('homepage-entry');
+    addButton.classList.add('cool-green-button');
+    deckContainer.appendChild(addButton);
+    addButton.addEventListener('click', () => {
+        //TODO: Add functionality to the add deck button when the page to create a deck is made
+        console.log("To be implemented");
+    });
+
+    //Header for followers
     const followersHeader = document.createElement('h2');
     followersHeader.innerHTML = `<h2 id='homepage-followers'>Followers: </h2>`;
     homePageContainer.appendChild(followersHeader);
 
-    const user1 = new User(123, "daniilkoval", [1245, 456], [1245, 456], {});
+    //Container for followers
     const followersContainer = document.createElement('homepage-followerContainer');
     homePageContainer.appendChild(followersContainer);
+
     //Create a short display of people following the user
     for(let i = 0; i < 4; i++){
         const follower = generateUserEntry(user1);
@@ -48,14 +68,16 @@ export async function loadHomepageView() {
         followersContainer.appendChild(follower);
     }
 
+    //Header for people following the user
     const followingHeader = document.createElement('h2');
     followingHeader.innerHTML = `<h2 id='homepage-following'>Following: </h2>`;
     homePageContainer.appendChild(followingHeader);
 
+    //Container for people following the user
     const followingContainer = document.createElement('homepage-followingContainer');
     homePageContainer.appendChild(followingContainer);
 
-    //Do the same for people the user follows
+    //Do the same for people the user follows as for people who follow the user
     for(let i = 0; i < 4; i++){
         const followee = generateUserEntry(user1);
         followee.classList.add('homepage-followee');
