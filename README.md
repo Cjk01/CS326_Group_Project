@@ -17,6 +17,7 @@
    - For milestone02, all user ids are "username_id" , ex username craig has an id of craig_id
    - You can do the same for decks (In this example, there are 3 sample decks: OS, webdev, algebra)
 - Study: This is where you study a selected deck (decks are recommended based on spaced repetition metadata)
+    - click on the flashcard to flip it and see the answer, then click correct or incorrect
 Enjoy
 
 # Contributing Guide 
