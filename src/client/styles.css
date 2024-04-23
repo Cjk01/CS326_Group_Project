@@ -267,3 +267,16 @@ label {
 
 
 /* Styling for decks page above */
+
+.homepage-entry {
+    margin-top: 10px !important;
+}
+
+.homepage-follower{
+    margin-top: 10px !important;
+}
+
+.homepage-followee{
+    margin-top: 10px !important;
+}
+
