@@ -16,7 +16,7 @@
 - Profile: View your profile info, and also can search for users via their user_id (different than their username)
    - For milestone02, all user ids are "username_id" , ex username craig has an id of craig_id
    - You can do the same for decks (In this example, there are 3 sample decks: OS, webdev, algebra)
-- Study: This is where you study a selected deck (decks are recommended based on spaced repetition metadata
+- Study: This is where you study a selected deck (decks are recommended based on spaced repetition metadata)
 Enjoy
 
 # Contributing Guide 
