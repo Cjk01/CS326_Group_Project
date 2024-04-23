@@ -280,7 +280,7 @@ export class User {
     * @param {User} other - Other User object
     */
    async registerFollowing(other) {
-      this.followers.push(other.id);
+      this.following.push(other.id);
       other.#registerFollower(this);
       await updateUser(this);
       if (this.id === User.getActiveUser().id) {

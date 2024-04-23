@@ -91,6 +91,9 @@ body {
     
 }
 
+.deck-entry-creator-text:hover {
+    color: #81e392;
+}
 
 
 
@@ -300,3 +303,36 @@ label {
       inset 2px 2px 3px rgb(0 0 0 / 60%);
   }
 
+
+
+/* Styling for profile page below */
+#profileView {
+    width: 100%;
+    height: 100%;
+}
+
+#profile-button-container {
+    width: 100%;
+    height: 30%;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+#other-decks-container {
+    width: 105%;
+    height: 550px;
+    display: grid;
+    justify-items: center;
+    align-items: center;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr;
+    overflow: hidden; 
+}
+
+#profile-entry-container {
+    display: inline-block;
+    width: 400px;
+    height: 180px;
+}
+/* Styling for profile page above */
