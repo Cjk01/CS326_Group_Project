@@ -13,8 +13,8 @@ export async function loadHomepageView() {
 
     //TODO: Uncomment lines once these are added into local storage. For now, just use a fake user
     const user1 = new User(123, "daniilkoval", [1245, 456], [1245, 456], {});
-    //const followers = User.getActiveFollowers();
-    //const following = User.getActiveFollowing();
+    const followers = User.getActiveFollowers();
+    const following = User.getActiveFollowing();
 
     //Create Home Page Container
     let homePageContainer = document.createElement('div');
@@ -33,7 +33,8 @@ export async function loadHomepageView() {
     homePageContainer.appendChild(deckContainer);
 
     //Generate deck elements for the first 5 decks in the decks to study as per wire frame
-    for(let i = 0; i < 5; i++){
+    let decks_to_iterate = decks.length > 5 ? 5 : decks.length;
+    for(let i = 0; i < decks_to_iterate; i++){
         const deck = generateDeckEntry(decks[i]);
         deck.classList.add('homepage-entry');
         deckContainer.appendChild(deck);
@@ -62,8 +63,8 @@ export async function loadHomepageView() {
     homePageContainer.appendChild(followersContainer);
 
     //Create a short display of people following the user
-    for(let i = 0; i < 4; i++){
-        const follower = generateUserEntry(user1);
+    for(let i = 0; i < followers.length; i++){
+        const follower = generateUserEntry(followers[i]);
         follower.classList.add('homepage-follower');
         followersContainer.appendChild(follower);
     }
@@ -78,8 +79,8 @@ export async function loadHomepageView() {
     homePageContainer.appendChild(followingContainer);
 
     //Do the same for people the user follows as for people who follow the user
-    for(let i = 0; i < 4; i++){
-        const followee = generateUserEntry(user1);
+    for(let i = 0; i < following.length; i++){
+        const followee = generateUserEntry(following[i]);
         followee.classList.add('homepage-followee');
         followingContainer.appendChild(followee);
     }

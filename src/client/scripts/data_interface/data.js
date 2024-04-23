@@ -186,33 +186,43 @@ export async function clearDatabases() {
  * so that all features can be shown in their entirety
  */
 export async function configureDatabaseForMilestoneTwo() {
-  
 
-  function makeCards(n) {
-  let cards = [];
-  for(let i = 0; i < n ; ++i){
-    let n1 = Math.floor(Math.random() * 12);
-    let n2 = Math.floor(Math.random() * 12);
-    let question = n1.toString() + " x " + n2.toString() + " = ?";
-    let answer = (n1 * n2).toString();
-    cards.push(new Card("text_answer", question, answer, {"metadata" : "example"}));
-  }
-    return cards;
-  }
-  let user = new User("main_user", "Craig Krikorian", [33], [234,343], {});
-  let example_decks = [];
-  for(let i = 0 ; i < 10 ; ++i) {
-    let deck = new Deck(i.toString(), "Math", makeCards(20), user )
-    example_decks.push(deck);
-    await addDeck(deck);
-  }
-  
-  for(let i = 0 ; i < example_decks.length ; ++i) {
-    user.metadata[example_decks[i].id] = {"timeLastStudied" : 0 , "timesStudied" : 0, "beingStudied" : false};
-  }
-  
-  let added_user_to_db = await addUser(user);
-  await User.estabilishLocalStorage(user.id);
+  //creating all of the fake users with consistent followers / following
+  let main_user = new User("main_user", "Main", ["aryan_id", "daniil_id"], ["craig_id", "jonah_id"], {});
+  let craig_user = new User("craig_id", "Craig", ["main_user"], ["main_user"], {});
+  let aryan_user = new User("aryan_id", "Aryan", ["main_user"], ["daniil_id", "jonah_id"], {});
+  let daniil_user = new User("daniil_id", "Daniil", ["aryan_id"], ["main_user"] , {});
+  let jonah_user = new User("jonah_id", "Jonah", ["main_user", "aryan_id"], [], {});
+
+  //loading the cards in from memory and assigning them
+  let cards_obj = await fetch("m2_config.json").then(res => res.json());
+  let loaded_cards = cards_obj.cards;
+  loaded_cards.forEach(c => {
+    c["card_type"] = "text";
+    c["metadata"] = {};
+  });
+ 
+  let base_user_metadata = {"timeLastStudied" : 0 , "timesStudied" : 0, "beingStudied" : false};
+  //loading the 3 example decks (OS, web, alg)
+  let os_deck = new Deck("OS", "Operating Systems", loaded_cards.filter(c=>c.deck_id === "OS"), main_user);
+  main_user["metadata"]["OS"] = base_user_metadata;
+  let web_deck = new Deck("web", "Web Dev", loaded_cards.filter(c=>c.deck_id === "web"), craig_user);
+  craig_user["metadata"]["web"] = base_user_metadata;
+  let alg_deck = new Deck("alg" , "Algebra", loaded_cards.filter(c=>c.deck_id === "alg"), aryan_user);
+  aryan_user["metadata"]["alg"] = base_user_metadata;
+
+   //add all of the example data to the db
+   await addDeck(os_deck);
+   await addDeck(web_deck);
+   await addDeck(alg_deck);
+   await addUser(main_user);
+   await addUser(craig_user);
+   await addUser(aryan_user);
+   await addUser(daniil_user);
+   await addUser(jonah_user);
+
+  //set the active user as the main user 
+  await User.estabilishLocalStorage("main_user");
 }
 
 /**
