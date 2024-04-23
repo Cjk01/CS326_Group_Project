@@ -2,6 +2,10 @@ import { getUser, updateUser, getDeck } from "../data_interface/data.js";
 import { generateDeckEntry, generateUserEntry } from "../generators/entry_generators.js";
 import { User } from "../structures/user.js";
 
+/**
+ * @todo - fix edit button
+ * @returns 
+ */
 export async function loadProfileView() {
     let profileView = document.createElement("div");
     profileView.setAttribute("id", "ProfileView");
@@ -49,9 +53,9 @@ export async function loadProfileView() {
             userBox.removeAttribute("readonly");
         } else {
             editButton.value = "Pending";
-            let user = await getUser(activeUser.id);
+            let user = activeUser;
             user.username = userBox.value;
-            await updateUser(await getUser(activeUser.id))
+            await updateUser(getUser(activeUser.id));
             userBox.setAttribute("readonly", true);
             await User.estabilishLocalStorage(activeUser.id);
             editButton.value = "Edit Username";
