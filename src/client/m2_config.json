@@ -1,0 +1,70 @@
+{
+    "cards" : [
+        {
+         "question" : "What 3 things are virtualized by the OS?" ,
+         "answer" : "Memory, CPU, Files",
+         "deck_id": "OS"
+        },
+        {
+         "question" : "is 'x = x+1' atomic?" ,
+         "answer" : "No",
+         "deck_id": "OS"
+        },
+        {
+         "question" : "_____ sections are where multithreading problems occur" ,
+         "answer" : "critical",
+         "deck_id": "OS"
+        },
+        {
+         "question" : "With 8 bit address and 4 page table entries, how many bits are used for the offset?" ,
+         "answer" : "6",
+         "deck_id": "OS"
+        },
+ {
+         "question" : "How to get the first child of an html element in JS?" ,
+         "answer" : "element.firstChild",
+         "deck_id": "web"
+        },
+        {
+         "question" : "is 'const x = 3; x = 2;' error free?" ,
+         "answer" : "No",
+         "deck_id": "web"
+        },
+        {
+         "question" : "the await keyword is used for ______ code" ,
+         "answer" : "asynchronous",
+         "deck_id": "web"
+        },
+        {
+         "question" : "How to center a div?" ,
+         "answer" : "good luck!",
+         "deck_id": "web"
+        },
+        {
+         "question" : "3x + 9 = 2y : solve for x" ,
+         "answer" : "x = (2y - 9) / 3",
+         "deck_id": "alg"
+        },
+        {
+         "question" : "5x + 7 = 2x - 3 : solve for x" ,
+         "answer" : "x = -10 / 3",
+         "deck_id": "alg"
+        },
+        {
+         "question" : "The ____ theorem lets you find the hypotenuse of a right triangle" ,
+         "answer" : "pythagorean",
+         "deck_id": "alg"
+        },
+        {
+         "question" : "What is the quadratic formula?" ,
+         "answer" : "x = -b +- (sqrt(b^2 - 4ac) / 2a)",
+         "deck_id": "alg"
+        },
+        {
+         "question" : "sqrt(12) = sqrt(4) * sqrt(?)" ,
+         "answer" : "3",
+         "deck_id": "alg"
+        }
+
+    ]
+}

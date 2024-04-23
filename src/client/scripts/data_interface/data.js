@@ -186,8 +186,44 @@ export async function clearDatabases() {
  * so that all features can be shown in their entirety
  */
 export async function configureDatabaseForMilestoneTwo() {
-  
 
+  //creating all of the fake users with consistent followers / following
+  let main_user = new User("main_user", "Main", ["aryan_id", "daniil_id"], ["craig_id", "jonah_id"], {});
+  let craig_user = new User("craig_id", "Craig", ["main_user"], ["main_user"], {});
+  let aryan_user = new User("aryan_id", "Aryan", ["main_user"], ["daniil_id", "jonah_id"], {});
+  let daniil_user = new User("daniil_id", "Daniil", ["aryan_id"], ["main_user"] , {});
+  let jonah_user = new User("jonah_id", "Jonah", ["main_user", "aryan_id"], [], {});
+
+  //loading the cards in from memory and assigning them
+  let cards_obj = await fetch("m2_config.json").then(res => res.json());
+  let loaded_cards = cards_obj.cards;
+  loaded_cards.forEach(c => {
+    c["card_type"] = "text";
+    c["metadata"] = {};
+  });
+ 
+  let base_user_metadata = {"timeLastStudied" : 0 , "timesStudied" : 0, "beingStudied" : false};
+  //loading the 3 example decks (OS, web, alg)
+  let os_deck = new Deck("OS", "Operating Systems", loaded_cards.filter(c=>c.deck_id === "OS"), main_user);
+  main_user["metadata"]["OS"] = base_user_metadata;
+  let web_deck = new Deck("web", "Web Dev", loaded_cards.filter(c=>c.deck_id === "web"), craig_user);
+  craig_user["metadata"]["web"] = base_user_metadata;
+  let alg_deck = new Deck("alg" , "Algebra", loaded_cards.filter(c=>c.deck_id === "alg"), aryan_user);
+  aryan_user["metadata"]["alg"] = base_user_metadata;
+
+   //add all of the example data to the db
+   await addDeck(os_deck);
+   await addDeck(web_deck);
+   await addDeck(alg_deck);
+   await addUser(main_user);
+   await addUser(craig_user);
+   await addUser(aryan_user);
+   await addUser(daniil_user);
+   await addUser(jonah_user);
+
+  //set the active user as the main user 
+  await User.estabilishLocalStorage("main_user");
+/*
   function makeCards(n) {
   let cards = [];
   for(let i = 0; i < n ; ++i){
@@ -212,7 +248,8 @@ export async function configureDatabaseForMilestoneTwo() {
   }
   
   let added_user_to_db = await addUser(user);
-  await User.estabilishLocalStorage(user.id);
+  await User.estabilishLocalStorage(user.id); 
+  */
 }
 
 /**
