@@ -35,12 +35,12 @@ export class User {
    static async estabilishLocalStorage(userId) {
       let activeUser = await getUser(userId);
       let activeDecks = await activeUser.getDecks();
-      // let activeFollowers = await activeUser.getFollowers();
-      // let activeFollowing = await activeUser.getFollowing();
+      let activeFollowers = await activeUser.getFollowers();
+      let activeFollowing = await activeUser.getFollowing();
       localStorage.setItem("active-user", JSON.stringify(activeUser));
       localStorage.setItem("active-decks", JSON.stringify(activeDecks));
-      // localStorage.setItem("active-followers", JSON.stringify(activeFollowers));
-      // localStorage.setItem("active-following", JSON.stringify(activeFollowing));
+      localStorage.setItem("active-followers", JSON.stringify(activeFollowers));
+      localStorage.setItem("active-following", JSON.stringify(activeFollowing));
    }
 
    /** Updates local storage's active-user field without accessing database
