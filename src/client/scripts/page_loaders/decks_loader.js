@@ -74,12 +74,14 @@ export async function populateDecksContainer(filter) {
 
 }
 
-export async function populateDeckPreviewPane(deck) {
-    let preview_pane = document.getElementById("deck-preview-pane");
-    while(preview_pane.firstChild) {
-        preview_pane.removeChild(preview_pane.firstChild);
+export function populateDeckPreviewPane(deck, card_number) {
+    let card_container = document.getElementById("card-container");
+    card_container.current_card = card_number;
+    while(card_container.firstChild) {
+        card_container.removeChild(card_container.firstChild);
     }
-    deck.cards.forEach(card => preview_pane.appendChild(generateCard(card)));
+    card_container.appendChild(generateCard(deck.cards[card_number]));
+
 }
 
 
@@ -102,7 +104,7 @@ export async function loadCreateNewDeckView() {
     <div id="create-new-deck-view">
     <label for="deckname">Enter Your Deck Name</label> 
     <input id="deckname-input" type="text" name="deckname"/>
-    <input id="submit-deck-button" type="button" value="Create Deck"/>
+    <input id="submit-deck-button" class="cool-green-button" type="button" value="Create Deck"/>
     </div>
     `;
     document.getElementById("submit-deck-button").addEventListener("click", async () => {
@@ -132,7 +134,6 @@ export async function loadModifyDeckView(deck_id) {
    while(user_decks_container.firstChild) {
        user_decks_container.removeChild(user_decks_container.firstChild);
    }
-
    let deck_to_modify = await getDeck(deck_id);
 
    user_decks_container.innerHTML = 
@@ -143,11 +144,26 @@ export async function loadModifyDeckView(deck_id) {
    <label for="answer">Answer</label>
    <textarea rows="6" id="answer-input" name="answer"> </textarea>
    <input id="add-card-button" class="cool-green-button" type="button" value="Add Card" />
-   <div id="deck-preview-pane"> </div>
+   <div id="deck-preview-pane">
+    <div id="card-container"> </div>
+   </div>
+    <input type="button" class="cool-green-button" id="move-backwards-button" value="<" />
+    <input type="button" class="cool-green-button" id="move-forward-button" value=">" />
   
    </div>
    `;
 
+   document.getElementById("card-container").current_card = 0;
+
+   document.getElementById("move-forward-button").addEventListener("click", () => {
+     let current_card = document.getElementById("card-container").current_card;
+     populateDeckPreviewPane(deck_to_modify, current_card + 1 === deck_to_modify.cards.length ? 0 : current_card + 1);
+   });
+
+   document.getElementById("move-backwards-button").addEventListener("click", () => {
+     let current_card = document.getElementById("card-container").current_card;
+     populateDeckPreviewPane(deck_to_modify, current_card - 1 === -1 ? deck_to_modify.cards.length - 1 : current_card - 1);
+   });
     //add event listener to the button
     document.getElementById("add-card-button").addEventListener("click" , async () => {
         console.log("Adding card to deck ... ");
@@ -155,7 +171,7 @@ export async function loadModifyDeckView(deck_id) {
         deck_to_modify.cards.push(new Card("text", document.getElementById("question-input").value, document.getElementById("answer-input").value, {}));
         await updateDeck(deck_to_modify);
         //populate the view of the current deck in the preview pane
-        populateDeckPreviewPane(deck_to_modify);
+        populateDeckPreviewPane(deck_to_modify, deck_to_modify.cards.length - 1);
         
     });
 
