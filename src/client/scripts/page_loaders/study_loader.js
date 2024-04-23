@@ -19,20 +19,28 @@ export function loadStudyPageView(deck = null) {
         final_study_view.className = "view";
     } else {
         final_study_view = check_study_view;
+
+        final_study_view.innerHTML = ""; // Resets study page
     }
 
     if (deck === null) {
-        let decks = User.getActiveDecks(true, true, true);
-
-        if (decks.length === 0) { // Edge Case: No decks actively being studied as of yet
-            final_study_view.innerText = "Please select a Deck to study from your Decks!";
-        } else {
-            // TODO General Study Page here
-            final_study_view.innerText = "ACTUAL STUDY CONTENT HERE LMAO";
-        }
+        // TODO - Add general study functionality later
+        final_study_view.innerText = "Please select a Deck to study from your Decks!";
     } else {
         // Specific Study Page here
-        final_study_view.innerText= "Specific Study Page Entry Clicked here!" + JSON.stringify(deck);
+        //final_study_view.innerText= "Specific Study Page Entry Clicked here!" + JSON.stringify(deck);
+        /*
+        Algorithm:
+        -1) Define correct and incorrect for deck summary stats at the end
+        0) Load a check and cross icon at the bottom
+        1) while(card != last)
+            a) Render the card
+            b) Add event handler to switch to new card when either check or cross is clicked
+        2) Render the summary stats and ask user to click on another deck to study
+        */
+        const card = generateCard(deck.cards[0]);
+
+        final_study_view.append(card);
     }
 
     return final_study_view;

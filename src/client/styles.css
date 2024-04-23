@@ -37,9 +37,9 @@ body {
     background-color: transparent;
     justify-content: space-between;
     overflow:hidden;
-    
+
   }
-  
+
 
 /*navbar anchor tag styling*/
 .navbarLink {
@@ -63,13 +63,13 @@ body {
     grid-template-columns: 3fr 1fr;
     border: 2px solid #bdc9b5;
     box-shadow: 1px 1px 1px #a3a8a0, 2px 2px 2px black, 3px 3px 3px #a3a8a0, 4px 4px 4px black;
-    background-color: #dee6e0; 
+    background-color: #dee6e0;
 }
 
 
 .entry:hover {
     background: linear-gradient(#f0efb4, #dcf26f);
-     
+
 }
 
 
@@ -88,7 +88,7 @@ body {
 .entry-text {
     font-family: "math";
     font-size: 16px;
-    
+
 }
 
 .deck-entry-creator-text:hover {
@@ -99,7 +99,7 @@ body {
 
 .entry-button-grid {
     display: flex;
-    flex-direction: column; 
+    flex-direction: column;
     justify-content: space-evenly;
 }
 
@@ -154,7 +154,7 @@ body {
 
 /*Card back*/
 .card-back {
-    display: flex; 
+    display: flex;
     align-items: center;
     justify-content: center;
     border: solid;
@@ -194,7 +194,7 @@ body {
 .cool-green-button:hover {
     background: linear-gradient(#f0efb4, #dcf26f);
 
-} 
+}
 
 /* create new deck page*/
 #create-new-deck-view {
@@ -208,7 +208,7 @@ body {
 /* deck creation page */
 
 #deck-preview-pane {
-    border: 2px solid black; 
+    border: 2px solid black;
     width: 90%;
     height: 30%;
 }
@@ -225,7 +225,7 @@ body {
 #deck-creation-page {
     width: 90%;
     height: 80%;
-    position: absolute; 
+    position: absolute;
     left: 5%;
     top: 15%;
 
@@ -254,7 +254,7 @@ label {
     align-items: center;
     grid-template-columns: 1fr 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr 1fr 1fr;
-    overflow: hidden; 
+    overflow: hidden;
 }
 
 
@@ -266,8 +266,6 @@ label {
     display: block;
 
 }
-
-
 
 /* Styling for decks page above */
 
@@ -327,7 +325,7 @@ label {
     align-items: center;
     grid-template-columns: 1fr 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr 1fr 1fr;
-    overflow: hidden; 
+    overflow: hidden;
 }
 
 #profile-entry-container {
