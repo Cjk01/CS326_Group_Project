@@ -116,10 +116,10 @@ body {
 }
 /*Outer frame of card*/
 .card {
-    width: 500px;
-    height: 300px;
+    width: 80%;
+    height: 80%;
     background-color: transparent;
-    perspective: 1000;
+    display: inline-block;
 }
 
 /*Card contexts to support flip animation*/
@@ -136,7 +136,7 @@ body {
     position: absolute;
     width: 100%;
     height: 100%;
-    font-size: 32px;
+    font-size: 2em;
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
 }
@@ -205,10 +205,20 @@ body {
 /* deck creation page */
 
 #deck-preview-pane {
-    border: 2px solid black;
-    display: grid;
-
+    border: 2px solid black; 
+    width: 90%;
+    height: 30%;
 }
+
+#card-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
 #deck-creation-page {
     width: 90%;
     height: 80%;
