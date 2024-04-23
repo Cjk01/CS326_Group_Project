@@ -63,7 +63,7 @@ export function loadStudyPageView(deck = null) {
 
             // Create a new card and add it to the DOM
             card = generateCard(deck.cards[cardIdx]);
-            final_study_view.prepend(card);  // Add the new card at the beginning
+            final_study_view.prepend(card); // Add before the buttons
         });
 
         incorrectButton.addEventListener("click", () => {
@@ -75,7 +75,7 @@ export function loadStudyPageView(deck = null) {
 
             // Create a new card and add it to the DOM
             card = generateCard(deck.cards[cardIdx]);
-            final_study_view.prepend(card);  // Add the new card at the beginning
+            final_study_view.prepend(card); // Add before the buttons
         });
 
 
