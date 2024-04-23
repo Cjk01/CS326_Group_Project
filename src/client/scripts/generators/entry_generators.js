@@ -1,5 +1,6 @@
 import {User} from "../structures/user.js";
-import {Deck} from "../structures/deck.js"
+import {Deck} from "../structures/deck.js";
+import { loadOtherUserProfile } from "../page_loaders/profile_loader.js";
 
 
 export function generateDeckEntry(deck) {
@@ -186,7 +187,7 @@ export function generateUserEntry(user) {
     bottomButton.value = "View";
 
     bottomButton.addEventListener("click", () => {
-        console.log("To be implemented");
+        loadOtherUserProfile(user);
     });
 
     buttonDiv.appendChild(topButton);
