@@ -1,5 +1,6 @@
-import {User} from "../structures/user.js";
-import {Deck} from "../structures/deck.js";
+import { getUser } from "../data_interface/data.js";
+import { User } from "../structures/user.js";
+import { Deck } from "../structures/deck.js";
 import { loadOtherUserProfile } from "../page_loaders/profile_loader.js";
 
 
@@ -34,9 +35,11 @@ export function generateDeckEntry(deck) {
     textChildren[0].innerHTML = deck.topic;
     textChildren[1].innerHTML = deck.cards.length + " Cards";
     textChildren[2].innerHTML = "Author: " + deck.creator.username;
-
-    textChildren[2].addEventListener("click", () => {
-        console.log("Not yet implemented");
+    
+    textChildren[2].classList.add("deck-entry-creator-text");
+    textChildren[2].addEventListener("click", async () => {
+        let creator = await getUser(deck.creator.id);
+        loadOtherUserProfile(creator);
     })
 
     if (Object.keys(User.getActiveUser().metadata).includes(deck.id)) {
@@ -163,14 +166,22 @@ export function generateUserEntry(user) {
     let topButton = document.createElement("input");
     topButton.type = "button";
     topButton.classList.add("entry-button");
-    if (User.getActiveUser().isFollowing(user)) {
+    
+    let activeUser = User.getActiveUser();
+
+    if (user.id === activeUser.id) {
+        topButton.value = "Self";
+        topButton.disabled = true;
+    } else if (activeUser.isFollowing(user)) {
         topButton.value = "Unfollow";
     } else {
         topButton.value = "Follow"
     }
 
     topButton.addEventListener("click", async () => {
-        if (User.getActiveUser().isFollowing(user)) {
+        if (activeUser.id === user.id) {
+
+        } else if (activeUser.isFollowing(user)) {
             topButton.value = "Pending";
             await User.getActiveUser().removeFollowing(user);
             topButton.value = "Follow";
