@@ -102,7 +102,7 @@ export async function loadCreateNewDeckView() {
     <div id="create-new-deck-view">
     <label for="deckname">Enter Your Deck Name</label> 
     <input id="deckname-input" type="text" name="deckname"/>
-    <input id="submit-deck-button" type="button" value="Create Deck"/>
+    <input id="submit-deck-button" class="cool-green-button" type="button" value="Create Deck"/>
     </div>
     `;
     document.getElementById("submit-deck-button").addEventListener("click", async () => {
