@@ -1,11 +1,31 @@
+
+html {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
 body {
-    background-color: aqua;
+    background-color: #fefefe;
+    width: 100%;
+    height: 100%;
+    margin: 0px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 #views {
-    width: 100%;
+    width: 90%;
     height: 100%;
     background-color : white;
+}
+
+#navbar {
+    width: 100%;
+    height: 7.5%;
+    background-color: #c5decc;
 }
 
 /*navbar styling for navbar unordered list*/
@@ -14,65 +34,90 @@ body {
     display: flex;
     align-items: center;
     margin: 10px;
-    background-color: rgb(173, 70, 70);
+    background-color: transparent;
     justify-content: space-between;
     overflow:hidden;
     
   }
   
-/*navbar unordered list li element styling*/
-.navbarLink {
-    list-style-type: none;
-    float: left;
-}
 
 /*navbar anchor tag styling*/
-.navbarLink a{
-    color: white;
-    font-size: 30px;
+.navbarLink {
+    color: black;
+    font-family: "math";
+    font-size: 32px;
     display: block;
     text-decoration: none;
 }
 
+.navbarLink:hover {
+    background-color: #fff1b3;
+}
+
 /*Entry frame*/
 .entry {
-    width: 700;
-    height: 250;
-    margin: 10;
+    width: 90%;
+    height:90%;
+    margin: 0;
     display: grid;
     grid-template-columns: 3fr 1fr;
-    border: solid;
+    border: 2px solid #bdc9b5;
+    box-shadow: 1px 1px 1px #a3a8a0, 2px 2px 2px black, 3px 3px 3px #a3a8a0, 4px 4px 4px black;
+    background-color: #dee6e0; 
 }
+
+
+.entry:hover {
+    background: linear-gradient(#f0efb4, #dcf26f);
+     
+}
+
 
 /*Entry text*/
 .entry-textbox {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr 1fr;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-around;
 }
 
-.entry-study-button {
-    height: 15%;
-    width: 25%;
+.entry-textbox > * {
+    margin-left: 10%;
 }
+
+.entry-text {
+    font-family: "math";
+    font-size: 16px;
+    
+}
+
+
+
 
 .entry-button-grid {
-    display: grid;
-    grid-template-rows: 1fr 1fr 1fr;
+    display: flex;
+    flex-direction: column; 
+    justify-content: space-evenly;
+}
+
+.entry-button-grid > * {
+    margin-right: 10%;
 }
 
 /*Entry button*/
 .entry-button {
-    width: 50%;
-    height: 50%;
-    border: solid;
-    place-self: center;
+    border: 1px solid black;
+    background-color: #81e392;
+    height: 15%;
 }
 
+.entry-button:hover {
+    background: linear-gradient(#f0efb4, #dcf26f);
+}
 /*Outer frame of card*/
 .card {
-    width: 500;
-    height: 300;
+    width: 500px;
+    height: 300px;
     background-color: transparent;
     perspective: 1000;
 }
@@ -115,20 +160,105 @@ body {
 
 /* Styling for decks page below */
 
+
 #DecksView {
+    width: 100%;
+    height: 100%;
 
 }
 
-#user-decks-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: auto;
+#decks-button-container {
+    width: 100%;
+    height: 10%;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
 }
+
+
+
+.cool-green-button {
+   width: 10%;
+   height: 50%;
+   min-width: 30px;
+   max-width: 100px;
+   min-height: 15px;
+   max-height: 50px;
+   margin: 2px;
+   border: 2px solid black;
+   background-color: #c5decc;
+}
+
+.cool-green-button:hover {
+    background: linear-gradient(#f0efb4, #dcf26f);
+
+} 
+
+/* create new deck page*/
+#create-new-deck-view {
+    position: absolute;
+    left: 40%;
+    top: 30%;
+}
+/* create new deck page*/
+
+
+/* deck creation page */
 
 #deck-preview-pane {
-    display: flex;
-    background-color: red;
-    border: 1px solid black;
+    border: 2px solid black;
+    
+}
+#deck-creation-page {
+    width: 100%;
+    height: 100%;
+    position: absolute; 
+    left: 5%;
+    top: 15%;
+
+}
+
+
+textarea {
+    display: block;
+}
+
+
+
+label {
+    font-size: 24px;
+    font-weight: bold;
+    font-family: "math";
+    display: block;
+}
+/* deck creation page */
+
+#user-decks-container {
+    width: 100%;
+    height: 90%;
+    display: grid;
+    justify-items: center;
+    align-items: center;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr;
+    overflow: hidden; 
+}
+
+
+
+#deckname-label{
+    font-size: 32px;
+    font-weight: bold;
+    font-family: "math";
+    display: block;
+
+}
+
+
+#submit-deck-button {
+    background-color : rgb(172, 255, 116);
+    border: none;
+
 }
 
 /* Styling for decks page above */
