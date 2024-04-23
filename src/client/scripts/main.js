@@ -26,11 +26,11 @@ body.appendChild(views);
 let hpview = await loadHomepageView();
 let dview = await loadDecksView();
 let pview = await loadProfileView();
-let sview = await loadGeneralStudyPageView();
+let generalStudyView = await loadGeneralStudyPageView();
+let specificStudyView = null; // updated to specifically pass in deck as needed
 views.appendChild(hpview);
 views.appendChild(dview);
 views.appendChild(pview);
-views.appendChild(sview);
 
 //setting up the multiview UI logic
 const links = document.querySelectorAll(".navbarLink");
