@@ -26,18 +26,23 @@ body.appendChild(views);
 let hpview = await loadHomepageView();
 let dview = await loadDecksView();
 let pview = await loadProfileView();
-let generalStudyView = await loadGeneralStudyPageView();
-let specificStudyView = null; // updated to specifically pass in deck as needed
+let sview = await loadGeneralStudyPageView();
 views.appendChild(hpview);
 views.appendChild(dview);
 views.appendChild(pview);
+views.appendChild(sview);
 
 //setting up the multiview UI logic
 const links = document.querySelectorAll(".navbarLink");
 const all_views = document.querySelectorAll(".view");
 const navigate = (view_id) => all_views.forEach(v => v.id === view_id ? v.style.display = "block" : v.style.display = "none");
-links.forEach(l => l.addEventListener("click", (e) => {
+links.forEach(l => l.addEventListener("click", async function(e) {
     e.preventDefault(); //prevent the default behavior of page reload when clicking
+
+    if (!e.isTrusted) { // captures artificially stimulated clicks-- used to determine when a user clicks study on a deck entry
+        sview = await loadGeneralStudyPageView(e.target.deck);
+    }
+
     navigate(e.target.id);
 }));
 

@@ -8,21 +8,33 @@ import { generateCard } from "../generators/card_generator.js";
  * @returns {Element} - The study view page
  * @todo Add general study page if 1 or more decks is actively being studied
 */
-export function loadGeneralStudyPageView() {
-    let study_view = document.createElement("div");
-    study_view.setAttribute("id", "StudyView");
-    study_view.className = "view";
+export function loadGeneralStudyPageView(deck = null) {
+    const check_study_view = document.querySelector("div#StudyView");
+    let final_study_view = null;
 
-    let decks = User.getActiveDecks(true, true, true);
-
-    if (decks.length === 0) { // Edge Case: No decks actively being studied as of yet
-        study_view.innerText = "Please select a Deck to study from your Decks!";
+    if (check_study_view === null || check_study_view.tagName !== "DIV") {
+        final_study_view = document.createElement("div");
+        final_study_view.setAttribute("id", "StudyView");
+        final_study_view.className = "view";
     } else {
-        // TODO General Study Page here
-        study_view.innerText = "ACTUAL STUDY CONTENT HERE LMAO";
+        final_study_view = check_study_view;
     }
 
-    return study_view;
+    if (deck === null) {
+        let decks = User.getActiveDecks(true, true, true);
+
+        if (decks.length === 0) { // Edge Case: No decks actively being studied as of yet
+            final_study_view.innerText = "Please select a Deck to study from your Decks!";
+        } else {
+            // TODO General Study Page here
+            final_study_view.innerText = "ACTUAL STUDY CONTENT HERE LMAO";
+        }
+    } else {
+        // Specific Study Page here
+        final_study_view.innerText= "Specific Study Page Entry Clicked here!" + JSON.stringify(deck);
+    }
+
+    return final_study_view;
 }
 
 /**
