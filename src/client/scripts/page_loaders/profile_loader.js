@@ -9,12 +9,13 @@ export async function loadProfileView() {
     profileView.innerHTML = 
     `
     <div id="profile-button-container">
-    <input id="your-profile-button" type="button" value="Your Profile"/>
-    <input id="following-button" type="button" value="Following"/>
-    <input id="follower-button" type="button" value="Followers"/>
-    <input id="search-user-button" type="button" value="Search Users">
-    <input id="search-deck-button" type="button" value="Search Decks">
+    <input id="your-profile-button" class="cool-green-button" type="button" value="Your Profile"/>
+    <input id="following-button" class="cool-green-button" type="button" value="Following"/>
+    <input id="follower-button" class="cool-green-button" type="button" value="Followers"/>
+    <input id="search-user-button" class="cool-green-button" type="button" value="Search Users">
+    <input id="search-deck-button" class="cool-green-button" type="button" value="Search Decks">
     </div>
+    <br>
     <div id="profileContainer"><div/>
     `;
 
@@ -24,8 +25,8 @@ export async function loadProfileView() {
 
     profileInfo.innerHTML = 
     `
-    <label for="profile-username-box">Username: </label>
-    <input id="profile-username-box" readonly value=${activeUser.username} /> <br>
+    <span id="username-label-not-label">Username:</span>
+    <input id="profile-username-box" readonly value="${activeUser.username}" /> <br>
 
     <input id="profile-username-edit-button" type="button" value="Edit Username" />
 
@@ -37,6 +38,8 @@ export async function loadProfileView() {
 
     <p id="profile-deck-text">Currently studying ${User.getActiveDecks(false, true, false, false, false).length} Decks</p>
     `
+    
+    let userBox = profileInfo.querySelector("#profile-username-box");
 
     let editButton = profileInfo.querySelector("#profile-username-edit-button");
 
@@ -77,8 +80,8 @@ function loadUserProfile() {
 
     profileInfoContainer.innerHTML = 
     `
-    <label for="profile-username-box">Username: </label>
-    <input id="profile-username-box" readonly value=${activeUser.username} /> <br>
+    <span id="username-label-not-label">Username:</span>
+    <input id="profile-username-box" readonly value="${activeUser.username}" /> <br>
 
     <input id="profile-username-edit-button" type="button" value="Edit Username" />
 
@@ -128,16 +131,15 @@ async function loadUserFollowers() {
 async function loadUserSearch() {
     let profileContainer = document.getElementById("profileContainer");
     profileContainer.innerHTML =
-    `
-    <label for="user-search-id-field">Type a user's ID here: </label>
+    `<p>Type a user's ID here: </p>
     <input id="user-search-id-field" /><br>
     <input id="user-search-button" type="button" value="Search"/><br>
-    <div id="user-entry-container"></div>
+    <div id="profile-entry-container"></div>
     `
 
     let searchField = profileContainer.querySelector("#user-search-id-field");
     let searchButton = profileContainer.querySelector("#user-search-button");
-    let entryContainer = profileContainer.querySelector("#user-entry-container");
+    let entryContainer = profileContainer.querySelector("#profile-entry-container");
 
     searchButton.addEventListener("click", async () => {
         entryContainer.innerHTML = 
@@ -157,15 +159,15 @@ async function loadDeckSearch() {
     let profileContainer = document.getElementById("profileContainer");
     profileContainer.innerHTML =
     `
-    <label for="deck-search-id-field">Type a deck's ID here: </label>
+    <p>Type a deck's ID here: </p>
     <input id="deck-search-id-field" /><br>
     <input id="deck-search-button" type="button" value="Search"/><br>
-    <div id="deck-entry-container"></div>
+    <div id="profile-entry-container"></div>
     `
 
     let searchField = profileContainer.querySelector("#deck-search-id-field");
     let searchButton = profileContainer.querySelector("#deck-search-button");
-    let entryContainer = profileContainer.querySelector("#deck-entry-container");
+    let entryContainer = profileContainer.querySelector("#profile-entry-container");
 
     searchButton.addEventListener("click", async () => {
         entryContainer.innerHTML = 
@@ -197,9 +199,9 @@ export async function loadOtherUserProfile(user) {
 
     <p id="profile-deck-text">Owns ${userDecks.length} Decks</p>
 
-    <div id="other-deck-entry-container"></div>
+    <div id="other-decks-container"></div>
     `
 
-    let entryContainer = profileContainer.querySelector("#other-deck-entry-container");
+    let entryContainer = profileContainer.querySelector("#other-decks-container");
     userDecks.map(deck => entryContainer.appendChild(generateDeckEntry(deck)));
 }
