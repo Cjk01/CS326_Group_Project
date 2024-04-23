@@ -29,10 +29,7 @@ export async function loadProfileView() {
 
     profileInfo.innerHTML = 
     `
-    <span id="username-label-not-label">Username:</span>
-    <input id="profile-username-box" readonly value="${activeUser.username}" /> <br>
-
-    <input id="profile-username-edit-button" type="button" value="Edit Username" />
+    <p id="profile-username-text">Username: ${activeUser.username}</p>
 
     <p id="profile-id-text">ID: ${activeUser.id}</p>
 
@@ -40,27 +37,8 @@ export async function loadProfileView() {
 
     <p id="profile-following-count-text">Number Following: ${activeUser.following.length}</p>
 
-    <p id="profile-deck-text">Currently studying ${User.getActiveDecks(false, true, false, false, false).length} Decks</p>
+    <p id="profile-deck-text">Currently studying ${User.getActiveDecks(false, true, false, false, false).length} deck(s)</p>
     `
-    
-    let userBox = profileInfo.querySelector("#profile-username-box");
-
-    let editButton = profileInfo.querySelector("#profile-username-edit-button");
-
-    editButton.addEventListener("click", async () => {
-        if (editButton.value === "Edit Username") {
-            editButton.value = "Confirm";
-            userBox.removeAttribute("readonly");
-        } else {
-            editButton.value = "Pending";
-            let user = activeUser;
-            user.username = userBox.value;
-            await updateUser(getUser(activeUser.id));
-            userBox.setAttribute("readonly", true);
-            await User.estabilishLocalStorage(activeUser.id);
-            editButton.value = "Edit Username";
-        }
-    });
 
     profileView.querySelector("#your-profile-button").addEventListener("click", loadUserProfile);
 
@@ -84,10 +62,7 @@ function loadUserProfile() {
 
     profileInfoContainer.innerHTML = 
     `
-    <span id="username-label-not-label">Username:</span>
-    <input id="profile-username-box" readonly value="${activeUser.username}" /> <br>
-
-    <input id="profile-username-edit-button" type="button" value="Edit Username" />
+    <p id="profile-username-text">Username: ${activeUser.username}</p>
 
     <p id="profile-id-text">ID: ${activeUser.id}</p>
 
@@ -95,41 +70,30 @@ function loadUserProfile() {
 
     <p id="profile-following-count-text">Number Following: ${activeUser.following.length}</p>
 
-    <p id="profile-deck-text">Currently studying ${User.getActiveDecks(false, true, false, false, false).length} Decks</p>
+    <p id="profile-deck-text">Currently studying ${User.getActiveDecks(false, true, false, false, false).length} deck(s)</p>
     `
-
-    let userBox = profileInfoContainer.querySelector("#profile-username-box");
-    let editButton = profileInfoContainer.querySelector("#profile-username-edit-button");
-    editButton.addEventListener("click", async () => {
-        if (editButton.value === "Edit Username") {
-            editButton.value = "Confirm";
-            userBox.removeAttribute("readonly");
-        } else {
-            editButton.value = "Pending";
-            let user = await getUser(activeUser.id);
-            user.username = userBox.value;
-            await updateUser(await getUser(activeUser.id))
-            userBox.setAttribute("readonly", true);
-            await User.estabilishLocalStorage(activeUser.id);
-            editButton.value = "Edit Username";
-        }
-    });
 }
 
 async function loadUserFollowing() {
     let profileContainer = document.getElementById("profileContainer");
-    profileContainer.innerHTML = "";
+    profileContainer.innerHTML = ""
 
-    let following = await User.getActiveUser().getFollowing()
-    following.map(generateUserEntry).map(entry => profileContainer.appendChild(entry));
+    let followContainer = document.createElement("div");
+    followContainer.setAttribute("id", "other-decks-container");
+    let following = User.getActiveFollowing();
+    following.map(generateUserEntry).map(entry => followContainer.appendChild(entry));
+    profileContainer.appendChild(followContainer);
 }
 
 async function loadUserFollowers() {
     let profileContainer = document.getElementById("profileContainer");
     profileContainer.innerHTML = "";
 
-    let followers = await User.getActiveUser().getFollowers()
-    followers.map(generateUserEntry).map(entry => profileContainer.appendChild(entry));
+    let followContainer = document.createElement("div");
+    followContainer.setAttribute("id", "other-decks-container");
+    let followers = User.getActiveFollowers();
+    followers.map(generateUserEntry).map(entry => followContainer.appendChild(entry));
+    profileContainer.appendChild(followContainer);
 }
 
 async function loadUserSearch() {

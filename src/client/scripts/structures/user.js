@@ -35,12 +35,12 @@ export class User {
    static async estabilishLocalStorage(userId) {
       let activeUser = await getUser(userId);
       let activeDecks = await activeUser.getDecks();
-      let activeFollowers = await activeUser.getFollowers();
-      let activeFollowing = await activeUser.getFollowing();
+      // let activeFollowers = await activeUser.getFollowers();
+      // let activeFollowing = await activeUser.getFollowing();
       localStorage.setItem("active-user", JSON.stringify(activeUser));
       localStorage.setItem("active-decks", JSON.stringify(activeDecks));
-      localStorage.setItem("active-followers", JSON.stringify(activeFollowers));
-      localStorage.setItem("active-following", JSON.stringify(activeFollowing));
+      // localStorage.setItem("active-followers", JSON.stringify(activeFollowers));
+      // localStorage.setItem("active-following", JSON.stringify(activeFollowing));
    }
 
    /** Updates local storage's active-user field without accessing database
@@ -57,21 +57,6 @@ export class User {
       let localDecks = User.getActiveDecks();
       localDecks.push(deck);
       localStorage.setItem("active-decks", JSON.stringify(localDecks));
-   }
-
-   /**
-    * Updates the local storage followers field
-    * @param {User} user - the user to add or delete to the local storage follower field
-    * @param {boolean} add - true for adding, false for deleting
-    */
-   static #updateLocalFollowers(user, add) {
-      let localFollowers = User.getActiveFollowers();
-      if (add) {
-         localFollowers.push(user);
-         localStorage.setItem("active-followers", JSON.stringify(localFollowers));
-      } else {
-         localStorage.setItem("active-followers", JSON.stringify(localFollowers.filter(follow => follow.id !== user.id)));
-      }
    }
 
    /**
@@ -287,10 +272,6 @@ export class User {
    async #registerFollower(other) {
       this.followers.push(other.id);
       await updateUser(this);
-      if (this.id === User.getActiveUser().id) {
-         User.#updateLocalUser(this);
-         User.#updateLocalFollowers(this, true);
-      }
    }
 
    /**
@@ -315,10 +296,6 @@ export class User {
    async #removeFollower(other) {
       this.followers = this.followers.filter(f => f !== other.id);
       await updateUser(this);
-      if (this.id === User.getActiveUser().id) {
-         User.#updateLocalUser(this);
-         User.#updateLocalFollowers(this, false);
-      }
    }
 
    /**

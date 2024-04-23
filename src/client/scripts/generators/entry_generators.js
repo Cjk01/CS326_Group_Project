@@ -179,15 +179,13 @@ export function generateUserEntry(user) {
     }
 
     topButton.addEventListener("click", async () => {
-        if (activeUser.id === user.id) {
-
-        } else if (activeUser.isFollowing(user)) {
+        if (activeUser.isFollowing(user)) {
             topButton.value = "Pending";
-            await User.getActiveUser().removeFollowing(user);
+            await activeUser.removeFollowing(user);
             topButton.value = "Follow";
         } else {
             topButton.value = "Pending";
-            await User.getActiveUser().registerFollowing(user);
+            await activeUser.registerFollowing(user);
             topButton.value = "Unfollow";
         }
     })

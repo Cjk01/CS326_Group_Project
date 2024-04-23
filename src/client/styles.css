@@ -320,7 +320,7 @@ label {
 }
 
 #other-decks-container {
-    width: 100%;
+    width: 105%;
     height: 550px;
     display: grid;
     justify-items: center;
