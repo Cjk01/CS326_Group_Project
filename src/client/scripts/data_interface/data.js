@@ -199,7 +199,7 @@ export async function configureDatabaseForMilestoneTwo() {
   }
     return cards;
   }
-  let user = new User("main_user", "main", [33], [234,343], {});
+  let user = new User("main_user", "Craig Krikorian", [33], [234,343], {});
   let example_decks = [];
   for(let i = 0 ; i < 10 ; ++i) {
     let deck = new Deck(i.toString(), "Math", makeCards(20), user )

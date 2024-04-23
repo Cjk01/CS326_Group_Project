@@ -30,9 +30,9 @@ export function generateDeckEntry(deck) {
     }
 
     // Change these to align with deck objects
-    textChildren[0].innerHTML = "Topic:<br>" + deck.topic;
-    textChildren[1].innerHTML = "Card Count:<br>" + deck.cards.length;
-    textChildren[2].innerHTML = "Author:<br>" + deck.creator.username + "<br>(Click to view profile)";
+    textChildren[0].innerHTML = deck.topic;
+    textChildren[1].innerHTML = deck.cards.length + " Cards";
+    textChildren[2].innerHTML = "Author: " + deck.creator.username;
     
     textChildren[2].addEventListener("click", () => {
         console.log("Not yet implemented");
@@ -41,7 +41,7 @@ export function generateDeckEntry(deck) {
     if (Object.keys(User.getActiveUser().metadata).includes(deck.id)) {
         let studyingButton = document.createElement("input");
         studyingButton.type = "button";
-        studyingButton.classList.add("entry-study-Button");
+        studyingButton.classList.add("entry-button");
         if (User.getActiveUser().metadata[deck.id].beingStudied) {
             studyingButton.value = "Studying";
         } else {
