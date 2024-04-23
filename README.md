@@ -1,4 +1,23 @@
-# CS326_Group_Project
+# Cachely
+
+## Notes for graders
+- We use a non standard setup
+- localStorage api for things which will remain in local storage even past milestone03
+- pouchDB running on a node server via a different port than the client to simulate a database
+
+## How to use Cachely (as a grader)
+- Cachely is a memorization aid app, you study decks of flash cards
+- You start out already logged in as "main user"
+- You have some followers, and users you follow
+- You have some decks you own, and decks owned by others
+### 4 Main Pages and their uses
+- Homepage: View social information and jump to studying
+- Decks: You can view your decks, saved decks (from other users), and create brand new decks
+- Profile: View your profile info, and also can search for users via their user_id (different than their username)
+   - For milestone02, all user ids are "username_id" , ex username craig has an id of craig_id
+   - You can do the same for decks (In this example, there are 3 sample decks: OS, webdev, algebra)
+- Study: This is where you study a selected deck (decks are recommended based on spaced repetition metadata
+Enjoy
 
 # Contributing Guide 
 - Pick a user story from the project board : https://github.com/users/Cjk01/projects/2
