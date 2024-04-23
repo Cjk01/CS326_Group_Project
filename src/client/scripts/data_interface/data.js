@@ -223,33 +223,6 @@ export async function configureDatabaseForMilestoneTwo() {
 
   //set the active user as the main user 
   await User.estabilishLocalStorage("main_user");
-/*
-  function makeCards(n) {
-  let cards = [];
-  for(let i = 0; i < n ; ++i){
-    let n1 = Math.floor(Math.random() * 12);
-    let n2 = Math.floor(Math.random() * 12);
-    let question = n1.toString() + " x " + n2.toString() + " = ?";
-    let answer = (n1 * n2).toString();
-    cards.push(new Card("text_answer", question, answer, {"metadata" : "example"}));
-  }
-    return cards;
-  }
-  let user = new User("main_user", "Craig Krikorian", [33], [234,343], {});
-  let example_decks = [];
-  for(let i = 0 ; i < 10 ; ++i) {
-    let deck = new Deck(i.toString(), "Math", makeCards(20), user )
-    example_decks.push(deck);
-    await addDeck(deck);
-  }
-  
-  for(let i = 0 ; i < example_decks.length ; ++i) {
-    user.metadata[example_decks[i].id] = {"timeLastStudied" : 0 , "timesStudied" : 0, "beingStudied" : false};
-  }
-  
-  let added_user_to_db = await addUser(user);
-  await User.estabilishLocalStorage(user.id); 
-  */
 }
 
 /**
