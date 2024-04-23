@@ -264,10 +264,26 @@ label {
     font-weight: bold;
     font-family: "math";
     display: block;
-
 }
 
 /* Styling for decks page above */
+
+
+/* Study page styling below */
+#StudyView {
+    height: 100%;
+    width: 123%;
+}
+
+.studyButton {
+    margin: 1%;
+    padding: 2%;
+    font-size: larger;
+}
+
+#correct-button {
+    margin-left: 30%;
+}
 
 /*Styling for home page below*/
 .homepage-entry {

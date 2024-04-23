@@ -38,9 +38,50 @@ export function loadStudyPageView(deck = null) {
             b) Add event handler to switch to new card when either check or cross is clicked
         2) Render the summary stats and ask user to click on another deck to study
         */
-        const card = generateCard(deck.cards[0]);
+        let correct = 0;
+        let incorrect = 0;
+        let cardIdx = 0;
+
+        let card = generateCard(deck.cards[cardIdx]);
+
+        const correctButton = document.createElement("button");
+        correctButton.setAttribute("id", "correct-button");
+        correctButton.setAttribute("class", "studyButton");
+        correctButton.innerText = "Correct";
+
+        const incorrectButton = document.createElement("button");
+        incorrectButton.setAttribute("id", "incorrect-button");
+        incorrectButton.setAttribute("class", "studyButton");
+        incorrectButton.innerText = "Incorrect";
+
+        correctButton.addEventListener("click", () => {
+            ++correct;
+            ++cardIdx;
+
+            // Remove the old card from the DOM
+            final_study_view.removeChild(card);
+
+            // Create a new card and add it to the DOM
+            card = generateCard(deck.cards[cardIdx]);
+            final_study_view.prepend(card);  // Add the new card at the beginning
+        });
+
+        incorrectButton.addEventListener("click", () => {
+            ++incorrect;
+            ++cardIdx;
+
+            // Remove the old card from the DOM
+            final_study_view.removeChild(card);
+
+            // Create a new card and add it to the DOM
+            card = generateCard(deck.cards[cardIdx]);
+            final_study_view.prepend(card);  // Add the new card at the beginning
+        });
+
 
         final_study_view.append(card);
+        final_study_view.append(correctButton);
+        final_study_view.append(incorrectButton);
     }
 
     return final_study_view;
