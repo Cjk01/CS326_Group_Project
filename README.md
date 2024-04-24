@@ -1,6 +1,8 @@
 # Cachely
 
 ## Notes for graders
+- Can run with npm install and npm run milestone-02
+   - localhost:3050 will take you to the homepage
 - We use a non standard setup
 - localStorage api for things which will remain in local storage even past milestone03
 - pouchDB running on a node server via a different port than the client to simulate a database
