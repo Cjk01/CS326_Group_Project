@@ -1,5 +1,5 @@
 //this is where all functions used to interact with the server are stored
-//these are meant to be transparent to the user so that api calls can be made easily 
+//these are meant to be transparent to the user so that api calls can be made easily
 //by the front end
 
 import { User } from "../structures/user.js";
@@ -10,11 +10,11 @@ const server_base_url = "http://localhost:3470/"
 
 
 /**
- * constructs and sends the http request to add a user to the database 
+ * constructs and sends the http request to add a user to the database
  * @param {User} user - The user to be added to the database
  * @returns {Object} - response object with status info
- * 
- * 
+ *
+ *
  */
 export async function addUser(user) {
     let headers = new Headers();
@@ -22,11 +22,11 @@ export async function addUser(user) {
     let response = await fetch(server_base_url + "users", {"headers": headers, method: "POST", body: JSON.stringify(user)});
     let response_json = response.json();
     return response_json;
-   
+
 }
 
 /**
- * 
+ *
  * @param {User} - the updated user object sent to the database
  * @returns {Object} - response object with status info
  */
@@ -39,8 +39,8 @@ export async function updateUser(user) {
 }
 
 /**
- * 
- * @param {int} user_id - id of the user you wish to obtain from the database 
+ *
+ * @param {int} user_id - id of the user you wish to obtain from the database
  * @returns {User} - the User object
  */
 export async function getUser(user_id) {
@@ -51,12 +51,12 @@ export async function getUser(user_id) {
   let returned_user = new User(); //creating an empty class isntance to map the returned object into
   Object.assign(returned_user, response_json); //filling in the User object with the contents of the returned object
   return returned_user;
-  
+
 }
 
 /**
- * RIP User 
- * @param {int} user_id id of user to be deleted 
+ * RIP User
+ * @param {int} user_id id of user to be deleted
  */
 export async function deleteUser(user_id) {
   let headers = new Headers();
@@ -68,7 +68,7 @@ export async function deleteUser(user_id) {
 
 
 /**
- * 
+ *
  * @param {Deck} deck - the deck to be added
  * @returns {Object} - response object with status info
  */
@@ -81,6 +81,11 @@ export async function addDeck(deck) {
 
 }
 
+/**
+ *
+ * @param {Deck} deck - the deck to be updated
+ * @returns {Object} - response object with status info
+ */
 export async function updateDeck(deck) {
   let headers = new Headers();
   headers.append("Content-Type", "text/html");
@@ -89,6 +94,11 @@ export async function updateDeck(deck) {
   return response_json;
 }
 
+/**
+ *
+ * @param {Deck} deck - the deck to be deleted
+ * @returns {Object} - response object with status info
+ */
 export async function deleteDeck(deck_id) {
   let headers = new Headers();
   headers.append("Content-Type", "text/html");
@@ -98,8 +108,8 @@ export async function deleteDeck(deck_id) {
 }
 
 /**
- * 
- * @param {int} deck_id 
+ *
+ * @param {int} deck_id
  * @returns {Deck} - the requested deck object
  */
 export async function getDeck(deck_id) {
@@ -116,7 +126,7 @@ export async function getDeck(deck_id) {
 /**
  * tests all CRUD operations for decks and users to ensure they are functioning correctly
  * any error will be logged to the console
- * 
+ *
  */
 export async function testDatabaseOperations() {
 
@@ -160,9 +170,6 @@ export async function testDatabaseOperations() {
   //testing deleteUser
   let delete_response = await deleteUser(test_user["id"]);
   console.assert(delete_response["ok"]);
-
-  
-
 }
 
 /**
@@ -170,7 +177,6 @@ export async function testDatabaseOperations() {
  * Used for setting up test environments
  */
 export async function clearDatabases() {
-
   let headers = new Headers();
   headers.append("Content-Type", "text/html");
   let response = await fetch(`${server_base_url}clear_databases` , {headers: headers, method: "DELETE"});
@@ -201,7 +207,7 @@ export async function configureDatabaseForMilestoneTwo() {
     c["card_type"] = "text";
     c["metadata"] = {};
   });
- 
+
   let base_user_metadata = {"timeLastStudied" : 0 , "timesStudied" : 0, "beingStudied" : false};
   //loading the 3 example decks (OS, web, alg)
   let os_deck = new Deck("OS", "Operating Systems", loaded_cards.filter(c=>c.deck_id === "OS"), main_user);
@@ -221,21 +227,21 @@ export async function configureDatabaseForMilestoneTwo() {
    await addUser(daniil_user);
    await addUser(jonah_user);
 
-  //set the active user as the main user 
-  await User.estabilishLocalStorage("main_user");
+  //set the active user as the main user
+  await User.establishLocalStorage("main_user");
 }
 
 /**
- * This function is used to load our pouchDB store with fake data 
+ * This function is used to load our pouchDB store with fake data
  * to satisfy the mock data requirements for milestone-02.
  * This will not be needed once we move forward to milestone-03
  * Makes use of the https://randomuser.me/documentation#howto api
  * Will not be used after milestone-02
  * @returns {Object} - {users: user db info, decks: deck db info} obtained from logDatabaseInformation()
- * 
+ *
  */
 export async function loadBatchTestData() {
-  
+
   //fetch fake user data in bulk from api
   let fakeUsersRequest = await fetch("https://randomuser.me/api?results=500"); //fetch 500 fake users
   let fakeUsersJson = await fakeUsersRequest.json();
@@ -264,7 +270,7 @@ export async function loadBatchTestData() {
     let deck = new Deck(uuid, "Math", cards, deck_creator);
     let added_deck = await addDeck(deck);
   }
-  
+
 
   /**
    *
@@ -277,5 +283,3 @@ export async function loadBatchTestData() {
   return response;
 
 }
-
-

@@ -6,12 +6,8 @@ import { loadStudyPageView } from "./page_loaders/study_loader.js";
 import { addUser, clearDatabases, configureDatabaseForMilestoneTwo, loadBatchTestData, testDatabaseOperations, updateUser } from "./data_interface/data.js";
 import { User } from "./structures/user.js";
 
-
-
 await clearDatabases();
 await configureDatabaseForMilestoneTwo();
-
-
 
 let body = document.getElementById("body");
 //create and append the navbar element to the body of the page
@@ -42,7 +38,7 @@ links.forEach(l => l.addEventListener("click", async function(e) {
     if (!e.isTrusted) { // captures artificially stimulated clicks-- used to determine when a user clicks study on a deck entry
         sview = await loadStudyPageView(e.target.deck);
     }
-    document.title = "Cachely: " + document.getElementById(e.target.id).innerHTML; //setting the title to reflect what the user is doing 
+    document.title = "Cachely: " + document.getElementById(e.target.id).innerHTML; //setting the title to reflect what the user is doing
     navigate(e.target.id);
 }));
 

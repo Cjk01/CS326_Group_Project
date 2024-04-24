@@ -1,11 +1,10 @@
 import { generateDeckEntry, generateUserEntry } from "../generators/entry_generators.js";
 import { User } from "../structures/user.js";
 
-/** 
+/**
  * Generates the homepage HTML element
  * @returns {HTMLElement}
 */
-
 export async function loadHomepageView() {
     //Get all the necessary data by using User methods --> Retrieves from local storage
     const user = User.getActiveUser();
@@ -21,7 +20,7 @@ export async function loadHomepageView() {
     homePageContainer.setAttribute('id', 'HomeView');
     homePageContainer.classList.add('view');
     homePageContainer.innerHTML = '';
-    
+
     //Create header
     const studyHeader = document.createElement('h2');
     studyHeader.innerHTML = `<h2 id='homepage-decksToStudy'>Decks to Study: </h2>`;

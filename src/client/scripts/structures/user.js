@@ -27,12 +27,11 @@ export class User {
    }
 
    /**
-    * @todo - Uncomment follower parts - as of right now, active user's followers/following aren't in database
     * Fetches active user from database and sets local storage field
     * Can also be used to update the field to match database
     * @param {Number} userId - the user object meant to
     */
-   static async estabilishLocalStorage(userId) {
+   static async establishLocalStorage(userId) {
       let activeUser = await getUser(userId);
       let activeDecks = await activeUser.getDecks();
       let activeFollowers = await activeUser.getFollowers();

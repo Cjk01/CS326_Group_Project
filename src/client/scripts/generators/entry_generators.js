@@ -4,16 +4,14 @@ import { Deck } from "../structures/deck.js";
 import { loadOtherUserProfile } from "../page_loaders/profile_loader.js";
 import { loadDeckPreview } from "../page_loaders/decks_loader.js";
 
-
+/**
+ * Generates a Deck Entry (Icon to represent a deck at a glance)
+ * @ToDo
+ * Add functionality to buttons
+ * @param {Deck} deck - A deck object as defined in structures/deck.js
+ * @returns {Element} - An HTML div element
+ */
 export function generateDeckEntry(deck) {
-    /**
-     * Generates a Deck Entry (Icon to represent a deck at a glance)
-     * @ToDo
-     * Add functionality to buttons
-     * @param {Deck} deck - A deck object as defined in structures/deck.js
-     * @returns {Element} - An HTML div element
-     */
-
     // Creation of entire entry
     let entry = document.createElement("div");
     entry.classList.add("entry");
@@ -36,7 +34,7 @@ export function generateDeckEntry(deck) {
     textChildren[0].innerHTML = deck.topic;
     textChildren[1].innerHTML = deck.cards.length + " Cards";
     textChildren[2].innerHTML = "Author: " + deck.creator.username;
-    
+
     textChildren[2].classList.add("deck-entry-creator-text");
     textChildren[2].addEventListener("click", async () => {
         let creator = await getUser(deck.creator.id);
@@ -122,16 +120,16 @@ export function generateDeckEntry(deck) {
     return entry;
 }
 
+/**
+ * Generates a User Entry (Icon to represent a user at a glance)
+ * @ToDo
+ * Change the text on the button
+ * Add click functionality to the button
+ * Style
+ * @param {User} user - A user object as defined in structures/user.js
+ * @returns {Element} - An HTML div element
+ */
 export function generateUserEntry(user) {
-    /**
-     * Generates a User Entry (Icon to represent a user at a glance)
-     * @ToDo
-     * Change the text on the button
-     * Add click functionality to the button
-     * Style
-     * @param {User} user - A user object as defined in structures/user.js
-     * @returns {Element} - An HTML div element
-     */
 
     // Creation of entire entry
     let entry = document.createElement("div");
@@ -167,7 +165,7 @@ export function generateUserEntry(user) {
     let topButton = document.createElement("input");
     topButton.type = "button";
     topButton.classList.add("cool-green-button");
-    
+
     let activeUser = User.getActiveUser();
 
     if (user.id === activeUser.id) {
