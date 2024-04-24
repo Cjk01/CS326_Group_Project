@@ -27,17 +27,6 @@ export function loadStudyPageView(deck = null) {
         // TODO - Add general study functionality later
         final_study_view.innerText = "Please select a Deck to study from your Decks!";
     } else {
-        // Specific Study Page here
-        //final_study_view.innerText= "Specific Study Page Entry Clicked here!" + JSON.stringify(deck);
-        /*
-        Algorithm:
-        -1) Define correct and incorrect for deck summary stats at the end
-        0) Load a check and cross icon at the bottom
-        1) while(card != last)
-            a) Render the card
-            b) Add event handler to switch to new card when either check or cross is clicked
-        2) Render the summary stats and ask user to click on another deck to study
-        */
         let correct = 0;
         let incorrect = 0;
         let cardIdx = 0;
@@ -68,9 +57,25 @@ export function loadStudyPageView(deck = null) {
             // Remove the old card from the DOM
             final_study_view.removeChild(card);
 
-            // Create a new card and add it to the DOM
-            card = generateCard(deck.cards[cardIdx]);
-            final_study_view.prepend(card); // Add before the buttons
+            // Displays final metadata if we've finished going through all cards
+            if (cardIdx === deck.cards.length) {
+                const finalDeckOutput = document.createElement("div");
+
+                finalDeckOutput.innerHTML = `
+                <h2>Deck Summary:</h2>
+                <strong>Correct: </strong>${correct} <br>
+                <strong>Incorrect: </strong>${incorrect} <br>
+                <strong>Incorrect: </strong>${incorrect} <br>
+                <strong>Percent: </strong>${Math.trunc(correct/((correct + incorrect !== 0 ? correct + incorrect : 1)) * 100)}% <br><br>
+                Learning has never been more fun! Please choose another Deck from your Decks to keep it up!
+                `;
+
+                final_study_view.prepend(finalDeckOutput);
+            } else {
+                // Create a new card and add it to the DOM
+                card = generateCard(deck.cards[cardIdx]);
+                final_study_view.prepend(card); // Add before the buttons
+            }
         });
 
         incorrectButton.addEventListener("click", () => {
@@ -85,9 +90,24 @@ export function loadStudyPageView(deck = null) {
             // Remove the old card from the DOM
             final_study_view.removeChild(card);
 
-            // Create a new card and add it to the DOM
-            card = generateCard(deck.cards[cardIdx]);
-            final_study_view.prepend(card); // Add before the buttons
+            // Displays final metadata if we've finished going through all cards
+            if (cardIdx === deck.cards.length) {
+                const finalDeckOutput = document.createElement("div");
+
+                finalDeckOutput.innerHTML = `
+                <h2>Deck Summary:</h2>
+                <strong>Correct: </strong>${correct} <br>
+                <strong>Incorrect: </strong>${incorrect} <br>
+                <strong>Percent: </strong>${Math.trunc(correct/((correct + incorrect !== 0 ? correct + incorrect : 1)) * 100)}% <br><br>
+                Learning has never been more fun! Please choose another Deck from your Decks to keep it up!
+                `;
+
+                final_study_view.prepend(finalDeckOutput);
+            } else {
+                // Create a new card and add it to the DOM
+                card = generateCard(deck.cards[cardIdx]);
+                final_study_view.prepend(card); // Add before the buttons
+            }
         });
 
 
