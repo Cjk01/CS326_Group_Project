@@ -325,8 +325,9 @@ label {
     margin-top: 10px !important;
 }
 
+/* Add button styling, might add back later
 #homepage-addButton {
-    margin-left: 50px !important;
+    margin-left: 200px !important;
     margin-top: 20px !important;
     font-size: 32px;
     font-family: "math";
@@ -335,8 +336,10 @@ label {
     border: 2px solid #bdc9b5;
     padding-left: 550px;
     padding-right: 550px;
+    padding-bottom: 38px;
     background-color: #dee6e0 !important;
-}
+    color: black !important;
+}*/
 
 #homepage-addButton:active {
     box-shadow:
