@@ -2,7 +2,7 @@ import { generateNavbar } from "./generators/navbar_generator.js"
 import { loadHomepageView } from "./page_loaders/homepage_loader.js";
 import {loadDecksView} from "./page_loaders/decks_loader.js"
 import { loadProfileView } from "./page_loaders/profile_loader.js";
-import { loadGeneralStudyPageView } from "./page_loaders/study_loader.js";
+import { loadStudyPageView } from "./page_loaders/study_loader.js";
 import { addUser, clearDatabases, configureDatabaseForMilestoneTwo, loadBatchTestData, testDatabaseOperations, updateUser } from "./data_interface/data.js";
 import { User } from "./structures/user.js";
 
@@ -26,7 +26,7 @@ body.appendChild(views);
 let hpview = await loadHomepageView();
 let dview = await loadDecksView();
 let pview = await loadProfileView();
-let sview = await loadGeneralStudyPageView();
+let sview = await loadStudyPageView();
 views.appendChild(hpview);
 views.appendChild(dview);
 views.appendChild(pview);
@@ -40,7 +40,7 @@ links.forEach(l => l.addEventListener("click", async function(e) {
     e.preventDefault(); //prevent the default behavior of page reload when clicking
 
     if (!e.isTrusted) { // captures artificially stimulated clicks-- used to determine when a user clicks study on a deck entry
-        sview = await loadGeneralStudyPageView(e.target.deck);
+        sview = await loadStudyPageView(e.target.deck);
     }
 
     navigate(e.target.id);

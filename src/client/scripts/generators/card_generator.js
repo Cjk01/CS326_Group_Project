@@ -25,11 +25,19 @@ export function generateCard(card) {
     cardInside.appendChild(cardFront);
     cardInside.appendChild(cardBack);
 
-    cardElement.addEventListener("click", () => { // Click to flip around
+    // isBeingStudied used to trigger the Correct and Incorrect Buttons when clicked
+    cardElement.addEventListener("click", (isBeingStudied = false) => {
         if (cardInside.style.transform === "rotateY(180deg)") {
             cardInside.style.transform = "rotateY(0deg)";
         } else {
             cardInside.style.transform = "rotateY(180deg)";
+        }
+
+        if (isBeingStudied) {
+          // Turns buttons visible after user interacts with the flashcard
+          const buttons = [...document.getElementsByClassName('studyButton')];
+
+          buttons.forEach(button => button.style.visibility = "visible");
         }
     });
 
