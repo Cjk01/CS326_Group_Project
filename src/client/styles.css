@@ -142,6 +142,7 @@ body {
     font-size: 2em;
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
+    transform: rotateX(0deg);
 }
 
 /*Card front*/
