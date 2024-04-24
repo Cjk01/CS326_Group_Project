@@ -40,7 +40,7 @@ export async function loadHomepageView() {
         deckContainer.appendChild(deck);
     }
 
-    //Create an add deck button
+    /*Create an add deck button. May add back later
     const addButton = document.createElement('input');
     addButton.setAttribute('type', 'button');
     addButton.setAttribute('id', 'homepage-addButton');
@@ -51,7 +51,7 @@ export async function loadHomepageView() {
     addButton.addEventListener('click', () => {
         //TODO: Add functionality to the add deck button when the page to create a deck is made
         console.log("To be implemented");
-    });
+    });*/
 
     //Header for followers
     const followersHeader = document.createElement('h2');
