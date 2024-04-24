@@ -177,6 +177,65 @@ export async function loadModifyDeckView(deck_id) {
 
 }
 
+export function loadDeckPreview(deck) {
+    document.getElementById("navbar").childNodes[0].childNodes[4].childNodes[0].click();
+
+    //clearing the user decks container
+    let user_decks_container = document.getElementById("user-decks-container");
+    while(user_decks_container.firstChild) {
+        user_decks_container.removeChild(user_decks_container.firstChild);
+    }
+
+    let activeUser = User.getActiveUser();
+
+    
+   
+   document.getElementById("navbar").childNodes[0].childNodes[2].childNodes[0].click();
+   
+
+    user_decks_container.innerHTML = 
+   `
+   <div id="deck-creation-page">
+   <p>Deck ID: ${deck.id}</p>
+   <input id="add-button" type="button" value="Add">
+   <div id="deck-preview-pane">
+    <div id="card-container"> </div>
+   </div>
+   <br>
+    <input type="button" class="cool-green-button" id="move-backwards-button" value="<" />
+    <input type="button" class="cool-green-button" id="move-forward-button" value=">" />
+  
+   </div>
+   `;
+
+    document.getElementById("card-container").current_card = 0;
+
+    document.getElementById("move-forward-button").addEventListener("click", () => {
+        let current_card = document.getElementById("card-container").current_card;
+        populateDeckPreviewPane(deck, current_card + 1 === deck.cards.length ? 0 : current_card + 1);
+    });
+
+    document.getElementById("move-backwards-button").addEventListener("click", () => {
+        let current_card = document.getElementById("card-container").current_card;
+        populateDeckPreviewPane(deck, current_card - 1 === -1 ? deck.cards.length - 1 : current_card - 1);
+    });
+
+    populateDeckPreviewPane(deck, 0);
+
+    let addButton = user_decks_container.querySelector("#deck-creation-page").querySelector("#add-button");
+
+    if (Object.keys(activeUser.metadata).includes(deck.id)) {
+        addButton.value = "Already added";
+        addButton.disabled = true;
+    } else {
+        addButton.addEventListener("click", async () => {
+            addButton.value = "Pending";
+            await activeUser.registerDeck(deck);
+            addButton.value = "Added";
+            addButton.disabled = true;
+        }) 
+    }
+}
 
 /**
  * TODO (maybe not necessary?? idk)

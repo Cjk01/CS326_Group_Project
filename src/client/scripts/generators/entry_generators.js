@@ -2,6 +2,7 @@ import { getUser } from "../data_interface/data.js";
 import { User } from "../structures/user.js";
 import { Deck } from "../structures/deck.js";
 import { loadOtherUserProfile } from "../page_loaders/profile_loader.js";
+import { loadDeckPreview } from "../page_loaders/decks_loader.js";
 
 
 export function generateDeckEntry(deck) {
@@ -92,7 +93,7 @@ export function generateDeckEntry(deck) {
     bottomButton.value = "View";
 
     bottomButton.addEventListener("click", () => {
-        console.log("Not yet implemented");
+        loadDeckPreview(deck);
     });
 
     let thirdButton;
