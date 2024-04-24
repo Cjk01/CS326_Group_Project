@@ -65,7 +65,6 @@ export function loadStudyPageView(deck = null) {
                 <h2>Deck Summary:</h2>
                 <strong>Correct: </strong>${correct} <br>
                 <strong>Incorrect: </strong>${incorrect} <br>
-                <strong>Incorrect: </strong>${incorrect} <br>
                 <strong>Percent: </strong>${Math.trunc(correct/((correct + incorrect !== 0 ? correct + incorrect : 1)) * 100)}% <br><br>
                 Learning has never been more fun! Please choose another Deck from your Decks to keep it up!
                 `;
