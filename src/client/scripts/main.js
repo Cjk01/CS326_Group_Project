@@ -42,7 +42,7 @@ links.forEach(l => l.addEventListener("click", async function(e) {
     if (!e.isTrusted) { // captures artificially stimulated clicks-- used to determine when a user clicks study on a deck entry
         sview = await loadStudyPageView(e.target.deck);
     }
-
+    document.title = "Cachely: " + document.getElementById(e.target.id).innerHTML; //setting the title to reflect what the user is doing 
     navigate(e.target.id);
 }));
 

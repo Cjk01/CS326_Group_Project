@@ -5,11 +5,12 @@
   * @returns {HTMLElement} - Returns the navbar element
   */
 export function generateNavbar(navInputs, container) {
+    
+
     let nav = document.createElement('nav');
     nav.setAttribute("id", "navbar");
     let list = document.createElement('ul');
     nav.appendChild(list);
-
     for(let navInput in navInputs){
 
         let listLink = document.createElement('a');
