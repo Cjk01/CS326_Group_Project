@@ -101,7 +101,7 @@ async function loadUserSearch() {
     profileContainer.innerHTML =
     `<p>Type a user's ID here: </p>
     <input id="user-search-id-field" /><br>
-    <input id="user-search-button" type="button" value="Search"/><br>
+    <input id="user-search-button" class="cool-green-button" type="button" value="Search"/><br>
     <div id="profile-entry-container"></div>
     `
 
@@ -129,7 +129,7 @@ async function loadDeckSearch() {
     `
     <p>Type a deck's ID here: </p>
     <input id="deck-search-id-field" /><br>
-    <input id="deck-search-button" type="button" value="Search"/><br>
+    <input id="deck-search-button" class="cool-green-button" type="button" value="Search"/><br>
     <div id="profile-entry-container"></div>
     `
 

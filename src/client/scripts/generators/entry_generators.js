@@ -46,18 +46,18 @@ export function generateDeckEntry(deck) {
     if (Object.keys(User.getActiveUser().metadata).includes(deck.id)) {
         let studyingButton = document.createElement("input");
         studyingButton.type = "button";
-        studyingButton.classList.add("entry-button");
+        studyingButton.classList.add("cool-green-button");
         if (User.getActiveUser().metadata[deck.id].beingStudied) {
             studyingButton.value = "Studying";
         } else {
-            studyingButton.value = "Not studying";
+            studyingButton.value = "Not Studying";
         }
 
         studyingButton.addEventListener("click", async () => {
             if (User.getActiveUser().metadata[deck.id].beingStudied) {
                 studyingButton.value = "Pending";
                 await User.getActiveUser().toggleStudy(deck);
-                studyingButton.value = "Not studying";
+                studyingButton.value = "Not Studying";
             } else {
                 studyingButton.value = "Pending";
                 await User.getActiveUser().toggleStudy(deck);
@@ -78,7 +78,7 @@ export function generateDeckEntry(deck) {
 
     let topButton = document.createElement("input");
     topButton.type = "button";
-    topButton.classList.add("entry-button");
+    topButton.classList.add("cool-green-button");
     topButton.value = "Study";
     topButton.addEventListener("click", () => {
         const studyPage = document.getElementById("StudyView");
@@ -89,7 +89,7 @@ export function generateDeckEntry(deck) {
 
     let bottomButton = document.createElement("input");
     bottomButton.type = "button";
-    bottomButton.classList.add("entry-button");
+    bottomButton.classList.add("cool-green-button");
     bottomButton.value = "View";
 
     bottomButton.addEventListener("click", () => {
@@ -101,7 +101,7 @@ export function generateDeckEntry(deck) {
     if (!Object.keys(User.getActiveUser().metadata).includes(deck.id)) {
         thirdButton = document.createElement("input");
         thirdButton.type = "button";
-        thirdButton.classList.add("entry-button");
+        thirdButton.classList.add("cool-green-button");
         thirdButton.value = "Add";
         thirdButton.addEventListener("click", async () => {
             thirdButton.value = "Pending";
@@ -166,7 +166,7 @@ export function generateUserEntry(user) {
 
     let topButton = document.createElement("input");
     topButton.type = "button";
-    topButton.classList.add("entry-button");
+    topButton.classList.add("cool-green-button");
     
     let activeUser = User.getActiveUser();
 
@@ -193,7 +193,7 @@ export function generateUserEntry(user) {
 
     let bottomButton = document.createElement("input");
     bottomButton.type = "button";
-    bottomButton.classList.add("entry-button");
+    bottomButton.classList.add("cool-green-button");
     bottomButton.value = "View";
 
     bottomButton.addEventListener("click", () => {
