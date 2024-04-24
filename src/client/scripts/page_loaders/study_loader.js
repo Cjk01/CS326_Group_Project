@@ -48,13 +48,20 @@ export function loadStudyPageView(deck = null) {
         correctButton.setAttribute("id", "correct-button");
         correctButton.setAttribute("class", "studyButton");
         correctButton.innerText = "Correct";
+        correctButton.style.visibility = "hidden"; // Hidden to start until user clicks on flashcard
 
         const incorrectButton = document.createElement("button");
         incorrectButton.setAttribute("id", "incorrect-button");
         incorrectButton.setAttribute("class", "studyButton");
         incorrectButton.innerText = "Incorrect";
+        incorrectButton.style.visibility = "hidden"; // Hidden to start until user clicks on flashcard
 
         correctButton.addEventListener("click", () => {
+            // Hide both buttons until next flashcard is clicked
+            correctButton.style.visibility = "hidden"; // Hidden to start until user clicks on flashcard
+            incorrectButton.style.visibility = "hidden"; // Hidden to start until user clicks on flashcard
+
+            // Update relevant card metadata
             ++correct;
             ++cardIdx;
 
@@ -67,6 +74,11 @@ export function loadStudyPageView(deck = null) {
         });
 
         incorrectButton.addEventListener("click", () => {
+            // Hide both buttons until next flashcard is clicked
+            correctButton.style.visibility = "hidden"; // Hidden to start until user clicks on flashcard
+            incorrectButton.style.visibility = "hidden"; // Hidden to start until user clicks on flashcard
+
+            // Update relevant card metadata
             ++incorrect;
             ++cardIdx;
 

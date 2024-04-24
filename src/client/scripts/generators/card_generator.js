@@ -34,7 +34,10 @@ export function generateCard(card) {
         }
 
         if (isBeingStudied) {
-          // TODO: Add button visibility logic here
+          // Turns buttons visible after user interacts with the flashcard
+          const buttons = [...document.getElementsByClassName('studyButton')];
+
+          buttons.forEach(button => button.style.visibility = "visible");
         }
     });
 
