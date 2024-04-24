@@ -6,8 +6,12 @@ import { loadStudyPageView } from "./page_loaders/study_loader.js";
 import { addUser, clearDatabases, configureDatabaseForMilestoneTwo, loadBatchTestData, testDatabaseOperations, updateUser } from "./data_interface/data.js";
 import { User } from "./structures/user.js";
 
-await clearDatabases();
-await configureDatabaseForMilestoneTwo();
+
+//purely for milestone-02 setup
+if(localStorage.getItem("active-user") === null){
+    await clearDatabases();
+    await configureDatabaseForMilestoneTwo();
+}
 
 let body = document.getElementById("body");
 //create and append the navbar element to the body of the page
