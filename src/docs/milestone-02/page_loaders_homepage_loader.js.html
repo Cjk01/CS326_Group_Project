@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: page_loaders/homepage_loader.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: page_loaders/homepage_loader.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { generateDeckEntry, generateUserEntry } from "../generators/entry_generators.js";
+import { User } from "../structures/user.js";
+
+/**
+ * Generates the homepage HTML element
+ * @returns {HTMLElement}
+*/
+export async function loadHomepageView() {
+    //Get all the necessary data by using User methods --> Retrieves from local storage
+    const user = User.getActiveUser();
+    const decks = User.getActiveDecks(true, false, false, true, false);
+
+    //TODO: Uncomment lines once these are added into local storage. For now, just use a fake user
+    const user1 = new User(123, "daniilkoval", [1245, 456], [1245, 456], {});
+    const followers = User.getActiveFollowers();
+    const following = User.getActiveFollowing();
+
+    //Create Home Page Container
+    let homePageContainer = document.createElement('div');
+    homePageContainer.setAttribute('id', 'HomeView');
+    homePageContainer.classList.add('view');
+    homePageContainer.innerHTML = '';
+
+    //Create header
+    const studyHeader = document.createElement('h2');
+    studyHeader.innerHTML = `&lt;h2 id='homepage-decksToStudy'>Decks to Study: &lt;/h2>`;
+    homePageContainer.appendChild(studyHeader);
+
+    //Element to contain the decks
+    const deckContainer = document.createElement('div');
+    deckContainer.setAttribute('id', 'homepage-deckContainer');
+    homePageContainer.appendChild(deckContainer);
+
+    //Generate deck elements for the first 5 decks in the decks to study as per wire frame
+    let decks_to_iterate = decks.length > 5 ? 5 : decks.length;
+    for(let i = 0; i &lt; decks_to_iterate; i++){
+        const deck = generateDeckEntry(decks[i]);
+        deck.classList.add('homepage-entry');
+        deckContainer.appendChild(deck);
+    }
+
+    /*Create an add deck button. May add back later
+    const addButton = document.createElement('input');
+    addButton.setAttribute('type', 'button');
+    addButton.setAttribute('id', 'homepage-addButton');
+    addButton.setAttribute('value', '+');
+    addButton.classList.add('homepage-entry');
+    addButton.classList.add('cool-green-button');
+    deckContainer.appendChild(addButton);
+    addButton.addEventListener('click', () => {
+        //TODO: Add functionality to the add deck button when the page to create a deck is made
+        console.log("To be implemented");
+    });*/
+
+    //Header for followers
+    const followersHeader = document.createElement('h2');
+    followersHeader.innerHTML = `&lt;h2 id='homepage-followers'>Followers: &lt;/h2>`;
+    homePageContainer.appendChild(followersHeader);
+
+    //Container for followers
+    const followersContainer = document.createElement('homepage-followerContainer');
+    homePageContainer.appendChild(followersContainer);
+
+    //Create a short display of people following the user
+    for(let i = 0; i &lt; followers.length; i++){
+        const follower = generateUserEntry(followers[i]);
+        follower.classList.add('homepage-follower');
+        followersContainer.appendChild(follower);
+    }
+
+    //Header for people following the user
+    const followingHeader = document.createElement('h2');
+    followingHeader.innerHTML = `&lt;h2 id='homepage-following'>Following: &lt;/h2>`;
+    homePageContainer.appendChild(followingHeader);
+
+    //Container for people following the user
+    const followingContainer = document.createElement('homepage-followingContainer');
+    homePageContainer.appendChild(followingContainer);
+
+    //Do the same for people the user follows as for people who follow the user
+    for(let i = 0; i &lt; following.length; i++){
+        const followee = generateUserEntry(following[i]);
+        followee.classList.add('homepage-followee');
+        followingContainer.appendChild(followee);
+    }
+
+    return homePageContainer;
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Card.html">Card</a></li><li><a href="Deck.html">Deck</a></li><li><a href="User.html">User</a></li></ul><h3>Global</h3><ul><li><a href="global.html#User.">User.</a></li><li><a href="global.html#addDeck">addDeck</a></li><li><a href="global.html#addUser">addUser</a></li><li><a href="global.html#clearDatabases">clearDatabases</a></li><li><a href="global.html#configureDatabaseForMilestoneTwo">configureDatabaseForMilestoneTwo</a></li><li><a href="global.html#deleteDeck">deleteDeck</a></li><li><a href="global.html#deleteUser">deleteUser</a></li><li><a href="global.html#generateCard">generateCard</a></li><li><a href="global.html#generateDeckEntry">generateDeckEntry</a></li><li><a href="global.html#generateNavbar">generateNavbar</a></li><li><a href="global.html#generateUserEntry">generateUserEntry</a></li><li><a href="global.html#getDeck">getDeck</a></li><li><a href="global.html#getUser">getUser</a></li><li><a href="global.html#loadBatchTestData">loadBatchTestData</a></li><li><a href="global.html#loadCreateNewDeckView">loadCreateNewDeckView</a></li><li><a href="global.html#loadDeckPreview">loadDeckPreview</a></li><li><a href="global.html#loadDeckSearch">loadDeckSearch</a></li><li><a href="global.html#loadDecksView">loadDecksView</a></li><li><a href="global.html#loadHomepageView">loadHomepageView</a></li><li><a href="global.html#loadModifyDeckView">loadModifyDeckView</a></li><li><a href="global.html#loadOtherUserProfile">loadOtherUserProfile</a></li><li><a href="global.html#loadProfileView">loadProfileView</a></li><li><a href="global.html#loadStudyPageView">loadStudyPageView</a></li><li><a href="global.html#loadUserFollowers">loadUserFollowers</a></li><li><a href="global.html#loadUserFollowing">loadUserFollowing</a></li><li><a href="global.html#loadUserProfile">loadUserProfile</a></li><li><a href="global.html#loadUserSearch">loadUserSearch</a></li><li><a href="global.html#populateDecksContainer">populateDecksContainer</a></li><li><a href="global.html#testDatabaseOperations">testDatabaseOperations</a></li><li><a href="global.html#updateDeck">updateDeck</a></li><li><a href="global.html#updateUser">updateUser</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Wed Apr 24 2024 16:01:12 GMT-0400 (Eastern Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

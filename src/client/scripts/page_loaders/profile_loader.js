@@ -1,10 +1,10 @@
-import { getUser, updateUser, getDeck } from "../data_interface/data.js";
+import { getUser, getDeck } from "../data_interface/data.js";
 import { generateDeckEntry, generateUserEntry } from "../generators/entry_generators.js";
 import { User } from "../structures/user.js";
 
 /**
- * @todo - fix edit button
- * @returns 
+ * Loads the initial profile view upon loading the page
+ * @returns {Element} - The HTML element containing the profile view
  */
 export async function loadProfileView() {
     let profileView = document.createElement("div");
@@ -53,7 +53,9 @@ export async function loadProfileView() {
     return profileView;
 }
 
-
+/**
+ * Loads the active user's profile into the profile view
+ */
 function loadUserProfile() {
     let profileInfoContainer = document.getElementById("profileContainer");
     profileInfoContainer.innerHTML = "";
@@ -74,6 +76,9 @@ function loadUserProfile() {
     `
 }
 
+/**
+ * Loads the User entries of the users the active user is following into the profile view
+ */
 async function loadUserFollowing() {
     let profileContainer = document.getElementById("profileContainer");
     profileContainer.innerHTML = ""
@@ -85,6 +90,9 @@ async function loadUserFollowing() {
     profileContainer.appendChild(followContainer);
 }
 
+/**
+ * Loads the User entries of the active user's followers into the profile view
+ */
 async function loadUserFollowers() {
     let profileContainer = document.getElementById("profileContainer");
     profileContainer.innerHTML = "";
@@ -96,12 +104,15 @@ async function loadUserFollowers() {
     profileContainer.appendChild(followContainer);
 }
 
+/**
+ * Loads the user search screen into the profile view
+ */
 async function loadUserSearch() {
     let profileContainer = document.getElementById("profileContainer");
     profileContainer.innerHTML =
     `<p>Type a user's ID here: </p>
     <input id="user-search-id-field" /><br>
-    <input id="user-search-button" class="cool-green-button" type="button" value="Search"/><br>
+    <input id="user-search-button" type="button" value="Search"/><br>
     <div id="profile-entry-container"></div>
     `
 
@@ -123,13 +134,16 @@ async function loadUserSearch() {
     });
 }
 
+/**
+ * Loads the user search screen into the profile view
+ */
 async function loadDeckSearch() {
     let profileContainer = document.getElementById("profileContainer");
     profileContainer.innerHTML =
     `
     <p>Type a deck's ID here: </p>
     <input id="deck-search-id-field" /><br>
-    <input id="deck-search-button" class="cool-green-button" type="button" value="Search"/><br>
+    <input id="deck-search-button" type="button" value="Search"/><br>
     <div id="profile-entry-container"></div>
     `
 
@@ -151,6 +165,10 @@ async function loadDeckSearch() {
     }); 
 }
 
+/**
+ * Moves current view to profile view and loads in the given user's profile information and owned decks
+ * @param {User} user - A user object as defined in structures/User.js 
+ */
 export async function loadOtherUserProfile(user) {
     document.getElementById("navbar").childNodes[0].childNodes[4].childNodes[0].click();
     let userDecks = await user.getDecks(false, false, false, true, false);

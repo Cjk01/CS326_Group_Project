@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: page_loaders/profile_loader.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: page_loaders/profile_loader.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { getUser, getDeck } from "../data_interface/data.js";
+import { generateDeckEntry, generateUserEntry } from "../generators/entry_generators.js";
+import { User } from "../structures/user.js";
+
+/**
+ * Loads the initial profile view upon loading the page
+ * @returns {Element} - The HTML element containing the profile view
+ */
+export async function loadProfileView() {
+    let profileView = document.createElement("div");
+    profileView.setAttribute("id", "ProfileView");
+    profileView.classList.add("view");
+    profileView.innerHTML = 
+    `
+    &lt;div id="profile-button-container">
+    &lt;input id="your-profile-button" class="cool-green-button" type="button" value="Your Profile"/>
+    &lt;input id="following-button" class="cool-green-button" type="button" value="Following"/>
+    &lt;input id="follower-button" class="cool-green-button" type="button" value="Followers"/>
+    &lt;input id="search-user-button" class="cool-green-button" type="button" value="Search Users">
+    &lt;input id="search-deck-button" class="cool-green-button" type="button" value="Search Decks">
+    &lt;/div>
+    &lt;br>
+    &lt;div id="profileContainer">&lt;div/>
+    `;
+
+    let activeUser = User.getActiveUser();
+
+    let profileInfo = profileView.querySelector("#profileContainer");
+
+    profileInfo.innerHTML = 
+    `
+    &lt;p id="profile-username-text">Username: ${activeUser.username}&lt;/p>
+
+    &lt;p id="profile-id-text">ID: ${activeUser.id}&lt;/p>
+
+    &lt;p id="profile-follower-count-text">Number of Followers: ${activeUser.followers.length}&lt;/p>
+
+    &lt;p id="profile-following-count-text">Number Following: ${activeUser.following.length}&lt;/p>
+
+    &lt;p id="profile-deck-text">Currently studying ${User.getActiveDecks(false, true, false, false, false).length} deck(s)&lt;/p>
+    `
+
+    profileView.querySelector("#your-profile-button").addEventListener("click", loadUserProfile);
+
+    profileView.querySelector("#following-button").addEventListener("click", loadUserFollowing);
+    
+    profileView.querySelector("#follower-button").addEventListener("click", loadUserFollowers);
+
+    profileView.querySelector("#search-user-button").addEventListener("click", loadUserSearch);
+
+    profileView.querySelector("#search-deck-button").addEventListener("click", loadDeckSearch);
+
+    return profileView;
+}
+
+/**
+ * Loads the active user's profile into the profile view
+ */
+function loadUserProfile() {
+    let profileInfoContainer = document.getElementById("profileContainer");
+    profileInfoContainer.innerHTML = "";
+
+    let activeUser = User.getActiveUser();
+
+    profileInfoContainer.innerHTML = 
+    `
+    &lt;p id="profile-username-text">Username: ${activeUser.username}&lt;/p>
+
+    &lt;p id="profile-id-text">ID: ${activeUser.id}&lt;/p>
+
+    &lt;p id="profile-follower-count-text">Number of Followers: ${activeUser.followers.length}&lt;/p>
+
+    &lt;p id="profile-following-count-text">Number Following: ${activeUser.following.length}&lt;/p>
+
+    &lt;p id="profile-deck-text">Currently studying ${User.getActiveDecks(false, true, false, false, false).length} deck(s)&lt;/p>
+    `
+}
+
+/**
+ * Loads the User entries of the users the active user is following into the profile view
+ */
+async function loadUserFollowing() {
+    let profileContainer = document.getElementById("profileContainer");
+    profileContainer.innerHTML = ""
+
+    let followContainer = document.createElement("div");
+    followContainer.setAttribute("id", "other-decks-container");
+    let following = User.getActiveFollowing();
+    following.map(generateUserEntry).map(entry => followContainer.appendChild(entry));
+    profileContainer.appendChild(followContainer);
+}
+
+/**
+ * Loads the User entries of the active user's followers into the profile view
+ */
+async function loadUserFollowers() {
+    let profileContainer = document.getElementById("profileContainer");
+    profileContainer.innerHTML = "";
+
+    let followContainer = document.createElement("div");
+    followContainer.setAttribute("id", "other-decks-container");
+    let followers = User.getActiveFollowers();
+    followers.map(generateUserEntry).map(entry => followContainer.appendChild(entry));
+    profileContainer.appendChild(followContainer);
+}
+
+/**
+ * Loads the user search screen into the profile view
+ */
+async function loadUserSearch() {
+    let profileContainer = document.getElementById("profileContainer");
+    profileContainer.innerHTML =
+    `&lt;p>Type a user's ID here: &lt;/p>
+    &lt;input id="user-search-id-field" />&lt;br>
+    &lt;input id="user-search-button" type="button" value="Search"/>&lt;br>
+    &lt;div id="profile-entry-container">&lt;/div>
+    `
+
+    let searchField = profileContainer.querySelector("#user-search-id-field");
+    let searchButton = profileContainer.querySelector("#user-search-button");
+    let entryContainer = profileContainer.querySelector("#profile-entry-container");
+
+    searchButton.addEventListener("click", async () => {
+        entryContainer.innerHTML = 
+        `
+        &lt;p id="user-apology-message">Searching...&lt;/p>
+        &lt;p id="user-apology-continued">If the user does not load within a few moments, it is likely we cannot find it. Sorry for the inconvenience, and please search for another ID.&lt;/p>
+        `;
+
+        let user = await getUser(searchField.value);
+        
+        entryContainer.innerHTML = "";
+        entryContainer.appendChild(generateUserEntry(user));
+    });
+}
+
+/**
+ * Loads the user search screen into the profile view
+ */
+async function loadDeckSearch() {
+    let profileContainer = document.getElementById("profileContainer");
+    profileContainer.innerHTML =
+    `
+    &lt;p>Type a deck's ID here: &lt;/p>
+    &lt;input id="deck-search-id-field" />&lt;br>
+    &lt;input id="deck-search-button" type="button" value="Search"/>&lt;br>
+    &lt;div id="profile-entry-container">&lt;/div>
+    `
+
+    let searchField = profileContainer.querySelector("#deck-search-id-field");
+    let searchButton = profileContainer.querySelector("#deck-search-button");
+    let entryContainer = profileContainer.querySelector("#profile-entry-container");
+
+    searchButton.addEventListener("click", async () => {
+        entryContainer.innerHTML = 
+        `
+        &lt;p id="deck-apology-message">Searching...&lt;/p>
+        &lt;p id="deck-apology-continued">If the deck does not load within a few moments, it is likely we cannot find it. Sorry for the inconvenience, and please search for another ID.&lt;/p>
+        `;
+
+        let deck = await getDeck(searchField.value);
+        
+        entryContainer.innerHTML = "";
+        entryContainer.appendChild(generateDeckEntry(deck));
+    }); 
+}
+
+/**
+ * Moves current view to profile view and loads in the given user's profile information and owned decks
+ * @param {User} user - A user object as defined in structures/User.js 
+ */
+export async function loadOtherUserProfile(user) {
+    document.getElementById("navbar").childNodes[0].childNodes[4].childNodes[0].click();
+    let userDecks = await user.getDecks(false, false, false, true, false);
+    let profileContainer = document.getElementById("profileContainer");
+    profileContainer.innerHTML =
+    `
+    &lt;p id="other-profile-username-text">${user.username}&lt;/p>
+
+    &lt;p id="other-profile-id-text">ID: ${user.id}&lt;/p>
+
+    &lt;p id="other-profile-follower-count-text">Number of Followers: ${user.followers.length}&lt;/p>
+
+    &lt;p id="other-profile-following-count-text">Number Following: ${user.following.length}&lt;/p>
+
+    &lt;p id="profile-deck-text">Owns ${userDecks.length} Decks&lt;/p>
+
+    &lt;div id="other-decks-container">&lt;/div>
+    `
+
+    let entryContainer = profileContainer.querySelector("#other-decks-container");
+    userDecks.map(deck => entryContainer.appendChild(generateDeckEntry(deck)));
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Card.html">Card</a></li><li><a href="Deck.html">Deck</a></li><li><a href="User.html">User</a></li></ul><h3>Global</h3><ul><li><a href="global.html#User.">User.</a></li><li><a href="global.html#addDeck">addDeck</a></li><li><a href="global.html#addUser">addUser</a></li><li><a href="global.html#clearDatabases">clearDatabases</a></li><li><a href="global.html#configureDatabaseForMilestoneTwo">configureDatabaseForMilestoneTwo</a></li><li><a href="global.html#deleteDeck">deleteDeck</a></li><li><a href="global.html#deleteUser">deleteUser</a></li><li><a href="global.html#generateCard">generateCard</a></li><li><a href="global.html#generateDeckEntry">generateDeckEntry</a></li><li><a href="global.html#generateNavbar">generateNavbar</a></li><li><a href="global.html#generateUserEntry">generateUserEntry</a></li><li><a href="global.html#getDeck">getDeck</a></li><li><a href="global.html#getUser">getUser</a></li><li><a href="global.html#loadBatchTestData">loadBatchTestData</a></li><li><a href="global.html#loadCreateNewDeckView">loadCreateNewDeckView</a></li><li><a href="global.html#loadDeckPreview">loadDeckPreview</a></li><li><a href="global.html#loadDeckSearch">loadDeckSearch</a></li><li><a href="global.html#loadDecksView">loadDecksView</a></li><li><a href="global.html#loadHomepageView">loadHomepageView</a></li><li><a href="global.html#loadModifyDeckView">loadModifyDeckView</a></li><li><a href="global.html#loadOtherUserProfile">loadOtherUserProfile</a></li><li><a href="global.html#loadProfileView">loadProfileView</a></li><li><a href="global.html#loadStudyPageView">loadStudyPageView</a></li><li><a href="global.html#loadUserFollowers">loadUserFollowers</a></li><li><a href="global.html#loadUserFollowing">loadUserFollowing</a></li><li><a href="global.html#loadUserProfile">loadUserProfile</a></li><li><a href="global.html#loadUserSearch">loadUserSearch</a></li><li><a href="global.html#populateDecksContainer">populateDecksContainer</a></li><li><a href="global.html#testDatabaseOperations">testDatabaseOperations</a></li><li><a href="global.html#updateDeck">updateDeck</a></li><li><a href="global.html#updateUser">updateUser</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Wed Apr 24 2024 16:01:12 GMT-0400 (Eastern Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

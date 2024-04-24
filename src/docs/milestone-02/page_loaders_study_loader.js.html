@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: page_loaders/study_loader.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: page_loaders/study_loader.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { User } from "../structures/user.js";
+import { Deck } from "../structures/deck.js";
+import { generateCard } from "../generators/card_generator.js";
+
+/**
+ * This function is called in main.js.
+ * It loads the study page directly if the user clicks on it or with the deck if clicked on its entry
+ * @param {deck} deck - Optional deck specified if user clicks on its entry
+ * @returns {Element} - The study view page
+ * @todo Add general study page if 1 or more decks is actively being studied
+*/
+export function loadStudyPageView(deck = null) {
+    const check_study_view = document.querySelector("div#StudyView");
+    let final_study_view = null;
+
+    if (check_study_view === null) {
+        final_study_view = document.createElement("div");
+        final_study_view.setAttribute("id", "StudyView");
+        final_study_view.className = "view";
+    } else {
+        final_study_view = check_study_view;
+
+        final_study_view.innerHTML = ""; // Resets study page
+    }
+
+    if (deck === null) {
+        // TODO - Add general study functionality later
+        final_study_view.innerText = "Please select a Deck to study from your Decks!";
+    } else {
+        let correct = 0;
+        let incorrect = 0;
+        let cardIdx = 0;
+
+        let card = generateCard(deck.cards[cardIdx]);
+
+        const correctButton = document.createElement("button");
+        correctButton.setAttribute("id", "correct-button");
+        correctButton.setAttribute("class", "studyButton");
+        correctButton.innerText = "Correct";
+        correctButton.style.visibility = "hidden"; // Hidden to start until user clicks on flashcard
+
+        const incorrectButton = document.createElement("button");
+        incorrectButton.setAttribute("id", "incorrect-button");
+        incorrectButton.setAttribute("class", "studyButton");
+        incorrectButton.innerText = "Incorrect";
+        incorrectButton.style.visibility = "hidden"; // Hidden to start until user clicks on flashcard
+
+        correctButton.addEventListener("click", () => {
+            // Hide both buttons until next flashcard is clicked
+            correctButton.style.visibility = "hidden"; // Hidden to start until user clicks on flashcard
+            incorrectButton.style.visibility = "hidden"; // Hidden to start until user clicks on flashcard
+
+            // Update relevant card metadata
+            ++correct;
+            ++cardIdx;
+
+            // Remove the old card from the DOM
+            final_study_view.removeChild(card);
+
+            // Displays final metadata if we've finished going through all cards
+            if (cardIdx === deck.cards.length) {
+                const finalDeckOutput = document.createElement("div");
+
+                finalDeckOutput.innerHTML = `
+                &lt;h2>Deck Summary:&lt;/h2>
+                &lt;strong>Correct: &lt;/strong>${correct} &lt;br>
+                &lt;strong>Incorrect: &lt;/strong>${incorrect} &lt;br>
+                &lt;strong>Percent: &lt;/strong>${Math.trunc(correct/((correct + incorrect !== 0 ? correct + incorrect : 1)) * 100)}% &lt;br>&lt;br>
+                Learning has never been more fun! Please choose another Deck from your Decks to keep it up!
+                `;
+
+                final_study_view.prepend(finalDeckOutput);
+            } else {
+                // Create a new card and add it to the DOM
+                card = generateCard(deck.cards[cardIdx]);
+                final_study_view.prepend(card); // Add before the buttons
+            }
+        });
+
+        incorrectButton.addEventListener("click", () => {
+            // Hide both buttons until next flashcard is clicked
+            correctButton.style.visibility = "hidden"; // Hidden to start until user clicks on flashcard
+            incorrectButton.style.visibility = "hidden"; // Hidden to start until user clicks on flashcard
+
+            // Update relevant card metadata
+            ++incorrect;
+            ++cardIdx;
+
+            // Remove the old card from the DOM
+            final_study_view.removeChild(card);
+
+            // Displays final metadata if we've finished going through all cards
+            if (cardIdx === deck.cards.length) {
+                const finalDeckOutput = document.createElement("div");
+
+                finalDeckOutput.innerHTML = `
+                &lt;h2>Deck Summary:&lt;/h2>
+                &lt;strong>Correct: &lt;/strong>${correct} &lt;br>
+                &lt;strong>Incorrect: &lt;/strong>${incorrect} &lt;br>
+                &lt;strong>Percent: &lt;/strong>${Math.trunc(correct/((correct + incorrect !== 0 ? correct + incorrect : 1)) * 100)}% &lt;br>&lt;br>
+                Learning has never been more fun! Please choose another Deck from your Decks to keep it up!
+                `;
+
+                final_study_view.prepend(finalDeckOutput);
+            } else {
+                // Create a new card and add it to the DOM
+                card = generateCard(deck.cards[cardIdx]);
+                final_study_view.prepend(card); // Add before the buttons
+            }
+        });
+
+
+        final_study_view.append(card);
+        final_study_view.append(correctButton);
+        final_study_view.append(incorrectButton);
+    }
+
+    return final_study_view;
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Card.html">Card</a></li><li><a href="Deck.html">Deck</a></li><li><a href="User.html">User</a></li></ul><h3>Global</h3><ul><li><a href="global.html#User.">User.</a></li><li><a href="global.html#addDeck">addDeck</a></li><li><a href="global.html#addUser">addUser</a></li><li><a href="global.html#clearDatabases">clearDatabases</a></li><li><a href="global.html#configureDatabaseForMilestoneTwo">configureDatabaseForMilestoneTwo</a></li><li><a href="global.html#deleteDeck">deleteDeck</a></li><li><a href="global.html#deleteUser">deleteUser</a></li><li><a href="global.html#generateCard">generateCard</a></li><li><a href="global.html#generateDeckEntry">generateDeckEntry</a></li><li><a href="global.html#generateNavbar">generateNavbar</a></li><li><a href="global.html#generateUserEntry">generateUserEntry</a></li><li><a href="global.html#getDeck">getDeck</a></li><li><a href="global.html#getUser">getUser</a></li><li><a href="global.html#loadBatchTestData">loadBatchTestData</a></li><li><a href="global.html#loadCreateNewDeckView">loadCreateNewDeckView</a></li><li><a href="global.html#loadDeckPreview">loadDeckPreview</a></li><li><a href="global.html#loadDeckSearch">loadDeckSearch</a></li><li><a href="global.html#loadDecksView">loadDecksView</a></li><li><a href="global.html#loadHomepageView">loadHomepageView</a></li><li><a href="global.html#loadModifyDeckView">loadModifyDeckView</a></li><li><a href="global.html#loadOtherUserProfile">loadOtherUserProfile</a></li><li><a href="global.html#loadProfileView">loadProfileView</a></li><li><a href="global.html#loadStudyPageView">loadStudyPageView</a></li><li><a href="global.html#loadUserFollowers">loadUserFollowers</a></li><li><a href="global.html#loadUserFollowing">loadUserFollowing</a></li><li><a href="global.html#loadUserProfile">loadUserProfile</a></li><li><a href="global.html#loadUserSearch">loadUserSearch</a></li><li><a href="global.html#populateDecksContainer">populateDecksContainer</a></li><li><a href="global.html#testDatabaseOperations">testDatabaseOperations</a></li><li><a href="global.html#updateDeck">updateDeck</a></li><li><a href="global.html#updateUser">updateUser</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Wed Apr 24 2024 16:01:12 GMT-0400 (Eastern Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

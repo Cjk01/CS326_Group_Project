@@ -2567,6 +2567,94 @@
     
 
     
+    <h4 class="name" id="loadDeckSearch"><span class="type-signature">(async) </span>loadDeckSearch<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Loads the user search screen into the profile view
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="page_loaders_profile_loader.js.html">page_loaders/profile_loader.js</a>, <a href="page_loaders_profile_loader.js.html#line140">line 140</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
     <h4 class="name" id="loadDecksView"><span class="type-signature"></span>loadDecksView<span class="signature">()</span><span class="type-signature"> &rarr; {Element}</span></h4>
     
 
@@ -2920,12 +3008,153 @@
     
 
     
-    <h4 class="name" id="loadProfileView"><span class="type-signature"></span>loadProfileView<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="loadOtherUserProfile"><span class="type-signature"></span>loadOtherUserProfile<span class="signature">(user)</span><span class="type-signature"></span></h4>
     
 
     
 
 
+
+<div class="description">
+    Moves current view to profile view and loads in the given user's profile information and owned decks
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>user</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="User.html">User</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">A user object as defined in structures/User.js</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="page_loaders_profile_loader.js.html">page_loaders/profile_loader.js</a>, <a href="page_loaders_profile_loader.js.html#line172">line 172</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="loadProfileView"><span class="type-signature"></span>loadProfileView<span class="signature">()</span><span class="type-signature"> &rarr; {Element}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Loads the initial profile view upon loading the page
+</div>
 
 
 
@@ -2977,13 +3206,6 @@
     
 
     
-    <dt class="tag-todo">To Do:</dt>
-    <dd class="tag-todo">
-        <ul>
-            <li>- fix edit button</li>
-        </ul>
-    </dd>
-    
 </dl>
 
 
@@ -3003,7 +3225,23 @@
 <h5>Returns:</h5>
 
         
+<div class="param-desc">
+    - The HTML element containing the profile view
+</div>
 
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Element</span>
+
+
+    </dd>
+</dl>
 
     
 
@@ -3172,6 +3410,358 @@
 </dl>
 
     
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="loadUserFollowers"><span class="type-signature">(async) </span>loadUserFollowers<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Loads the User entries of the active user's followers into the profile view
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="page_loaders_profile_loader.js.html">page_loaders/profile_loader.js</a>, <a href="page_loaders_profile_loader.js.html#line96">line 96</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="loadUserFollowing"><span class="type-signature">(async) </span>loadUserFollowing<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Loads the User entries of the users the active user is following into the profile view
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="page_loaders_profile_loader.js.html">page_loaders/profile_loader.js</a>, <a href="page_loaders_profile_loader.js.html#line82">line 82</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="loadUserProfile"><span class="type-signature"></span>loadUserProfile<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Loads the active user's profile into the profile view
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="page_loaders_profile_loader.js.html">page_loaders/profile_loader.js</a>, <a href="page_loaders_profile_loader.js.html#line59">line 59</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="loadUserSearch"><span class="type-signature">(async) </span>loadUserSearch<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Loads the user search screen into the profile view
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="page_loaders_profile_loader.js.html">page_loaders/profile_loader.js</a>, <a href="page_loaders_profile_loader.js.html#line110">line 110</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -3728,13 +4318,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Card.html">Card</a></li><li><a href="Deck.html">Deck</a></li><li><a href="User.html">User</a></li></ul><h3>Global</h3><ul><li><a href="global.html#User.">User.</a></li><li><a href="global.html#addDeck">addDeck</a></li><li><a href="global.html#addUser">addUser</a></li><li><a href="global.html#clearDatabases">clearDatabases</a></li><li><a href="global.html#configureDatabaseForMilestoneTwo">configureDatabaseForMilestoneTwo</a></li><li><a href="global.html#deleteDeck">deleteDeck</a></li><li><a href="global.html#deleteUser">deleteUser</a></li><li><a href="global.html#generateCard">generateCard</a></li><li><a href="global.html#generateDeckEntry">generateDeckEntry</a></li><li><a href="global.html#generateNavbar">generateNavbar</a></li><li><a href="global.html#generateUserEntry">generateUserEntry</a></li><li><a href="global.html#getDeck">getDeck</a></li><li><a href="global.html#getUser">getUser</a></li><li><a href="global.html#loadBatchTestData">loadBatchTestData</a></li><li><a href="global.html#loadCreateNewDeckView">loadCreateNewDeckView</a></li><li><a href="global.html#loadDeckPreview">loadDeckPreview</a></li><li><a href="global.html#loadDecksView">loadDecksView</a></li><li><a href="global.html#loadHomepageView">loadHomepageView</a></li><li><a href="global.html#loadModifyDeckView">loadModifyDeckView</a></li><li><a href="global.html#loadProfileView">loadProfileView</a></li><li><a href="global.html#loadStudyPageView">loadStudyPageView</a></li><li><a href="global.html#populateDecksContainer">populateDecksContainer</a></li><li><a href="global.html#testDatabaseOperations">testDatabaseOperations</a></li><li><a href="global.html#updateDeck">updateDeck</a></li><li><a href="global.html#updateUser">updateUser</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Card.html">Card</a></li><li><a href="Deck.html">Deck</a></li><li><a href="User.html">User</a></li></ul><h3>Global</h3><ul><li><a href="global.html#User.">User.</a></li><li><a href="global.html#addDeck">addDeck</a></li><li><a href="global.html#addUser">addUser</a></li><li><a href="global.html#clearDatabases">clearDatabases</a></li><li><a href="global.html#configureDatabaseForMilestoneTwo">configureDatabaseForMilestoneTwo</a></li><li><a href="global.html#deleteDeck">deleteDeck</a></li><li><a href="global.html#deleteUser">deleteUser</a></li><li><a href="global.html#generateCard">generateCard</a></li><li><a href="global.html#generateDeckEntry">generateDeckEntry</a></li><li><a href="global.html#generateNavbar">generateNavbar</a></li><li><a href="global.html#generateUserEntry">generateUserEntry</a></li><li><a href="global.html#getDeck">getDeck</a></li><li><a href="global.html#getUser">getUser</a></li><li><a href="global.html#loadBatchTestData">loadBatchTestData</a></li><li><a href="global.html#loadCreateNewDeckView">loadCreateNewDeckView</a></li><li><a href="global.html#loadDeckPreview">loadDeckPreview</a></li><li><a href="global.html#loadDeckSearch">loadDeckSearch</a></li><li><a href="global.html#loadDecksView">loadDecksView</a></li><li><a href="global.html#loadHomepageView">loadHomepageView</a></li><li><a href="global.html#loadModifyDeckView">loadModifyDeckView</a></li><li><a href="global.html#loadOtherUserProfile">loadOtherUserProfile</a></li><li><a href="global.html#loadProfileView">loadProfileView</a></li><li><a href="global.html#loadStudyPageView">loadStudyPageView</a></li><li><a href="global.html#loadUserFollowers">loadUserFollowers</a></li><li><a href="global.html#loadUserFollowing">loadUserFollowing</a></li><li><a href="global.html#loadUserProfile">loadUserProfile</a></li><li><a href="global.html#loadUserSearch">loadUserSearch</a></li><li><a href="global.html#populateDecksContainer">populateDecksContainer</a></li><li><a href="global.html#testDatabaseOperations">testDatabaseOperations</a></li><li><a href="global.html#updateDeck">updateDeck</a></li><li><a href="global.html#updateUser">updateUser</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Wed Apr 24 2024 15:55:47 GMT-0400 (Eastern Daylight Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Wed Apr 24 2024 16:01:12 GMT-0400 (Eastern Daylight Time)
 </footer>
 
 <script> prettyPrint(); </script>
