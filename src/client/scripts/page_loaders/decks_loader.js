@@ -126,6 +126,7 @@ export async function loadCreateNewDeckView() {
 /**
  * loads the deck creation view within the decks page
  * removes all content from the decks view, injects the deck creator
+ * @param {int} deck_id - the deck id of the deck which is loaded in
  */
 export async function loadModifyDeckView(deck_id) {
 
@@ -177,6 +178,12 @@ export async function loadModifyDeckView(deck_id) {
 
 }
 
+/**
+ * This function injects the html and rigs event listeners for the preview pane
+ * that is shown on the deck view page 
+ * The html is injected into the user-decks-container 
+ * @param {Deck} deck - The deck which is shown in the preview pane
+ */
 export function loadDeckPreview(deck) {
     document.getElementById("navbar").childNodes[0].childNodes[4].childNodes[0].click();
 
@@ -235,15 +242,4 @@ export function loadDeckPreview(deck) {
             addButton.disabled = true;
         }) 
     }
-}
-
-/**
- * TODO (maybe not necessary?? idk)
- * This function dynamically updates the content of the page
- * It makes use of localstorage if needed (not via pouchDB, as we want to only use pouchDB for what will later be replaced by a remote server)
- * 
- */
-
-export function updateDecksView() {
-
 }
