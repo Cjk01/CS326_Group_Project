@@ -279,6 +279,9 @@ export class User {
     * @param {User} other - Other User object
     */
    async registerFollowing(other) {
+      if (this.following.includes(other.id)) {
+         return;
+      }
       this.following.push(other.id);
       other.#registerFollower(this);
       await updateUser(this);
@@ -302,6 +305,9 @@ export class User {
     * @param {User} other - Other User object
     */
    async removeFollowing(other) {
+      if (!this.following.includes(other.id)) {
+         return;
+      }
       this.following = this.following.filter(f => f !== other.id);
       other.#removeFollower(this);
       await updateUser(this);
