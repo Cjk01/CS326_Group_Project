@@ -19,19 +19,10 @@ console.log(`joined path: ${path.join(client_path, 'index.html')}`);
 //express middleware
 //this sets up our app so that when users go to
 // localhost:3500/ they receive the index.html file in src/client/
+
 app.use(cors());
-app.use(function(req, res, next) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-  res.setHeader('Access-Control-Allow-Credentials', true);
-  next();
-});
 app.use(express.static(client_path));
 
-app.options('*', (req, res, next) => {
-    next();
-});
 
 app.get('/', (req, res) => {
    res.sendFile(path.join(client_path, 'index.html'));
