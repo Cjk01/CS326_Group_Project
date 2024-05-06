@@ -74,7 +74,7 @@ export async function deleteUser(user_id) {
  */
 export async function addDeck(deck) {
   let headers = new Headers();
-  headers.append("Content-Type", "text/html");
+  headers.append("Content-Type", "text/plain");
   console.log(JSON.stringify(deck));
   let response = await fetch(`${server_base_url}decks`, {headers: headers, method: "POST" , body: JSON.stringify(deck)});
   let response_json = await response.json();

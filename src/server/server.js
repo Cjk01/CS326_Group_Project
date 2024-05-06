@@ -20,7 +20,18 @@ console.log(`joined path: ${path.join(client_path, 'index.html')}`);
 //this sets up our app so that when users go to
 // localhost:3500/ they receive the index.html file in src/client/
 app.use(cors());
+app.use(function(req, res, next) {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  res.setHeader('Access-Control-Allow-Credentials', true);
+  next();
+});
 app.use(express.static(client_path));
+
+app.options('*', (req, res, next) => {
+    next();
+});
 
 app.get('/', (req, res) => {
    res.sendFile(path.join(client_path, 'index.html'));
@@ -29,7 +40,7 @@ app.get('/', (req, res) => {
 //all of the crud operations below
 
 app.get('/users', async (req, res) => {
-    let response_obj = await db.getUserById(req.params.id);
+    let response_obj = await db.getUserByID(req.params.id);
     res.send(response_obj);
 });
 
@@ -45,7 +56,7 @@ app.post('/users' , async (req, res) => {
 
 app.post('/decks', async (req, res) => {
     console.log(req.body);
-    let response_obj = await db.addDeckToDatabase(JSON.parse(req.body));
+    let response_obj = await db.addDeckToDatabase(req.body);
     res.send(response_obj);
 });
 
