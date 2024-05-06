@@ -6,7 +6,7 @@ import { User } from "../structures/user.js";
 import { Card } from "../structures/card.js";
 import { Deck } from "../structures/deck.js";
 
-const server_base_url = "http://localhost:3470/"
+const server_base_url = "http://localhost:3500/"
 
 
 /**
@@ -75,6 +75,7 @@ export async function deleteUser(user_id) {
 export async function addDeck(deck) {
   let headers = new Headers();
   headers.append("Content-Type", "text/html");
+  console.log(JSON.stringify(deck));
   let response = await fetch(`${server_base_url}decks`, {headers: headers, method: "POST" , body: JSON.stringify(deck)});
   let response_json = await response.json();
   return response_json;
