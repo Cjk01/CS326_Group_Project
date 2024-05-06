@@ -18,7 +18,7 @@ const server_base_url = "http://localhost:3500/"
  */
 export async function addUser(user) {
     let headers = new Headers();
-    headers.append("Content-Type", "text/plain");
+    headers.append("Content-Type", "application/json");
     let response = await fetch(server_base_url + "users", {"headers": headers, method: "POST", body: JSON.stringify(user)});
     let response_json = response.json();
     return response_json;
@@ -32,7 +32,7 @@ export async function addUser(user) {
  */
 export async function updateUser(user) {
     let headers = new Headers();
-    headers.append("Content-Type", "text/plain");
+    headers.append("Content-Type", "application/json");
     let response = await fetch(server_base_url + "users", {"headers": headers, method: "PUT", body: JSON.stringify(user)});
     let response_json = response.json();
     return response_json;
@@ -74,9 +74,9 @@ export async function deleteUser(user_id) {
  */
 export async function addDeck(deck) {
   let headers = new Headers();
-  headers.append("Content-Type", "text/plain");
+  headers.append("Content-Type", "application/json");
   console.log(JSON.stringify(deck));
-  let response = await fetch(`${server_base_url}decks`, { method: "POST" , body: JSON.stringify(deck)});
+  let response = await fetch(`${server_base_url}decks`, {headers: headers, method: "POST" , body: JSON.stringify(deck)});
   let response_json = await response.json();
   return response_json;
 
@@ -89,7 +89,7 @@ export async function addDeck(deck) {
  */
 export async function updateDeck(deck) {
   let headers = new Headers();
-  headers.append("Content-Type", "text/plain");
+  headers.append("Content-Type", "application/json");
   let response = await fetch(`${server_base_url}decks`, {headers: headers, method: "PUT" , body: JSON.stringify(deck)});
   let response_json = await response.json();
   return response_json;

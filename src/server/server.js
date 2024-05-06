@@ -20,7 +20,13 @@ console.log(`joined path: ${path.join(client_path, 'index.html')}`);
 //this sets up our app so that when users go to
 // localhost:3500/ they receive the index.html file in src/client/
 
+// allow CORS:
+app.use(function (req, res, next) {
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000')
+  next()
+})
 app.use(cors());
+app.use(express.json());
 app.use(express.static(client_path));
 
 
@@ -31,12 +37,12 @@ app.get('/', (req, res) => {
 //all of the crud operations below
 
 app.get('/users', async (req, res) => {
-    let response_obj = await db.getUserByID(req.params.id);
+    let response_obj = await db.getUserByID(req.query.id);
     res.send(response_obj);
 });
 
 app.get('/decks', async (req, res) => {
-    let response_obj = await db.getDeckByID(req.params.id);
+    let response_obj = await db.getDeckByID(req.query.id);
     res.send(response_obj);
 });
 
