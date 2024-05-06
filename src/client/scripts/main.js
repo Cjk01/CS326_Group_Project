@@ -10,6 +10,7 @@ import { User } from "./structures/user.js";
 //purely for milestone-02 setup
 if(localStorage.getItem("active-user") === null){
     await clearDatabases();
+    // TODO: Can remove from if-statement later
     await configureDatabaseForMilestoneTwo();
 }
 
