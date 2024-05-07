@@ -20,10 +20,17 @@ export async function addUser(user) {
     let headers = new Headers();
     headers.append("Content-Type", "text/html");
     let response = await fetch(server_base_url + "users", {"headers": headers, method: "POST", body: JSON.stringify(user)});
+    if(!response.ok){
+      alert(`Error ${response.status}: Failed to add user`);
+      return {
+        status: response.status,
+        message: response.statusText
+      }
+    }
     let response_json = response.json();
     return response_json;
-
 }
+
 
 /**
  *
@@ -34,6 +41,13 @@ export async function updateUser(user) {
     let headers = new Headers();
     headers.append("Content-Type", "text/html");
     let response = await fetch(server_base_url + "users", {"headers": headers, method: "PUT", body: JSON.stringify(user)});
+    if(!response.ok){
+      alert(`Error ${response.status}: Failed to update user`);
+      return {
+        status: response.status,
+        message: response.statusText
+      }
+    }
     let response_json = response.json();
     return response_json;
 }
@@ -47,6 +61,13 @@ export async function getUser(user_id) {
   let headers = new Headers();
   headers.append("Content-Type", "text/html");
   let response = await fetch(`${server_base_url}users?id=${user_id}` , {headers: headers, method: "GET"});
+  if(!response.ok){
+    alert(`Error ${response.status}: Failed to get user`);
+    return {
+      status: response.status,
+      message: response.statusText
+    }
+  }
   let response_json = await response.json();
   let returned_user = new User(); //creating an empty class isntance to map the returned object into
   Object.assign(returned_user, response_json); //filling in the User object with the contents of the returned object
@@ -62,6 +83,13 @@ export async function deleteUser(user_id) {
   let headers = new Headers();
   headers.append("Content-Type", "text/html");
   let response = await fetch(`${server_base_url}users?id=${user_id}` , {headers: headers, method: "DELETE"});
+  if(!response.ok){
+    alert(`Error ${response.status}: Failed to delete user`);
+    return {
+      status: response.status,
+      message: response.statusText
+    }
+  }
   let response_json = await response.json();
   return response_json;
 }
@@ -76,6 +104,13 @@ export async function addDeck(deck) {
   let headers = new Headers();
   headers.append("Content-Type", "text/html");
   let response = await fetch(`${server_base_url}decks`, {headers: headers, method: "POST" , body: JSON.stringify(deck)});
+  if(!response.ok){
+    alert(`Error ${response.status}: Failed to create deck`);
+    return {
+      status: response.status,
+      message: response.statusText
+    }
+  }
   let response_json = await response.json();
   return response_json;
 
@@ -90,6 +125,13 @@ export async function updateDeck(deck) {
   let headers = new Headers();
   headers.append("Content-Type", "text/html");
   let response = await fetch(`${server_base_url}decks`, {headers: headers, method: "PUT" , body: JSON.stringify(deck)});
+  if(!response.ok){
+    alert(`Error ${response.status}: Failed to update deck`);
+    return {
+      status: response.status,
+      message: response.statusText
+    }
+  }
   let response_json = await response.json();
   return response_json;
 }
@@ -103,6 +145,13 @@ export async function deleteDeck(deck_id) {
   let headers = new Headers();
   headers.append("Content-Type", "text/html");
   let response = await fetch(`${server_base_url}decks?id=${deck_id}` , {headers: headers, method: "DELETE"});
+  if(!response.ok){
+    alert(`Error ${response.status}: Failed to delete deck`);
+    return {
+      status: response.status,
+      message: response.statusText
+    }
+  }
   let response_json = await response.json();
   return response_json;
 }
@@ -116,6 +165,13 @@ export async function getDeck(deck_id) {
   let headers = new Headers();
   headers.append("Content-Type", "text/html");
   let response = await fetch(`${server_base_url}decks?id=${deck_id}`, {headers: headers, method: "GET"});
+  if(!response.ok){
+    alert(`Error ${response.status}: Failed to get deck`);
+    return {
+      status: response.status,
+      message: response.statusText
+    }
+  }
   let response_json = await response.json();
   let returned_deck = new Deck();
   Object.assign(returned_deck, response_json);
@@ -130,7 +186,14 @@ export async function getDeck(deck_id) {
  */
 export async function testDatabaseOperations() {
 
-  let user_uuid = await fetch("https://randomuser.me/api").then(resp => resp.json().then(data => data.results[0]["login"]["uuid"]));
+  let user_uuid = await fetch("https://randomuser.me/api").then(resp => resp.json()
+    .then(data => data.results[0]["login"]["uuid"]))
+    .catch(err => {
+      return {
+        status: err.status,
+        message: err.statusText
+      }
+  });
   let test_user = new User(user_uuid , "testDatabaseUser", ["Follower1"], ["Following1"], {} );
 
   //testing addUser
@@ -180,6 +243,12 @@ export async function clearDatabases() {
   let headers = new Headers();
   headers.append("Content-Type", "text/html");
   let response = await fetch(`${server_base_url}clear_databases` , {headers: headers, method: "DELETE"});
+  if(!response.ok){
+    return {
+      status: response.status,
+      message: response.statusText
+    }
+  }
   let response_json = await response.json();
   return response_json;
 }
