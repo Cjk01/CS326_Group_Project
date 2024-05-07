@@ -6,7 +6,7 @@ import { User } from "../structures/user.js";
 import { Card } from "../structures/card.js";
 import { Deck } from "../structures/deck.js";
 
-const server_base_url = "http://localhost:3470/"
+const server_base_url = "http://localhost:3500/"
 
 
 /**
@@ -18,7 +18,7 @@ const server_base_url = "http://localhost:3470/"
  */
 export async function addUser(user) {
     let headers = new Headers();
-    headers.append("Content-Type", "text/html");
+    headers.append("Content-Type", "application/json");
     let response = await fetch(server_base_url + "users", {"headers": headers, method: "POST", body: JSON.stringify(user)});
     let response_json = response.json();
     return response_json;
@@ -32,7 +32,7 @@ export async function addUser(user) {
  */
 export async function updateUser(user) {
     let headers = new Headers();
-    headers.append("Content-Type", "text/html");
+    headers.append("Content-Type", "application/json");
     let response = await fetch(server_base_url + "users", {"headers": headers, method: "PUT", body: JSON.stringify(user)});
     let response_json = response.json();
     return response_json;
@@ -45,7 +45,7 @@ export async function updateUser(user) {
  */
 export async function getUser(user_id) {
   let headers = new Headers();
-  headers.append("Content-Type", "text/html");
+  headers.append("Content-Type", "text/plain");
   let response = await fetch(`${server_base_url}users?id=${user_id}` , {headers: headers, method: "GET"});
   let response_json = await response.json();
   let returned_user = new User(); //creating an empty class isntance to map the returned object into
@@ -60,7 +60,7 @@ export async function getUser(user_id) {
  */
 export async function deleteUser(user_id) {
   let headers = new Headers();
-  headers.append("Content-Type", "text/html");
+  headers.append("Content-Type", "text/plain");
   let response = await fetch(`${server_base_url}users?id=${user_id}` , {headers: headers, method: "DELETE"});
   let response_json = await response.json();
   return response_json;
@@ -74,7 +74,8 @@ export async function deleteUser(user_id) {
  */
 export async function addDeck(deck) {
   let headers = new Headers();
-  headers.append("Content-Type", "text/html");
+  headers.append("Content-Type", "application/json");
+  console.log(JSON.stringify(deck));
   let response = await fetch(`${server_base_url}decks`, {headers: headers, method: "POST" , body: JSON.stringify(deck)});
   let response_json = await response.json();
   return response_json;
@@ -88,7 +89,7 @@ export async function addDeck(deck) {
  */
 export async function updateDeck(deck) {
   let headers = new Headers();
-  headers.append("Content-Type", "text/html");
+  headers.append("Content-Type", "application/json");
   let response = await fetch(`${server_base_url}decks`, {headers: headers, method: "PUT" , body: JSON.stringify(deck)});
   let response_json = await response.json();
   return response_json;
@@ -101,7 +102,7 @@ export async function updateDeck(deck) {
  */
 export async function deleteDeck(deck_id) {
   let headers = new Headers();
-  headers.append("Content-Type", "text/html");
+  headers.append("Content-Type", "text/plain");
   let response = await fetch(`${server_base_url}decks?id=${deck_id}` , {headers: headers, method: "DELETE"});
   let response_json = await response.json();
   return response_json;
@@ -114,7 +115,7 @@ export async function deleteDeck(deck_id) {
  */
 export async function getDeck(deck_id) {
   let headers = new Headers();
-  headers.append("Content-Type", "text/html");
+  headers.append("Content-Type", "text/plain");
   let response = await fetch(`${server_base_url}decks?id=${deck_id}`, {headers: headers, method: "GET"});
   let response_json = await response.json();
   let returned_deck = new Deck();
@@ -178,7 +179,7 @@ export async function testDatabaseOperations() {
  */
 export async function clearDatabases() {
   let headers = new Headers();
-  headers.append("Content-Type", "text/html");
+  headers.append("Content-Type", "text/plain");
   let response = await fetch(`${server_base_url}clear_databases` , {headers: headers, method: "DELETE"});
   let response_json = await response.json();
   return response_json;
@@ -278,7 +279,7 @@ export async function loadBatchTestData() {
    * To get the results of logDatabaseInfo, which is then returned to user
    */
   let headers = new Headers();
-  headers.append("Content-Type", "text/html");
+  headers.append("Content-Type", "text/plain");
   let response = await fetch(`${server_base_url}`, {headers: headers, method: "GET"}).then(resp => resp.json());
   return response;
 
