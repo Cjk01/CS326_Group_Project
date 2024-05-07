@@ -113,14 +113,15 @@ export async function loadCreateNewDeckView() {
         // it should create a new blank deck, add it to the decks db, and register it with the current active user
         let active_user = User.getActiveUser();
         let new_deck_name = document.getElementById("deckname-input").value;
-        let new_deck_uuid = await fetch("https://randomuser.me/api").then(resp => resp.json().then(data => data.results[0]["login"]["uuid"]));
-        if(!new_deck_uuid.ok){
-            alert(`Error ${new_deck_uuid.status}: Failed to fetch from https://randomuser.me/api`);
+        let uuid_response = await fetch("https://randomuser.me/api");
+        if(!uuid_response.ok){
+            alert(`Error ${uuid_response.status}: Failed to fetch from https://randomuser.me/api`);
             return {
-              status: new_deck_uuid.status,
-              message: new_deck_uuid.statusText
+              status: uuid_response.status,
+              message: uuid_response.statusText
             }
         }
+        let new_deck_uuid = await uuid_response.json().then(data => data.results[0]["login"]["uuid"]);
         let new_deck = new Deck(new_deck_uuid, new_deck_name , [], active_user);
         await addDeck(new_deck);
         active_user.registerDeck(new_deck);
