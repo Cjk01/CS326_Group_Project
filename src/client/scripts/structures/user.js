@@ -1,4 +1,4 @@
-import { getDeck, getUser, updateUser } from "../data_interface/data.js";
+import { getDeck, getUser, updateUser, deleteDeck } from "../data_interface/data.js";
 import { Deck } from "./deck.js";
 import { Card } from "./card.js";
 /**
@@ -51,10 +51,15 @@ export class User {
 
    /** Updates local storage's active-decks field without accessing database
     * @param {Deck} deck - A deck to be added to local storage
+    * @param {boolean} add - True to add, False to delete
     */
-   static #updateLocalDecks(deck) {
+   static #updateLocalDecks(deck, add) {
       let localDecks = User.getActiveDecks();
-      localDecks.push(deck);
+      if (add) {
+         localDecks.push(deck);
+      } else {
+         localDecks = localDecks.filter(x => x.id !== deck.id);
+      }
       localStorage.setItem("active-decks", JSON.stringify(localDecks));
    }
 
@@ -93,16 +98,21 @@ export class User {
     */
    static getActiveDecks(sorted = false, beingStudied = false, toStudy = false, owned = false, notOwned = false) {
       let user = User.getActiveUser();
+      console.log(user.metadata);
       let decks = JSON.parse(localStorage.getItem("active-decks"));
+      console.log(decks);
+      if (decks.length === 0) {
+         return decks;
+      }
       let deckArr = [];
       for (let deck of decks) {
-         let cardArr = [];
-         for (let card of deck.cards) {
-            cardArr.push(new Card(card.card_type, card.question, card.answer, card.metadata));
-         }
+      //    let cardArr = [];
+      //    for (let card of deck.cards) {
+      //       cardArr.push(new Card(card.card_type, card.question, card.answer, card.metadata));
+      //    }
          let creator = deck.creator;
          let creatorUser = new User(creator.id, creator.username, creator.followers, creator.following, creator.metadata);
-         deckArr.push(new Deck(deck.id, deck.topic, cardArr, creatorUser));
+         deckArr.push(new Deck(deck.id, deck.topic, deck.cards, creatorUser));
       }
 
       if (beingStudied) {
@@ -155,7 +165,7 @@ export class User {
    /**
     * Registers a deck's id in the metadata field along with necessary information if it doesn't already exists.
     * @param {Deck} deck - Deck object as defined in /structures/deck.js
-    * @returns {boolean} - true if user was freshly registered, false otherwise
+    * @returns {boolean} - true if user successfully registers, false if already has it
     */
    async registerDeck(deck) {
       if (deck.id in this.metadata) {
@@ -167,11 +177,34 @@ export class User {
 
          if (this.id === User.getActiveUser().id) {
             User.#updateLocalUser(this);
-            User.#updateLocalDecks(deck);
+            User.#updateLocalDecks(deck, true);
          }
 
          return true;
       }
+   }
+
+   /**
+    * Deletes an owned deck from database
+    * @param {Deck} deck - Deck object as defined in /structures/deck.js
+    * @returns {boolean} - true if user successfully deletes, false if doesn't have or doesn't own
+    */
+   async deleteOwnedDeck(deck) {
+      if (!(deck.id in this.metadata) || (deck.creator.id !== this.id)) {
+         return false;
+      }
+
+      delete this.metadata[deck.id];
+      await deleteDeck(deck.id);
+
+      await updateUser(this);
+
+      if (this.id === User.getActiveUser().id) {
+         User.#updateLocalUser(this);
+         User.#updateLocalDecks(deck, false);
+      }
+
+      return true;
    }
 
    /**
@@ -209,6 +242,9 @@ export class User {
     */
    async getDecks(sorted = false, beingStudied = false, toStudy = false, owned = false, notOwned = false) {
       let decks = await Promise.all(Object.keys(this.metadata).map(getDeck));
+      if (decks.length === 0) {
+         return decks;
+      }
 
       if (beingStudied) {
          decks = decks.filter((deck) => this.metadata[deck.id].beingStudied);

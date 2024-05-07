@@ -1,7 +1,7 @@
 
 
 
-import { getDeck, addDeck, updateDeck } from "../data_interface/data.js";
+import { getDeck, addDeck, updateDeck, deleteDeck } from "../data_interface/data.js";
 import { generateDeckEntry } from "../generators/entry_generators.js";
 import { generateCard } from "../generators/card_generator.js";
 import { User } from "../structures/user.js";
@@ -204,7 +204,7 @@ export function loadDeckPreview(deck) {
    `
    <div id="deck-creation-page">
    <p>Deck ID: ${deck.id}</p>
-   <input id="add-button" type="button" value="Add">
+   <input id="addDel-button" type="button" value="Add">
    <div id="deck-preview-pane">
     <div id="card-container"> </div>
    </div>
@@ -229,17 +229,24 @@ export function loadDeckPreview(deck) {
 
     populateDeckPreviewPane(deck, 0);
 
-    let addButton = user_decks_container.querySelector("#deck-creation-page").querySelector("#add-button");
+    let addDelButton = user_decks_container.querySelector("#deck-creation-page").querySelector("#addDel-button");
 
-    if (Object.keys(activeUser.metadata).includes(deck.id)) {
-        addButton.value = "Already added";
-        addButton.disabled = true;
+    if (deck.creator.id === User.getActiveUser().id) {
+        addDelButton.value = "Delete";
+        addDelButton.addEventListener("click", async () => {
+            addDelButton.value = "Pending";
+            await activeUser.deleteOwnedDeck(deck);
+            populateDecksContainer(true);
+        });
+    } else if (Object.keys(activeUser.metadata).includes(deck.id)) {
+        addDelButton.value = "Already added";
+        addDelButton.disabled = true; 
     } else {
-        addButton.addEventListener("click", async () => {
-            addButton.value = "Pending";
+        addDelButton.addEventListener("click", async () => {
+            addDelButton.value = "Pending";
             await activeUser.registerDeck(deck);
-            addButton.value = "Added";
-            addButton.disabled = true;
+            addDelButton.value = "Added";
+            addDelButton.disabled = true;
         }) 
     }
 }
