@@ -1,8 +1,7 @@
-import PouchDB from "pouchdb";
-import { getDeck, getUser, updateUser } from "../data_interface/data.js";
-import { Deck } from "./deck.js";
-import { Card } from "./card.js";
-import { User } from "./user.js";
+
+import { getUser } from "../data_interface/data.js";
+import { Deck } from "../structures/deck.js";
+import { User } from "../structures/user.js";
 
 export async function establishLocalDatabase(user_id) {
     const ldb = new PouchDB("localData");
@@ -25,17 +24,15 @@ export async function establishLocalDatabase(user_id) {
         const activeFollowers = await ldb.get("active-followers");
     } catch (e) {
         let intendedFollowers = await intendedUser.getFollowers();
-        await ldb.put({_id: "active-followers", followers: intendedFollowers})
+        await ldb.put({_id: "active-followers", followers: intendedFollowers});
     }
 
     try {
         const activeFollowing = await ldb.get("active-following");
     } catch (e) {
         let intendedFollowing = await intendedUser.getFollowing();
-        await ldb.put({_id: "active-following", followers: intendedFollowing})
+        await ldb.put({_id: "active-following", followers: intendedFollowing});
     }
-
-    await ldb.close();
 }
 
 async function getLDB() {
@@ -53,31 +50,29 @@ export async function getActiveUser() {
     let db = await getLDB();
     let user_page = await db.get("active-user");
     let activeUser = new User();
-    let userJSON = await user_page["user"].json();
-    Object.assign(activeUser, userJSON);
-    await db.close();
+    Object.assign(activeUser, user_page["user"]);
     return activeUser;
 }
 
 export async function updateActiveUser(user) {
     let db = await getLDB();
-    db.put({_id: "active-user", user});
-    await db.close();
+    await db.put({_id: "active-user", user});
 }
 
 export async function getActiveDecks(sorted = false, beingStudied = false, toStudy = false, owned = false, notOwned = false) {
     let db = await getLDB();
-    let decks = await db.get("active-decks").then(ds => ds.json());
+    let decks = await db.get("active-decks").then(ds => ds["decks"]);
+    
+    let user = await getActiveUser();
     if (decks.length === 0) {
         return decks;
      }
 
     let deckArr = [];
     for (let deck of decks) {
-        let cardArr = [];
         let creator = deck.creator;
         let creatorUser = new User(creator.id, creator.username, creator.followers, creator.following, creator.metadata);
-        deckArr.push(new Deck(deck.id, deck.topic, cardArr, creatorUser));
+        deckArr.push(new Deck(deck.id, deck.topic, deck.cards, creatorUser));
     }
 
     if (beingStudied) {
@@ -111,6 +106,36 @@ export async function getActiveDecks(sorted = false, beingStudied = false, toStu
      return deckArr;
 }
 
-export async function updateActiveDecks() {
-    
+export async function updateActiveDecks(deck, add) {
+    let activeDecks = await getActiveDecks();
+    if (add) {
+        activeDecks.push(deck);
+    } else {
+        activeDecks = decks.filter(x => x.id !== deck.id);
+    }
+    let db = await getLDB();
+    await db.put({_id: "active-decks", decks: activeDecks});
+}
+
+export async function getActiveFollowers() {
+    let db = await getLDB();
+    let activeFollowers = await db.get("active-followers").then(f => f["followers"]);
+    return activeFollowers.map(follow => new User(follow.id, follow.username, follow.followers, follow.following, follow.metadata));
+}
+
+export async function getActiveFollowing() {
+    let db = await getLDB();
+    let activeFollowers = await db.get("active-following").then(f => f["followers"]);
+    return activeFollowers.map(follow => new User(follow.id, follow.username, follow.followers, follow.following, follow.metadata));
+}
+
+export async function updateActiveFollowers(user, add) {
+    let activeFollowing = await getActiveFollowing();
+    if (add) {
+        activeFollowing.add(user);
+    } else {
+        activeFollowing = activeFolowing.filter(follow => follow.id !== user.id);
+    }
+    let db = await getLDB();
+    await db.put({_id: "active-following", followers: intendedFollowing});
 }
