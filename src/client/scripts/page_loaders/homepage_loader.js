@@ -23,7 +23,7 @@ export async function loadHomepageView() {
 
     //Create header
     const studyHeader = document.createElement('h2');
-    studyHeader.innerHTML = `<h2 id='homepage-decksToStudy'>Decks to Study: </h2>`;
+    studyHeader.innerHTML = `<h2 id='homepage-decksToStudy'>Decks to Study </h2>`;
     homePageContainer.appendChild(studyHeader);
 
     //Element to contain the decks
@@ -54,7 +54,7 @@ export async function loadHomepageView() {
 
     //Header for followers
     const followersHeader = document.createElement('h2');
-    followersHeader.innerHTML = `<h2 id='homepage-followers'>Followers: </h2>`;
+    followersHeader.innerHTML = `<h2 id='homepage-followers'>Followers </h2>`;
     homePageContainer.appendChild(followersHeader);
 
     //Container for followers
@@ -70,7 +70,7 @@ export async function loadHomepageView() {
 
     //Header for people following the user
     const followingHeader = document.createElement('h2');
-    followingHeader.innerHTML = `<h2 id='homepage-following'>Following: </h2>`;
+    followingHeader.innerHTML = `<h2 id='homepage-following'>Following </h2>`;
     homePageContainer.appendChild(followingHeader);
 
     //Container for people following the user

@@ -150,9 +150,9 @@ export function generateUserEntry(user) {
     }
 
     // Change these to align with user objects
-    textChildren[0].innerHTML = "User:<br>" + user.username;
-    textChildren[1].innerHTML = "Followers:<br>" + user.followers.length;
-    textChildren[2].innerHTML = "Following:<br>" + user.following.length;
+    textChildren[0].innerHTML = "User: " + user.username;
+    textChildren[1].innerHTML = "Followers: " + user.followers.length;
+    textChildren[2].innerHTML = "Following: " + user.following.length;
 
     entry.appendChild(textDiv);
 
