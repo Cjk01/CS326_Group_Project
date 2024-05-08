@@ -31,18 +31,19 @@ export async function establishLocalDatabase(user_id) {
         const activeFollowing = await ldb.get("active-following");
     } catch (e) {
         let intendedFollowing = await intendedUser.getFollowing();
-        await ldb.put({_id: "active-following", followers: intendedFollowing});
+        await ldb.put({_id: "active-following", following: intendedFollowing});
     }
 }
 
 async function getLDB() {
-    establishLocalDatabase("main_user");
+    await establishLocalDatabase("main_user");
     return new PouchDB("localData");
 }
 
-export async function replaceLocalDatabases() {
-    let deleteLocal = await getLDB().then(db => db.destroy());
-    establishLocalDatabase("main_user");
+export async function replaceLocalDatabase() {
+    let db = new PouchDB("localData");
+    let deleteLocal = await db.destroy();
+    await establishLocalDatabase("main_user");
     return { "ok" : deleteLocal["ok"] };
 }
 
@@ -56,7 +57,9 @@ export async function getActiveUser() {
 
 export async function updateActiveUser(user) {
     let db = await getLDB();
-    await db.put({_id: "active-user", user});
+    let activeUser = await db.get("active-user");
+    let rev = activeUser._rev;
+    await db.put({_id: "active-user", user: user, _rev: rev});
 }
 
 export async function getActiveDecks(sorted = false, beingStudied = false, toStudy = false, owned = false, notOwned = false) {
@@ -76,6 +79,8 @@ export async function getActiveDecks(sorted = false, beingStudied = false, toStu
     }
 
     if (beingStudied) {
+        console.log(await getUser("main_user"));
+        console.log(user);
         deckArr = deckArr.filter((deck) => user.metadata[deck.id].beingStudied);
      }
 
@@ -106,15 +111,26 @@ export async function getActiveDecks(sorted = false, beingStudied = false, toStu
      return deckArr;
 }
 
+export async function refreshActiveDecks() {
+    let activeUser = await getActiveUser();
+    let trueDecks = await activeUser.getDecks();
+    let db = await getLDB();
+    let dbDecks = await db.get("active-decks");
+    let rev = dbDecks._rev;
+    await db.put({_id: "active-decks", decks: trueDecks, _rev: rev});
+}
+
 export async function updateActiveDecks(deck, add) {
     let activeDecks = await getActiveDecks();
     if (add) {
         activeDecks.push(deck);
     } else {
-        activeDecks = decks.filter(x => x.id !== deck.id);
+        activeDecks = activeDecks.filter(x => x.id !== deck.id);
     }
     let db = await getLDB();
-    await db.put({_id: "active-decks", decks: activeDecks});
+    let dbDecks = await db.get("active-decks");
+    let rev = dbDecks._rev;
+    await db.put({_id: "active-decks", decks: activeDecks, _rev: rev});
 }
 
 export async function getActiveFollowers() {
@@ -125,17 +141,19 @@ export async function getActiveFollowers() {
 
 export async function getActiveFollowing() {
     let db = await getLDB();
-    let activeFollowers = await db.get("active-following").then(f => f["followers"]);
-    return activeFollowers.map(follow => new User(follow.id, follow.username, follow.followers, follow.following, follow.metadata));
+    let activeFollowing = await db.get("active-following").then(f => f["following"]);
+    return activeFollowing.map(follow => new User(follow.id, follow.username, follow.followers, follow.following, follow.metadata));
 }
 
-export async function updateActiveFollowers(user, add) {
+export async function updateActiveFollowing(user, add) {
     let activeFollowing = await getActiveFollowing();
     if (add) {
-        activeFollowing.add(user);
+        activeFollowing.push(user);
     } else {
-        activeFollowing = activeFolowing.filter(follow => follow.id !== user.id);
+        activeFollowing = activeFollowing.filter(follow => follow.id !== user.id);
     }
     let db = await getLDB();
-    await db.put({_id: "active-following", followers: intendedFollowing});
+    let dbFollowing = await db.get("active-following");
+    let rev = dbFollowing._rev;
+    await db.put({_id: "active-following", following: activeFollowing, _rev: rev});
 }

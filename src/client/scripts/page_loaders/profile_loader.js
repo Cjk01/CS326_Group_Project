@@ -1,6 +1,7 @@
 import { getUser, getDeck } from "../data_interface/data.js";
 import { generateDeckEntry, generateUserEntry } from "../generators/entry_generators.js";
 import { User } from "../structures/user.js";
+import { getActiveUser, getActiveDecks, getActiveFollowing, getActiveFollowers } from "../data_interface/localDB.js"
 
 /**
  * Loads the initial profile view upon loading the page
@@ -23,7 +24,7 @@ export async function loadProfileView() {
     <div id="profileContainer"><div/>
     `;
 
-    let activeUser = User.getActiveUser();
+    let activeUser = await getActiveUser();
 
     let profileInfo = profileView.querySelector("#profileContainer");
 
@@ -37,7 +38,7 @@ export async function loadProfileView() {
 
     <p id="profile-following-count-text">Number Following: ${activeUser.following.length}</p>
 
-    <p id="profile-deck-text">Currently studying ${User.getActiveDecks(false, true, false, false, false).length} deck(s)</p>
+    <p id="profile-deck-text">Currently studying ${await getActiveDecks(false, true, false, false, false).then(d => d.length)} deck(s)</p>
     `
 
     profileView.querySelector("#your-profile-button").addEventListener("click", loadUserProfile);
@@ -56,11 +57,11 @@ export async function loadProfileView() {
 /**
  * Loads the active user's profile into the profile view
  */
-function loadUserProfile() {
+async function loadUserProfile() {
     let profileInfoContainer = document.getElementById("profileContainer");
     profileInfoContainer.innerHTML = "";
 
-    let activeUser = User.getActiveUser();
+    let activeUser = await getActiveUser();
 
     profileInfoContainer.innerHTML = 
     `
@@ -72,7 +73,7 @@ function loadUserProfile() {
 
     <p id="profile-following-count-text">Number Following: ${activeUser.following.length}</p>
 
-    <p id="profile-deck-text">Currently studying ${User.getActiveDecks(false, true, false, false, false).length} deck(s)</p>
+    <p id="profile-deck-text">Currently studying ${await getActiveDecks(false, true, false, false, false).then(d => d.length)} deck(s)</p>
     `
 }
 
@@ -85,8 +86,8 @@ async function loadUserFollowing() {
 
     let followContainer = document.createElement("div");
     followContainer.setAttribute("id", "other-decks-container");
-    let following = User.getActiveFollowing();
-    following.map(generateUserEntry).map(entry => followContainer.appendChild(entry));
+    let following = await getActiveFollowing();
+    await Promise.all(following.map(generateUserEntry)).then(f => f.map(entry => followContainer.appendChild(entry)));
     profileContainer.appendChild(followContainer);
 }
 
@@ -99,8 +100,9 @@ async function loadUserFollowers() {
 
     let followContainer = document.createElement("div");
     followContainer.setAttribute("id", "other-decks-container");
-    let followers = User.getActiveFollowers();
-    followers.map(generateUserEntry).map(entry => followContainer.appendChild(entry));
+    let followers = await getActiveFollowers();
+    console.log(followers);
+    await Promise.all(followers.map(generateUserEntry)).then(f => f.map(entry => followContainer.appendChild(entry)));
     profileContainer.appendChild(followContainer);
 }
 
@@ -189,5 +191,6 @@ export async function loadOtherUserProfile(user) {
     `
 
     let entryContainer = profileContainer.querySelector("#other-decks-container");
-    userDecks.map(deck => entryContainer.appendChild(generateDeckEntry(deck)));
+    let entries = await Promise.all(userDecks.map(generateDeckEntry))
+    entries.map(e => entryContainer.appendChild(e));
 }

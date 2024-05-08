@@ -5,7 +5,7 @@ import { loadProfileView } from "./page_loaders/profile_loader.js";
 import { loadStudyPageView } from "./page_loaders/study_loader.js";
 import { addUser, clearDatabases, configureDatabaseForMilestoneTwo, loadBatchTestData, testDatabaseOperations, updateUser } from "./data_interface/data.js";
 import { User } from "./structures/user.js";
-import { establishLocalDatabase, getActiveDecks, getActiveFollowers, getActiveFollowing, getActiveUser } from "./data_interface/localDB.js";
+import { establishLocalDatabase, replaceLocalDatabase } from "./data_interface/localDB.js";
 
 
 //purely for milestone-02 setup
@@ -13,7 +13,8 @@ if(localStorage.getItem("active-user") === null){
     await clearDatabases();
     // TODO: Can remove from if-statement later
     await configureDatabaseForMilestoneTwo();
-    await establishLocalDatabase("main_user");
+    console.log("here");
+    await replaceLocalDatabase();
 }
 
 let body = document.getElementById("body");

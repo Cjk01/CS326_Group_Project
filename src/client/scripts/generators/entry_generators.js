@@ -3,6 +3,7 @@ import { User } from "../structures/user.js";
 import { Deck } from "../structures/deck.js";
 import { loadOtherUserProfile } from "../page_loaders/profile_loader.js";
 import { loadDeckPreview } from "../page_loaders/decks_loader.js";
+import { getActiveUser } from "../data_interface/localDB.js";
 
 /**
  * Generates a Deck Entry (Icon to represent a deck at a glance)
@@ -11,7 +12,7 @@ import { loadDeckPreview } from "../page_loaders/decks_loader.js";
  * @param {Deck} deck - A deck object as defined in structures/deck.js
  * @returns {Element} - An HTML div element
  */
-export function generateDeckEntry(deck) {
+export async function generateDeckEntry(deck) {
     // Creation of entire entry
     let entry = document.createElement("div");
     entry.classList.add("entry");
@@ -41,30 +42,30 @@ export function generateDeckEntry(deck) {
         loadOtherUserProfile(creator);
     })
 
-    if (Object.keys(User.getActiveUser().metadata).includes(deck.id)) {
+    if (Object.keys(await getActiveUser().then(u => u.metadata)).includes(deck.id)) {
         let studyingButton = document.createElement("input");
         studyingButton.type = "button";
         studyingButton.classList.add("cool-green-button");
-        if (User.getActiveUser().metadata[deck.id].beingStudied) {
+
+        if (await getActiveUser().then(u => u.metadata[deck.id].beingStudied)) {
             studyingButton.value = "Studying";
         } else {
             studyingButton.value = "Not Studying";
         }
 
         studyingButton.addEventListener("click", async () => {
-            if (User.getActiveUser().metadata[deck.id].beingStudied) {
+            if (await getActiveUser().then(u => u.metadata[deck.id].beingStudied)) {
                 studyingButton.value = "Pending";
-                await User.getActiveUser().toggleStudy(deck);
+                await getActiveUser().then(async u => await u.toggleStudy(deck));
                 studyingButton.value = "Not Studying";
             } else {
                 studyingButton.value = "Pending";
-                await User.getActiveUser().toggleStudy(deck);
+                await getActiveUser().then(async u => await u.toggleStudy(deck));
                 studyingButton.value = "Studying";
             }
         })
 
         textDiv.appendChild(studyingButton);
-
     }
 
     entry.appendChild(textDiv);
@@ -90,20 +91,20 @@ export function generateDeckEntry(deck) {
     bottomButton.classList.add("cool-green-button");
     bottomButton.value = "View";
 
-    bottomButton.addEventListener("click", () => {
-        loadDeckPreview(deck);
+    bottomButton.addEventListener("click", async () => {
+        await loadDeckPreview(deck);
     });
 
     let thirdButton;
 
-    if (!Object.keys(User.getActiveUser().metadata).includes(deck.id)) {
+    if (!Object.keys(await getActiveUser().then(u => u.metadata)).includes(deck.id)) {
         thirdButton = document.createElement("input");
         thirdButton.type = "button";
         thirdButton.classList.add("cool-green-button");
         thirdButton.value = "Add";
         thirdButton.addEventListener("click", async () => {
             thirdButton.value = "Pending";
-            await User.getActiveUser().registerDeck(deck);
+            await getActiveUser().then(u => u.registerDeck(deck));
             thirdButton.value = "Added";
             thirdButton.disabled = true;
         })
@@ -129,7 +130,7 @@ export function generateDeckEntry(deck) {
  * @param {User} user - A user object as defined in structures/user.js
  * @returns {Element} - An HTML div element
  */
-export function generateUserEntry(user) {
+export async function generateUserEntry(user) {
 
     // Creation of entire entry
     let entry = document.createElement("div");
@@ -166,7 +167,7 @@ export function generateUserEntry(user) {
     topButton.type = "button";
     topButton.classList.add("cool-green-button");
 
-    let activeUser = User.getActiveUser();
+    let activeUser = await getActiveUser();
 
     if (user.id === activeUser.id) {
         topButton.value = "Self";
@@ -178,13 +179,13 @@ export function generateUserEntry(user) {
     }
 
     topButton.addEventListener("click", async () => {
-        if (User.getActiveUser().isFollowing(user)) {
+        if (await getActiveUser().then(u => u.isFollowing(user))) {
             topButton.value = "Pending";
-            await User.getActiveUser().removeFollowing(user);
+            await getActiveUser().then(async u => await u.removeFollowing(user));
             topButton.value = "Follow";
         } else {
             topButton.value = "Pending";
-            await User.getActiveUser().registerFollowing(user);
+            await getActiveUser().then(async u => await u.registerFollowing(user));
             topButton.value = "Unfollow";
         }
     })
