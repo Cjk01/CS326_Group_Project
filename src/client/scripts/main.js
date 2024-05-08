@@ -14,12 +14,6 @@ if(localStorage.getItem("active-user") === null){
     // TODO: Can remove from if-statement later
     await configureDatabaseForMilestoneTwo();
     await establishLocalDatabase("main_user");
-    console.log("here");
-    console.log(await getActiveUser());
-    console.log(await getActiveDecks());
-    console.log(await getActiveFollowers());
-    console.log(await getActiveFollowing());
-    console.log("there");
 }
 
 let body = document.getElementById("body");
