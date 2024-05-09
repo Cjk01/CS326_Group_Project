@@ -1,26 +1,36 @@
 # Cachely
+*A study and memorization aid platform with a focus on social features and efficient learning via spaced repetition*
 
-## Notes for graders
-- Can run with npm install and npm run milestone-02
-   - localhost:3050 will take you to the homepage
-- We use a non standard setup
-- localStorage api for things which will remain in local storage even past milestone03
-- pouchDB running on a node server via a different port than the client to simulate a database
+### How to run the application
+```
+npm install
+```
+```
+npm start
+```
+### And then proceed to [localhost:3500](http://localhost:3500/) in your browser
 
-## How to use Cachely (as a grader)
+# Usage Guide
 - Cachely is a memorization aid app, you study decks of flash cards
 - You start out already logged in as "main user"
 - You have some followers, and users you follow
 - You have some decks you own, and decks owned by others
-### 4 Main Pages and their uses
-- Homepage: View social information and jump to studying
-- Decks: You can view your decks, saved decks (from other users), and create brand new decks
-- Profile: View your profile info, and also can search for users via their user_id (different than their username)
-   - For milestone02, all user ids are "username_id" , ex username craig has an id of craig_id
-   - You can do the same for decks (In this example, there are 3 sample decks: OS, webdev, algebra)
-- Study: This is where you study a selected deck (decks are recommended based on spaced repetition metadata)
+
+### There are 4 main pages of our application, with the use case for each below
+1. Homepage: View social information and jump to studying (Followers, Following, Most important decks to study)
+2. Decks: Contains the following views (you start out on the "Your Decks" page)
+   - **Your Decks** (decks you created)
+   - **Saved Decks** (decks you bookmarked from other users)
+   - **Create Deck** (open the deck creator page)
+3. Profile: View your profile info, and also can search for users and decks via their ids
+   - try out the following for examples of searching users (without quotes): "aryan_id" or "main_user" 
+   - You can do the same for decks: "OS" "web" "Alg"
+4. Study: This is where you study a selected deck (decks are recommended based on spaced repetition metadata)
+    - To study a deck, select the "Study" button on a deck preview
     - click on the flashcard to flip it and see the answer, then click correct or incorrect
-Enjoy
+        - You can leave the page entirely, come back later, and your current position in the deck will be saved  
+
+## We hope you enjoy using the application!
 
 # Contributing Guide 
 - Pick a user story from the project board : https://github.com/users/Cjk01/projects/2
