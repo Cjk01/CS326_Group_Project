@@ -3,6 +3,11 @@ import { getUser } from "../data_interface/data.js";
 import { Deck } from "../structures/deck.js";
 import { User } from "../structures/user.js";
 
+
+/**
+ * Creates a client side database and checks for the different data, filling in whatever blanks exist
+ * @param {String} user_id - The user to be established as the active user 
+ */
 export async function establishLocalDatabase(user_id) {
     const ldb = new PouchDB("localData");
 
@@ -35,18 +40,28 @@ export async function establishLocalDatabase(user_id) {
     }
 }
 
+/**
+ * Returns instance of client-side database, mainly for sake of convenience
+ * @returns {PouchDB} Instance of client-side database
+ */
 async function getLDB() {
-    await establishLocalDatabase("main_user");
     return new PouchDB("localData");
 }
 
+/**
+ * Destroys and replaces the existing client-side database. Can also be used to initialize database.
+ * @param {String} user_id - ID of user to establish as the active user
+ */
 export async function replaceLocalDatabase(user_id) {
     let db = new PouchDB("localData");
-    let deleteLocal = await db.destroy();
+    await db.destroy();
     await establishLocalDatabase(user_id);
-    return { "ok" : deleteLocal["ok"] };
 }
 
+/**
+ * Gets active user from client-side database
+ * @returns {User} - Active user object
+ */
 export async function getActiveUser() {
     let db = await getLDB();
     let user_page = await db.get("active-user");
@@ -55,6 +70,10 @@ export async function getActiveUser() {
     return activeUser;
 }
 
+/**
+ * Updates the client-side database with current instance
+ * @param {User} user - Object form of active user
+ */
 export async function updateActiveUser(user) {
     let db = await getLDB();
     let activeUser = await db.get("active-user");
@@ -62,6 +81,15 @@ export async function updateActiveUser(user) {
     await db.put({_id: "active-user", user: user, _rev: rev});
 }
 
+/**
+ * Gets array of the active user's decks from the client-side database
+ * @param {boolean} sorted - Sorts according to time over deadline to study according to spatial repetition
+ * @param {boolean} beingStudied - Filters to return only decks currently being studied according to metadata
+ * @param {boolean} toStudy - Filters to return only decks that need to be studied according to spatial repetition
+ * @param {boolean} owned - Filters to return only decks created by the user. Overrides notOwned
+ * @param {boolean} notOwned - Filters to return only decks created by someone other than the user. Overridden by owned
+ * @returns {Deck[]} - Array of deck objects
+*/
 export async function getActiveDecks(sorted = false, beingStudied = false, toStudy = false, owned = false, notOwned = false) {
     let db = await getLDB();
     let decks = await db.get("active-decks").then(ds => ds["decks"]);
@@ -109,6 +137,9 @@ export async function getActiveDecks(sorted = false, beingStudied = false, toStu
      return deckArr;
 }
 
+/**
+ * Refreshes the client-side database's decks with the server's
+ */
 export async function refreshActiveDecks() {
     let activeUser = await getActiveUser();
     let trueDecks = await activeUser.getDecks();
@@ -118,6 +149,11 @@ export async function refreshActiveDecks() {
     await db.put({_id: "active-decks", decks: trueDecks, _rev: rev});
 }
 
+/**
+ * Updates client-side database's decks with the deck you pass to it
+ * @param {Deck} deck - the deck you want to add or delete
+ * @param {Boolean} add - True to add the deck, false to delete it
+ */
 export async function updateActiveDecks(deck, add) {
     let activeDecks = await getActiveDecks();
     if (add) {
@@ -131,18 +167,31 @@ export async function updateActiveDecks(deck, add) {
     await db.put({_id: "active-decks", decks: activeDecks, _rev: rev});
 }
 
+/**
+* Outputs array of User objects who follow the active user from client-side database
+* @returns {User[]} - Array of User objects
+*/
 export async function getActiveFollowers() {
     let db = await getLDB();
     let activeFollowers = await db.get("active-followers").then(f => f["followers"]);
     return activeFollowers.map(follow => new User(follow.id, follow.username, follow.followers, follow.following, follow.metadata));
 }
 
+/**
+ * Outputs array of User objects who the active user is following from client-side database
+ * @returns {User[]} - Array of User objects
+ */
 export async function getActiveFollowing() {
     let db = await getLDB();
     let activeFollowing = await db.get("active-following").then(f => f["following"]);
     return activeFollowing.map(follow => new User(follow.id, follow.username, follow.followers, follow.following, follow.metadata));
 }
 
+/**
+ * Adds or deletes a user to client-side database for the active user's following list
+ * @param {User} user - User to add or delete from client-side database
+ * @param {*} add - True to add the user, false to delete
+ */
 export async function updateActiveFollowing(user, add) {
     let activeFollowing = await getActiveFollowing();
     if (add) {

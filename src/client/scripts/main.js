@@ -13,7 +13,6 @@ if(localStorage.getItem("active-user") === null){
     await clearDatabases();
     // TODO: Can remove from if-statement later
     await configureDatabaseForMilestoneTwo();
-    await establishLocalDatabase("main_user");
 }
 
 let body = document.getElementById("body");
