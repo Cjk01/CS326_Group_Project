@@ -121,6 +121,10 @@ async function loadUserSearch() {
     let searchButton = profileContainer.querySelector("#user-search-button");
     let entryContainer = profileContainer.querySelector("#profile-entry-container");
 
+    if (localStorage.getItem("user-search")) {
+        searchField.value = localStorage.getItem("user-search");
+    }
+
     searchButton.addEventListener("click", async () => {
         entryContainer.innerHTML = 
         `
@@ -128,10 +132,12 @@ async function loadUserSearch() {
         <p id="user-apology-continued">If the user does not load within a few moments, it is likely we cannot find it. Sorry for the inconvenience, and please search for another ID.</p>
         `;
 
+        localStorage.setItem("user-search", searchField.value);
         let user = await getUser(searchField.value);
         
         entryContainer.innerHTML = "";
-        entryContainer.appendChild(generateUserEntry(user));
+        let entry = await generateUserEntry(user);
+        entryContainer.appendChild(entry);
     });
 }
 
@@ -149,6 +155,9 @@ async function loadDeckSearch() {
     `
 
     let searchField = profileContainer.querySelector("#deck-search-id-field");
+    if (localStorage.getItem("deck-search")) {
+        searchField.value = localStorage.getItem("deck-search");
+    }
     let searchButton = profileContainer.querySelector("#deck-search-button");
     let entryContainer = profileContainer.querySelector("#profile-entry-container");
 
@@ -158,11 +167,12 @@ async function loadDeckSearch() {
         <p id="deck-apology-message">Searching...</p>
         <p id="deck-apology-continued">If the deck does not load within a few moments, it is likely we cannot find it. Sorry for the inconvenience, and please search for another ID.</p>
         `;
-
+        localStorage.setItem("deck-search", searchField.value);
         let deck = await getDeck(searchField.value);
         
         entryContainer.innerHTML = "";
-        entryContainer.appendChild(generateDeckEntry(deck));
+        let entry = await generateDeckEntry(deck);
+        entryContainer.appendChild(entry);
     }); 
 }
 
