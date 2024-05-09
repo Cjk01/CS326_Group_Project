@@ -1,5 +1,5 @@
 # Cachely
-*A study and memorization aid platform with a focus on social features and efficient learning via spaced repetition*
+*A study and memorization aid platform with a focus on social features and efficient learning via [spaced repetition](https://en.wikipedia.org/wiki/Spaced_repetition)*
 
 ### How to run the application
 ```
