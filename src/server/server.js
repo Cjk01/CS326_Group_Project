@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { response } from 'express';
 import path from 'path';
 import {fileURLToPath} from 'url';
 import * as db from "./db.js";
@@ -32,42 +32,99 @@ app.get('/users', async (req, res) => {
 
 app.get('/decks', async (req, res) => {
     let response_obj = await db.getDeckByID(req.query.id);
-    res.send(response_obj);
+    if(response_obj instanceof Error) {
+        //error handling for when a deck does not exist in the DB
+        res.status(404);
+        res.send(response_obj);
+    }
+    else {
+        res.status(200);
+        res.send(response_obj);
+    }
 });
 
 app.post('/users' , async (req, res) => {
     let response_obj = await db.addUserToDatabase(req.body);
-    res.send(response_obj);
+    if(response_obj instanceof Error) {
+        res.status(404);
+        res.send(response_obj);
+    }
+    else {
+        res.status(200);
+        res.send(response_obj);
+    }
 });
 
 app.post('/decks', async (req, res) => {
     let response_obj = await db.addDeckToDatabase(req.body);
-    res.send(response_obj);
+    if(response_obj instanceof Error) {
+        res.status(404);
+        res.send(response_obj);
+    }
+    else {
+        res.status(200);
+        res.send(response_obj);
+    }
 });
 
 app.put('/users', async (req, res) => {
     let response_obj = await db.updateUserInDatabase(req.body);
-    res.send(response_obj);
+    if(response_obj instanceof Error){
+        res.status(404);
+        res.send(response_obj);
+    }
+    else {
+        res.status(200);
+        res.send(response_obj);
+    }
 });
 
 app.put('/decks', async (req, res) => {
     let response_obj = await db.updateDeckInDatabase(req.body);
-    res.send(response_obj);
+    if(response_obj instanceof Error) {
+        res.status(404);
+        res.send(response_obj);
+    }
+    else {
+        res.status(200);
+        res.send(response_obj);
+    }
 });
 
 app.delete('/users', async (req, res) => {
     let response_obj = await db.deleteUserFromDatabase(req.query.id);
-    res.send(response_obj);
+    if(response_obj instanceof Error) {
+        res.status(404);
+        res.send(response_obj);
+    }
+    else {
+        res.status(200);
+        res.send(response_obj);
+    }
 });
 
 app.delete('/decks', async (req, res) => {
     let response_obj = await db.deleteDeckFromDatabase(req.query.id);
-    res.send(response_obj);
+    if(response_obj instanceof Error) {
+        res.status(404);
+        res.send(response_obj);
+    }
+    else {
+        res.status(200);
+        res.send(response_obj);
+    }
 });
 
 app.delete('/clear_databases', async (req, res) => {
     let response_obj = await db.clearDatabases();
-    res.send(response_obj);
+    if(response_obj instanceof Error) {
+        res.status(404);
+        res.send(response_obj);
+    }
+    else {
+        res.status(200);
+        res.send(response_obj);
+    }
 });
 
 
