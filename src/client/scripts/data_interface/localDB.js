@@ -40,10 +40,10 @@ async function getLDB() {
     return new PouchDB("localData");
 }
 
-export async function replaceLocalDatabase() {
+export async function replaceLocalDatabase(user_id) {
     let db = new PouchDB("localData");
     let deleteLocal = await db.destroy();
-    await establishLocalDatabase("main_user");
+    await establishLocalDatabase(user_id);
     return { "ok" : deleteLocal["ok"] };
 }
 
@@ -79,8 +79,6 @@ export async function getActiveDecks(sorted = false, beingStudied = false, toStu
     }
 
     if (beingStudied) {
-        console.log(await getUser("main_user"));
-        console.log(user);
         deckArr = deckArr.filter((deck) => user.metadata[deck.id].beingStudied);
      }
 

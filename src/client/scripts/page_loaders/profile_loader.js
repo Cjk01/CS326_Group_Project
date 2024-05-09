@@ -101,7 +101,6 @@ async function loadUserFollowers() {
     let followContainer = document.createElement("div");
     followContainer.setAttribute("id", "other-decks-container");
     let followers = await getActiveFollowers();
-    console.log(followers);
     await Promise.all(followers.map(generateUserEntry)).then(f => f.map(entry => followContainer.appendChild(entry)));
     profileContainer.appendChild(followContainer);
 }
