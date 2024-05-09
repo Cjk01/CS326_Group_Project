@@ -9,6 +9,7 @@ npm install
 npm start
 ```
 ### And then proceed to [localhost:3500](http://localhost:3500/) in your browser
+*Note: Prior to running the application for the first time, we recommend clearing your local storage, as this can potentially interfere with the application*
 
 # Usage Guide
 - Cachely is a memorization aid app, you study decks of flash cards
