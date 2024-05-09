@@ -27,9 +27,9 @@ export async function loadDecksView() {
     decks_view.innerHTML = 
     `
     <div id="decks-button-container"> 
-    <input id="your-decks-button" class="cool-green-button" type="button" value="Your Decks"/>
-    <input id="saved-decks-button" class="cool-green-button" type="button" value="Saved Decks"/>
-    <input id="create-deck-button" class="cool-green-button" type="button" value="Create Deck"/>
+    <input id="your-decks-button" class="cool-green-button" type="button" value="Your Decks📚"/>
+    <input id="saved-decks-button" class="cool-green-button" type="button" value="Saved Decks💾"/>
+    <input id="create-deck-button" class="cool-green-button" type="button" value="Create Deck📝"/>
     </div>
     <div id="user-decks-container"> </div>
     `;

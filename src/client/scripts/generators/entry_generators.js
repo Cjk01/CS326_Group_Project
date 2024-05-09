@@ -78,7 +78,7 @@ export async function generateDeckEntry(deck) {
     let topButton = document.createElement("input");
     topButton.type = "button";
     topButton.classList.add("cool-green-button");
-    topButton.value = "Study";
+    topButton.value = "Study📖";
     topButton.addEventListener("click", () => {
         const studyPage = document.getElementById("StudyView");
 
@@ -89,7 +89,7 @@ export async function generateDeckEntry(deck) {
     let bottomButton = document.createElement("input");
     bottomButton.type = "button";
     bottomButton.classList.add("cool-green-button");
-    bottomButton.value = "View";
+    bottomButton.value = "View📂";
 
     bottomButton.addEventListener("click", async () => {
         await loadDeckPreview(deck);
@@ -173,27 +173,27 @@ export async function generateUserEntry(user) {
         topButton.value = "Self";
         topButton.disabled = true;
     } else if (activeUser.isFollowing(user)) {
-        topButton.value = "Unfollow";
+        topButton.value = "Unfollow💔";
     } else {
-        topButton.value = "Follow"
+        topButton.value = "Follow💛"
     }
 
     topButton.addEventListener("click", async () => {
         if (await getActiveUser().then(u => u.isFollowing(user))) {
             topButton.value = "Pending";
             await getActiveUser().then(async u => await u.removeFollowing(user));
-            topButton.value = "Follow";
+            topButton.value = "Follow💛"
         } else {
             topButton.value = "Pending";
             await getActiveUser().then(async u => await u.registerFollowing(user));
-            topButton.value = "Unfollow";
+            topButton.value = "Unfollow💔";
         }
     })
 
     let bottomButton = document.createElement("input");
     bottomButton.type = "button";
     bottomButton.classList.add("cool-green-button");
-    bottomButton.value = "View";
+    bottomButton.value = "View🔍";
 
     bottomButton.addEventListener("click", () => {
         loadOtherUserProfile(user);
