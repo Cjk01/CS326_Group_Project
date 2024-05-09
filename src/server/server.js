@@ -1,6 +1,4 @@
-import express, { response } from 'express';
-import path from 'path';
-import {fileURLToPath} from 'url';
+import express from 'express';
 import * as db from "./db.js";
 
 const app = express();

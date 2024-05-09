@@ -1,5 +1,3 @@
-import { User } from "../structures/user.js";
-import { Deck } from "../structures/deck.js";
 import { generateCard } from "../generators/card_generator.js";
 import { getActiveUser } from "../data_interface/localDB.js";
 
@@ -25,7 +23,6 @@ export function loadStudyPageView(deck = null) {
     }
 
     if (deck === null) {
-        // TODO - Add general study functionality later
         final_study_view.innerText = "Please select a Deck to study from your Decks!";
     } else {
         let correct = 0;

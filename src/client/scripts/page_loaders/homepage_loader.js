@@ -1,18 +1,14 @@
 import { generateDeckEntry, generateUserEntry } from "../generators/entry_generators.js";
-import { User } from "../structures/user.js";
-import { getActiveUser, getActiveDecks, getActiveFollowers, getActiveFollowing } from "../data_interface/localDB.js"
+import { getActiveDecks, getActiveFollowers, getActiveFollowing } from "../data_interface/localDB.js"
 
 /**
  * Generates the homepage HTML element
  * @returns {HTMLElement}
 */
 export async function loadHomepageView() {
-    //Get all the necessary data by using User methods --> Retrieves from local storage
-    const user = await getActiveUser();
+    //Get all the necessary data by using Active methods --> Retrieves from client db
     const decks = await getActiveDecks(true, true, true, false, false);
 
-    //TODO: Uncomment lines once these are added into local storage. For now, just use a fake user
-    const user1 = new User(123, "daniilkoval", [1245, 456], [1245, 456], {});
     const followers = await getActiveFollowers();
     const following = await getActiveFollowing();
 
@@ -39,19 +35,6 @@ export async function loadHomepageView() {
         deck.classList.add('homepage-entry');
         deckContainer.appendChild(deck);
     }
-
-    /*Create an add deck button. May add back later
-    const addButton = document.createElement('input');
-    addButton.setAttribute('type', 'button');
-    addButton.setAttribute('id', 'homepage-addButton');
-    addButton.setAttribute('value', '+');
-    addButton.classList.add('homepage-entry');
-    addButton.classList.add('cool-green-button');
-    deckContainer.appendChild(addButton);
-    addButton.addEventListener('click', () => {
-        //TODO: Add functionality to the add deck button when the page to create a deck is made
-        console.log("To be implemented");
-    });*/
 
     //Header for followers
     const followersHeader = document.createElement('h2');

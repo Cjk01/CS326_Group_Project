@@ -1,6 +1,5 @@
 
 import PouchDB from "pouchdb";
-import * as http from "http";
 
 let users = new PouchDB("users");
 let decks = new PouchDB("decks");

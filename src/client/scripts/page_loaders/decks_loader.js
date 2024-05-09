@@ -1,11 +1,10 @@
 
 
 
-import { getDeck, addDeck, updateDeck, deleteDeck } from "../data_interface/data.js";
+import { getDeck, addDeck, updateDeck } from "../data_interface/data.js";
 import { generateDeckEntry } from "../generators/entry_generators.js";
 import { generateCard } from "../generators/card_generator.js";
-import { User } from "../structures/user.js";
-import {Card} from "../structures/card.js";
+import { Card } from "../structures/card.js";
 import { Deck } from "../structures/deck.js";
 import { getActiveUser, getActiveDecks, refreshActiveDecks } from "../data_interface/localDB.js";
 

@@ -19,5 +19,4 @@ export class Deck {
         this.cards = cards;
         this.creator = creator;
     }
-    //add more later if needed
 }
