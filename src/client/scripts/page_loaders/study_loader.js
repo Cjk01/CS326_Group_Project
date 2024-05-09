@@ -1,6 +1,7 @@
 import { User } from "../structures/user.js";
 import { Deck } from "../structures/deck.js";
 import { generateCard } from "../generators/card_generator.js";
+import { getActiveUser } from "../data_interface/localDB.js";
 
 /**
  * This function is called in main.js.
@@ -45,7 +46,7 @@ export function loadStudyPageView(deck = null) {
         incorrectButton.innerText = "Incorrect";
         incorrectButton.style.visibility = "hidden"; // Hidden to start until user clicks on flashcard
 
-        correctButton.addEventListener("click", () => {
+        correctButton.addEventListener("click", async () => {
             // Hide both buttons until next flashcard is clicked
             correctButton.style.visibility = "hidden"; // Hidden to start until user clicks on flashcard
             incorrectButton.style.visibility = "hidden"; // Hidden to start until user clicks on flashcard
@@ -69,6 +70,9 @@ export function loadStudyPageView(deck = null) {
                 Learning has never been more fun! Please choose another Deck from your Decks to keep it up!
                 `;
 
+                let user = await getActiveUser();
+                await user.updateDeck(deck);
+
                 final_study_view.prepend(finalDeckOutput);
             } else {
                 // Create a new card and add it to the DOM
@@ -77,7 +81,7 @@ export function loadStudyPageView(deck = null) {
             }
         });
 
-        incorrectButton.addEventListener("click", () => {
+        incorrectButton.addEventListener("click", async () => {
             // Hide both buttons until next flashcard is clicked
             correctButton.style.visibility = "hidden"; // Hidden to start until user clicks on flashcard
             incorrectButton.style.visibility = "hidden"; // Hidden to start until user clicks on flashcard
@@ -100,6 +104,9 @@ export function loadStudyPageView(deck = null) {
                 <strong>Percent: </strong>${Math.trunc(correct/((correct + incorrect !== 0 ? correct + incorrect : 1)) * 100)}% <br><br>
                 Learning has never been more fun! Please choose another Deck from your Decks to keep it up!
                 `;
+                
+                let user = await getActiveUser();
+                await user.updateDeck(deck);
 
                 final_study_view.prepend(finalDeckOutput);
             } else {

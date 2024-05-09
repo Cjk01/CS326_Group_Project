@@ -9,7 +9,7 @@ import { getActiveUser, getActiveDecks, getActiveFollowers, getActiveFollowing }
 export async function loadHomepageView() {
     //Get all the necessary data by using User methods --> Retrieves from local storage
     const user = await getActiveUser();
-    const decks = await getActiveDecks(true, false, false, true, false);
+    const decks = await getActiveDecks(true, true, true, false, false);
 
     //TODO: Uncomment lines once these are added into local storage. For now, just use a fake user
     const user1 = new User(123, "daniilkoval", [1245, 456], [1245, 456], {});
