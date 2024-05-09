@@ -18,7 +18,16 @@ app.use(express.static("src/client"));
 
 app.get('/users', async (req, res) => {
     let response_obj = await db.getUserByID(req.query.id);
-    res.send(response_obj);
+    if(response_obj instanceof Error){
+        //error handling for when a user does not exist in the DB
+        res.status(404);
+        res.send(response_obj);
+    }
+    else {
+        //successful
+        res.status(200);
+        res.send(response_obj);
+    }
 });
 
 app.get('/decks', async (req, res) => {
