@@ -129,15 +129,21 @@ async function loadUserSearch() {
         entryContainer.innerHTML = 
         `
         <p id="user-apology-message">Searching...</p>
-        <p id="user-apology-continued">If the user does not load within a few moments, it is likely we cannot find it. Sorry for the inconvenience, and please search for another ID.</p>
         `;
 
         localStorage.setItem("user-search", searchField.value);
         let user = await getUser(searchField.value);
-        
-        entryContainer.innerHTML = "";
-        let entry = await generateUserEntry(user);
-        entryContainer.appendChild(entry);
+
+        if ("status" in user) {
+            entryContainer.innerHTML = 
+            `
+            <p id="user-apology-message">Sorry, we could not find that user. Please search another id.</p>
+            `
+        } else {
+            entryContainer.innerHTML = "";
+            let entry = await generateUserEntry(user);
+            entryContainer.appendChild(entry);
+        }
     });
 }
 
@@ -165,14 +171,19 @@ async function loadDeckSearch() {
         entryContainer.innerHTML = 
         `
         <p id="deck-apology-message">Searching...</p>
-        <p id="deck-apology-continued">If the deck does not load within a few moments, it is likely we cannot find it. Sorry for the inconvenience, and please search for another ID.</p>
         `;
         localStorage.setItem("deck-search", searchField.value);
         let deck = await getDeck(searchField.value);
-        
-        entryContainer.innerHTML = "";
-        let entry = await generateDeckEntry(deck);
-        entryContainer.appendChild(entry);
+        if ("status" in deck) {
+            entryContainer.innerHTML = 
+            `
+            <p id="deck-apology-message">Sorry, we could not find that deck. Please search another id.</p>
+            `
+        } else {
+            entryContainer.innerHTML = "";
+            let entry = await generateDeckEntry(deck);
+            entryContainer.appendChild(entry);
+        }
     }); 
 }
 
