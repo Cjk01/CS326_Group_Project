@@ -5,6 +5,7 @@
 import { User } from "../structures/user.js";
 import { Card } from "../structures/card.js";
 import { Deck } from "../structures/deck.js";
+import { replaceLocalDatabase } from "./localDB.js";
 
 const server_base_url = "http://localhost:3500/"
 
@@ -298,7 +299,9 @@ export async function configureDatabaseForMilestoneTwo() {
    await addUser(jonah_user);
 
   //set the active user as the main user
-  await User.establishLocalStorage("main_user");
+  localStorage.setItem("active-user", "main_user");
+  await replaceLocalDatabase("main_user");
+  
 }
 
 /**

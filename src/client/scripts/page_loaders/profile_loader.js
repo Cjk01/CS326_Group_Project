@@ -1,6 +1,7 @@
 import { getUser, getDeck } from "../data_interface/data.js";
 import { generateDeckEntry, generateUserEntry } from "../generators/entry_generators.js";
 import { User } from "../structures/user.js";
+import { getActiveUser, getActiveDecks, getActiveFollowing, getActiveFollowers } from "../data_interface/localDB.js"
 
 /**
  * Loads the initial profile view upon loading the page
@@ -23,7 +24,7 @@ export async function loadProfileView() {
     <div id="profileContainer"><div/>
     `;
 
-    let activeUser = User.getActiveUser();
+    let activeUser = await getActiveUser();
 
     let profileInfo = profileView.querySelector("#profileContainer");
 
@@ -37,7 +38,7 @@ export async function loadProfileView() {
 
     <p id="profile-following-count-text">Number Following: ${activeUser.following.length}</p>
 
-    <p id="profile-deck-text">Currently studying ${User.getActiveDecks(false, true, false, false, false).length} deck(s)</p>
+    <p id="profile-deck-text">Currently studying ${await getActiveDecks(false, true, false, false, false).then(d => d.length)} deck(s)</p>
     `
 
     profileView.querySelector("#your-profile-button").addEventListener("click", loadUserProfile);
@@ -56,11 +57,11 @@ export async function loadProfileView() {
 /**
  * Loads the active user's profile into the profile view
  */
-function loadUserProfile() {
+async function loadUserProfile() {
     let profileInfoContainer = document.getElementById("profileContainer");
     profileInfoContainer.innerHTML = "";
 
-    let activeUser = User.getActiveUser();
+    let activeUser = await getActiveUser();
 
     profileInfoContainer.innerHTML = 
     `
@@ -72,7 +73,7 @@ function loadUserProfile() {
 
     <p id="profile-following-count-text">Number Following: ${activeUser.following.length}</p>
 
-    <p id="profile-deck-text">Currently studying ${User.getActiveDecks(false, true, false, false, false).length} deck(s)</p>
+    <p id="profile-deck-text">Currently studying ${await getActiveDecks(false, true, false, false, false).then(d => d.length)} deck(s)</p>
     `
 }
 
@@ -85,8 +86,8 @@ async function loadUserFollowing() {
 
     let followContainer = document.createElement("div");
     followContainer.setAttribute("id", "other-decks-container");
-    let following = User.getActiveFollowing();
-    following.map(generateUserEntry).map(entry => followContainer.appendChild(entry));
+    let following = await getActiveFollowing();
+    await Promise.all(following.map(generateUserEntry)).then(f => f.map(entry => followContainer.appendChild(entry)));
     profileContainer.appendChild(followContainer);
 }
 
@@ -99,8 +100,8 @@ async function loadUserFollowers() {
 
     let followContainer = document.createElement("div");
     followContainer.setAttribute("id", "other-decks-container");
-    let followers = User.getActiveFollowers();
-    followers.map(generateUserEntry).map(entry => followContainer.appendChild(entry));
+    let followers = await getActiveFollowers();
+    await Promise.all(followers.map(generateUserEntry)).then(f => f.map(entry => followContainer.appendChild(entry)));
     profileContainer.appendChild(followContainer);
 }
 
@@ -120,6 +121,10 @@ async function loadUserSearch() {
     let searchButton = profileContainer.querySelector("#user-search-button");
     let entryContainer = profileContainer.querySelector("#profile-entry-container");
 
+    if (localStorage.getItem("user-search")) {
+        searchField.value = localStorage.getItem("user-search");
+    }
+
     searchButton.addEventListener("click", async () => {
         entryContainer.innerHTML = 
         `
@@ -127,10 +132,12 @@ async function loadUserSearch() {
         <p id="user-apology-continued">If the user does not load within a few moments, it is likely we cannot find it. Sorry for the inconvenience, and please search for another ID.</p>
         `;
 
+        localStorage.setItem("user-search", searchField.value);
         let user = await getUser(searchField.value);
         
         entryContainer.innerHTML = "";
-        entryContainer.appendChild(generateUserEntry(user));
+        let entry = await generateUserEntry(user);
+        entryContainer.appendChild(entry);
     });
 }
 
@@ -148,6 +155,9 @@ async function loadDeckSearch() {
     `
 
     let searchField = profileContainer.querySelector("#deck-search-id-field");
+    if (localStorage.getItem("deck-search")) {
+        searchField.value = localStorage.getItem("deck-search");
+    }
     let searchButton = profileContainer.querySelector("#deck-search-button");
     let entryContainer = profileContainer.querySelector("#profile-entry-container");
 
@@ -157,11 +167,12 @@ async function loadDeckSearch() {
         <p id="deck-apology-message">Searching...</p>
         <p id="deck-apology-continued">If the deck does not load within a few moments, it is likely we cannot find it. Sorry for the inconvenience, and please search for another ID.</p>
         `;
-
+        localStorage.setItem("deck-search", searchField.value);
         let deck = await getDeck(searchField.value);
         
         entryContainer.innerHTML = "";
-        entryContainer.appendChild(generateDeckEntry(deck));
+        let entry = await generateDeckEntry(deck);
+        entryContainer.appendChild(entry);
     }); 
 }
 
@@ -189,5 +200,6 @@ export async function loadOtherUserProfile(user) {
     `
 
     let entryContainer = profileContainer.querySelector("#other-decks-container");
-    userDecks.map(deck => entryContainer.appendChild(generateDeckEntry(deck)));
+    let entries = await Promise.all(userDecks.map(generateDeckEntry))
+    entries.map(e => entryContainer.appendChild(e));
 }

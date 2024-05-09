@@ -12,9 +12,14 @@ let decks = new PouchDB("decks");
  * @returns {Object} - the response object, similar to addUserToDatabase
  */
 export async function addDeckToDatabase(deck) {
+    try { 
     let doc = {"_id" : deck.id.toString() , "deck" : deck};
     let response = await decks.put(doc);
     return response;
+    }
+    catch(err) {
+        return err;
+    }
 }
 
 /**
@@ -24,8 +29,13 @@ export async function addDeckToDatabase(deck) {
  */
 
 export async function getDeckByID(id) {
+    try {
     let deck_document = await decks.get(id);
     return deck_document["deck"];
+    } 
+    catch(err) {
+        return err;
+    }
 }
 
 /**
@@ -34,10 +44,15 @@ export async function getDeckByID(id) {
  * @returns {Object} - response status object
  */
 export async function updateDeckInDatabase(deck) {
+    try {
     let doc_to_update = await decks.get(deck.id);
     Object.assign(doc_to_update, {"_id" : deck.id.toString() , "deck" : deck});
     let response = await decks.put(doc_to_update);
     return response;
+    }
+    catch(err) {
+        return err;
+    }
 }
 
 /**
@@ -46,8 +61,13 @@ export async function updateDeckInDatabase(deck) {
  * @returns {Object} - response status object
  */
 export async function deleteDeckFromDatabase(id) {
+    try {
     let deletion = await decks.get(id).then(deck_doc => decks.remove(deck_doc));
-    return deletion;
+    return deletion; 
+    } 
+    catch(err) {
+        return err;
+    }
  }
 
 /**
@@ -63,8 +83,14 @@ export async function deleteDeckFromDatabase(id) {
  */
 export async function addUserToDatabase(user) {
     let doc = {"_id" : user.id.toString(), "user" : user}; //_id is needed for pouchDB
+
+    try {
     let response = await users.put(doc);
     return response;
+    } 
+    catch(err) {
+        return err;
+    }
 }
 
 /**
@@ -73,8 +99,13 @@ export async function addUserToDatabase(user) {
  * @returns {Object} - JSON representation of the requested User object
  */
 export async function getUserByID(id){
-    let user_document = await users.get(id);
+    try  {
+    let user_document = await users.get(id); 
     return user_document["user"];
+    } 
+    catch(err) {
+        return err;
+    }
 }
 
 /**
@@ -83,10 +114,15 @@ export async function getUserByID(id){
  * @returns {Object} - response status object
  */
 export async function updateUserInDatabase(user) {
+    try {
     let doc_to_update = await users.get(user.id);
     Object.assign(doc_to_update, {"_id" : user.id.toString() , "user" : user});
     let response = await users.put(doc_to_update);
     return response;
+    }
+    catch(err) {
+        return err;
+    }
     
 }
 
@@ -98,8 +134,13 @@ export async function updateUserInDatabase(user) {
  * @returns {Object} - response status object (if the user was deleted properly)
  */
 export async function deleteUserFromDatabase(id) {
+   try {
    let deletion = await users.get(id).then(user_doc => users.remove(user_doc));
    return deletion;
+   }
+   catch(err) {
+      return err;
+   }
 }
 
 /**
@@ -107,11 +148,16 @@ export async function deleteUserFromDatabase(id) {
  * @returns {Object} response status object
  */
 export async function clearDatabases() {
+    try {
     let delete_users = await users.destroy();
     let delete_decks = await decks.destroy();
     users = new PouchDB("users");
     decks = new PouchDB("decks");
     return {"ok" : delete_decks["ok"] && delete_users["ok"] };
+    } 
+    catch(err) {
+        return err;
+    }
 }
 
 
@@ -121,9 +167,14 @@ export async function clearDatabases() {
  * logs the info for all databases
  */
 export async function logDatabaseInformation() {
+    try { 
    let users_info = await users.info();
    let decks_info = await decks.info();
    return {"users" : users_info, "decks" : decks_info};
+    } 
+    catch(err) {
+        return err;
+    }
 }
 
 

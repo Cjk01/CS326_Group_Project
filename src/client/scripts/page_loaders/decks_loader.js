@@ -7,6 +7,7 @@ import { generateCard } from "../generators/card_generator.js";
 import { User } from "../structures/user.js";
 import {Card} from "../structures/card.js";
 import { Deck } from "../structures/deck.js";
+import { getActiveUser, getActiveDecks, refreshActiveDecks } from "../data_interface/localDB.js";
 
 /**
  * This function is called once (in main.js)
@@ -35,7 +36,7 @@ export async function loadDecksView() {
 
     //load all of the active user's decks (should be set prior)
     //this is equivalent to clicking "Your Decks"
-    await User.getActiveUser().getDecks(true, false, false, true, false).then(decks => decks.forEach(deck => decks_view.querySelector("#user-decks-container").appendChild(generateDeckEntry(deck))));
+    await getActiveDecks(true, false, false, true, false).then(decks => decks.forEach(async deck => decks_view.querySelector("#user-decks-container").appendChild(await generateDeckEntry(deck))));
     
     //adding event listeners to the buttons to load filtered subset of decks
 
@@ -69,9 +70,9 @@ export async function populateDecksContainer(filter) {
     }
 
     
-    await User.getActiveUser().getDecks(true, false, false, filter, !filter).then(decks => decks.forEach(deck => user_decks_container.appendChild(generateDeckEntry(deck))));
-    
-
+    let decks = await getActiveDecks(true, false, false, filter, !filter);
+    let entries = await Promise.all(decks.map(generateDeckEntry));
+    entries.map(e => user_decks_container.appendChild(e));
 }
 
 export function populateDeckPreviewPane(deck, card_number) {
@@ -111,7 +112,7 @@ export async function loadCreateNewDeckView() {
         // TODO
         //Refactor this logic of adding deck to db plus updating user to a predefined function
         // it should create a new blank deck, add it to the decks db, and register it with the current active user
-        let active_user = User.getActiveUser();
+        let active_user = await getActiveUser();
         let new_deck_name = document.getElementById("deckname-input").value;
         let uuid_response = await fetch("https://randomuser.me/api");
         if(!uuid_response.ok){
@@ -179,6 +180,7 @@ export async function loadModifyDeckView(deck_id) {
         // add the card to the selected deck
         deck_to_modify.cards.push(new Card("text", document.getElementById("question-input").value, document.getElementById("answer-input").value, {}));
         await updateDeck(deck_to_modify);
+        await refreshActiveDecks();
         //populate the view of the current deck in the preview pane
         populateDeckPreviewPane(deck_to_modify, deck_to_modify.cards.length - 1);
         
@@ -192,7 +194,7 @@ export async function loadModifyDeckView(deck_id) {
  * The html is injected into the user-decks-container 
  * @param {Deck} deck - The deck which is shown in the preview pane
  */
-export function loadDeckPreview(deck) {
+export async function loadDeckPreview(deck) {
     document.getElementById("navbar").childNodes[0].childNodes[4].childNodes[0].click();
 
     //clearing the user decks container
@@ -201,7 +203,7 @@ export function loadDeckPreview(deck) {
         user_decks_container.removeChild(user_decks_container.firstChild);
     }
 
-    let activeUser = User.getActiveUser();
+    let activeUser = await getActiveUser();
 
     
    
@@ -239,7 +241,7 @@ export function loadDeckPreview(deck) {
 
     let addDelButton = user_decks_container.querySelector("#deck-creation-page").querySelector("#addDel-button");
 
-    if (deck.creator.id === User.getActiveUser().id) {
+    if (deck.creator.id === await getActiveUser().then(u => u.id)) {
         addDelButton.value = "Delete";
         addDelButton.addEventListener("click", async () => {
             addDelButton.value = "Pending";

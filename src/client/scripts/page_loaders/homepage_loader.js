@@ -1,5 +1,6 @@
 import { generateDeckEntry, generateUserEntry } from "../generators/entry_generators.js";
 import { User } from "../structures/user.js";
+import { getActiveUser, getActiveDecks, getActiveFollowers, getActiveFollowing } from "../data_interface/localDB.js"
 
 /**
  * Generates the homepage HTML element
@@ -7,13 +8,13 @@ import { User } from "../structures/user.js";
 */
 export async function loadHomepageView() {
     //Get all the necessary data by using User methods --> Retrieves from local storage
-    const user = User.getActiveUser();
-    const decks = User.getActiveDecks(true, false, false, true, false);
+    const user = await getActiveUser();
+    const decks = await getActiveDecks(true, false, false, true, false);
 
     //TODO: Uncomment lines once these are added into local storage. For now, just use a fake user
     const user1 = new User(123, "daniilkoval", [1245, 456], [1245, 456], {});
-    const followers = User.getActiveFollowers();
-    const following = User.getActiveFollowing();
+    const followers = await getActiveFollowers();
+    const following = await getActiveFollowing();
 
     //Create Home Page Container
     let homePageContainer = document.createElement('div');
@@ -34,7 +35,7 @@ export async function loadHomepageView() {
     //Generate deck elements for the first 5 decks in the decks to study as per wire frame
     let decks_to_iterate = decks.length > 5 ? 5 : decks.length;
     for(let i = 0; i < decks_to_iterate; i++){
-        const deck = generateDeckEntry(decks[i]);
+        const deck = await generateDeckEntry(decks[i]);
         deck.classList.add('homepage-entry');
         deckContainer.appendChild(deck);
     }
@@ -63,7 +64,7 @@ export async function loadHomepageView() {
 
     //Create a short display of people following the user
     for(let i = 0; i < followers.length; i++){
-        const follower = generateUserEntry(followers[i]);
+        const follower = await generateUserEntry(followers[i]);
         follower.classList.add('homepage-follower');
         followersContainer.appendChild(follower);
     }
@@ -79,7 +80,7 @@ export async function loadHomepageView() {
 
     //Do the same for people the user follows as for people who follow the user
     for(let i = 0; i < following.length; i++){
-        const followee = generateUserEntry(following[i]);
+        const followee = await generateUserEntry(following[i]);
         followee.classList.add('homepage-followee');
         followingContainer.appendChild(followee);
     }
