@@ -29,7 +29,7 @@ npm start
 4. Study: This is where you study a selected deck (decks are recommended based on spaced repetition metadata)
     - To study a deck, select the "Study" button on a deck preview
     - click on the flashcard to flip it and see the answer, then click correct or incorrect
-        - You can leave the page entirely, come back later, and your current position in the deck will be saved  
+      
 
 ## We hope you enjoy using the application!
 
